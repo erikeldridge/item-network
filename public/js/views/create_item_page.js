@@ -30,6 +30,9 @@ define([
             name: name,
             created_by_id: owner.get('id')
           };
+      itemCollection.on('sync', function(){
+        this.$('.alert-success').show();
+      }, this);
       itemCollection.create(item);
       return false;
     }
