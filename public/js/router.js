@@ -13,27 +13,21 @@ define([
   CreateItemPageView, ShowItemPageView,
   SearchFormPageView, SearchResultsPageView){
 
-  var views = {
-        CreateItemPageView: CreateItemPageView,
-        ShowItemPageView: ShowItemPageView,
-        SearchFormPageView: SearchFormPageView,
-        SearchResultsPageView: SearchResultsPageView,
-      },
-      Router = Backbone.Router.extend({
+  var Router = Backbone.Router.extend({
         routes: {
-          '': 'CreateItemPageView',
-          'item/:itemId': 'ShowItemPageView',
-          'search_form': 'SearchFormPageView',
-          'search?*query': 'SearchResultsPageView',
-          'search': 'SearchResultsPageView'
+          ''              : CreateItemPageView,
+          'item/:itemId'  : ShowItemPageView,
+          'search_form'   : SearchFormPageView,
+          'search?*query' : SearchResultsPageView,
+          'search'        : SearchResultsPageView
         },
         initialize: function(){
 
-          Backbone.history.on('route', function(router, viewName, params){
+          Backbone.history.on('route', function(router, viewClass, params){
             if(this.view){
               this.view.close();
             }
-            this.view = new views[viewName]({params: params});
+            this.view = new viewClass({params: params});
             $('#container').html(this.view.el);
           }, this);
 
