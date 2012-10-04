@@ -1,0 +1,11 @@
+<ul class="breadcrumb">
+  <li class="active">Search results</li>
+</ul>
+
+<div class="stream">
+  <% results.each(function(result){ %>
+    <div>
+      <a href="/item/<%= result.get('id') %>"><%= result.get('name') %></a>
+    </div>
+  <% }) %>
+</div>
