@@ -1,0 +1,16 @@
+<ul class="breadcrumb">
+  <li><a href="/">Home</a><span class="divider">/</span></li>
+  <li class="active">Items</li>
+</ul>
+
+<h1>
+  Items
+</h1>
+
+<div class="stream">
+  <% _.each(items, function(item){ %>
+    <div>
+      <a href="/item/<%= item.get('id') %>"><%= item.get('name') %></a>
+    </div>
+  <% }) %>
+</div>

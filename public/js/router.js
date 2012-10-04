@@ -6,16 +6,18 @@ define([
   'collections/likes',
   'views/create_item_page',
   'views/show_item_page',
+  'views/show_items_page',
   'views/search_form_page',
   'views/search_results_page'
 ], function(
   $, Backbone, itemCollection, userCollection, likeCollection,
-  CreateItemPageView, ShowItemPageView,
+  CreateItemPageView, ShowItemPageView, ShowItemsPageView,
   SearchFormPageView, SearchResultsPageView){
 
   var views = {
         CreateItemPageView: CreateItemPageView,
         ShowItemPageView: ShowItemPageView,
+        ShowItemsPageView: ShowItemsPageView,
         SearchFormPageView: SearchFormPageView,
         SearchResultsPageView: SearchResultsPageView,
       },
@@ -23,6 +25,7 @@ define([
         routes: {
           '': 'CreateItemPageView',
           'item/:itemId': 'ShowItemPageView',
+          'items': 'ShowItemsPageView',
           'search_form': 'SearchFormPageView',
           'search?*query': 'SearchResultsPageView'
         },
