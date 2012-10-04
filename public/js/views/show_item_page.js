@@ -10,9 +10,9 @@ define([
     initialize: function(){
       this.render();
     },
-    close: function(){
+    remove: function(){
       this.undelegateEvents();
-      this.remove();
+      Backbone.View.prototype.remove.call(this);
     },
     render: function(){
       var itemId = this.options.params[0],

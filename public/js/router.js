@@ -25,7 +25,7 @@ define([
 
           Backbone.history.on('route', function(router, viewClass, params){
             if(this.view){
-              this.view.close();
+              this.view.remove();
             }
             this.view = new viewClass({params: params});
             $('#container').html(this.view.el);
