@@ -5,22 +5,26 @@ define([
   'collections/users',
   'collections/likes',
   'views/create_item_page',
+  'views/show_item_page',
   'views/search_form_page',
   'views/search_results_page'
 ], function(
   $, Backbone, itemCollection, userCollection, likeCollection,
-  CreateItemPageView, SearchFormPageView, SearchResultsPageView){
+  CreateItemPageView, ShowItemPageView,
+  SearchFormPageView, SearchResultsPageView){
 
   var views = {
-        createItem: CreateItemPageView,
-        searchForm: SearchFormPageView,
-        searchResults: SearchResultsPageView,
+        CreateItemPageView: CreateItemPageView,
+        ShowItemPageView: ShowItemPageView,
+        SearchFormPageView: SearchFormPageView,
+        SearchResultsPageView: SearchResultsPageView,
       },
       Router = Backbone.Router.extend({
         routes: {
-          '' : 'createItem',
-          'search_form': 'searchForm',
-          'search?*query' : 'searchResults',
+          '': 'CreateItemPageView',
+          'item/:itemId': 'ShowItemPageView',
+          'search_form': 'SearchFormPageView',
+          'search?*query': 'SearchResultsPageView'
         },
         initialize: function(){
 
