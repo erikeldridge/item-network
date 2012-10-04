@@ -4,19 +4,22 @@ define([
   'collections/items',
   'collections/users',
   'collections/likes',
+  'views/nav_page',
   'views/create_item_page',
   'views/show_item_page',
   'views/search_form_page',
   'views/search_results_page'
 ], function(
   $, Backbone, itemCollection, userCollection, likeCollection,
-  CreateItemPageView, ShowItemPageView,
+  NavPageView,
+  CreateItemPageView, ItemPageView,
   SearchFormPageView, SearchResultsPageView){
 
   var Router = Backbone.Router.extend({
         routes: {
-          ''              : CreateItemPageView,
-          'item/:itemId'  : ShowItemPageView,
+          ''              : NavPageView,
+          'create'        : CreateItemPageView,
+          'item/:itemId'  : ItemPageView,
           'search_form'   : SearchFormPageView,
           'search?*query' : SearchResultsPageView,
           'search'        : SearchResultsPageView
