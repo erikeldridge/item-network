@@ -27,8 +27,7 @@ define([
       var name = this.$el.find('input[name=name]').val(),
           owner = userCollection.get({id: 1}),
           item = {
-            name: name,
-            created_by_id: owner.get('id')
+            name: name
           };
       itemCollection.on('sync', function(){
         this.$('.alert-success').show();

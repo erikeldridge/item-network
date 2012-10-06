@@ -1,0 +1,13 @@
+<ul class="breadcrumb">
+  <li><a href="/">Home</a><span class="divider">/</span></li>
+  <li><a href="/search">Items</a><span class="divider">/</span></li>
+  <li class="active">Edit <%= item.get('id') %></li>
+</ul>
+
+<p>
+Name: <input name="name" value="<%= item.get('name') %>" type="text">
+</p>
+<p>
+Tag: <input name="tag" value="<%= tag.get('text') || '' %>" type="text">
+</p>
+<button type="submit" class="btn">Save</button>

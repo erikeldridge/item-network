@@ -1,9 +1,9 @@
 define([
   'backbone',
-  'models/like'
+  'models/tag'
 ], function(Backbone, model){
   var Collection = Backbone.Collection.extend({
     model: model
   });
-  return new Collection(init.likes);
+  return new Collection(init.tags);
 });

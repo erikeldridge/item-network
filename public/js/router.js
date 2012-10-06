@@ -1,28 +1,26 @@
 define([
   'zepto',
   'backbone',
-  'collections/items',
-  'collections/users',
-  'collections/likes',
   'views/nav_page',
   'views/create_item_page',
+  'views/edit_item_page',
   'views/show_item_page',
   'views/search_form_page',
   'views/search_results_page'
 ], function(
-  $, Backbone, itemCollection, userCollection, likeCollection,
-  NavPageView,
-  CreateItemPageView, ItemPageView,
+  $, Backbone, NavPageView,
+  CreateItemPageView, EditItemPageView, ShowItemPageView,
   SearchFormPageView, SearchResultsPageView){
 
   var Router = Backbone.Router.extend({
         routes: {
-          ''              : NavPageView,
-          'create'        : CreateItemPageView,
-          'item/:itemId'  : ItemPageView,
-          'search_form'   : SearchFormPageView,
-          'search?*query' : SearchResultsPageView,
-          'search'        : SearchResultsPageView
+          ''                  : NavPageView,
+          'create'            : CreateItemPageView,
+          'edit_item/:itemId' : EditItemPageView,
+          'item/:itemId'      : ShowItemPageView,
+          'search_form'       : SearchFormPageView,
+          'search?*query'     : SearchResultsPageView,
+          'search'            : SearchResultsPageView
         },
         initialize: function(){
 
