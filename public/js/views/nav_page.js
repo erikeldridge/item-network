@@ -6,6 +6,14 @@ define([
 
   var View = Backbone.View.extend({
     template: _.template( template ),
+    events: {
+      'submit .navbar-search': 'search'
+    },
+    search: function(e){
+      var query = this.$('.navbar-search').serialize();
+      Backbone.history.navigate('item?'+query, {trigger: true});
+      return false;
+    },
     initialize: function(){
       this.render();
     },
