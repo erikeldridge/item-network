@@ -1,9 +1,9 @@
 define([
   'underscore',
   'backbone',
-  'collections/search_results',
+  'collections/item_search_results',
   'text!templates/search_results_page.html'
-], function module(_, Backbone, searchResultsCollection, template){
+], function module(_, Backbone, itemSearchResultCollection, template){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
@@ -16,7 +16,7 @@ define([
     },
     render: function(){
       var query = this.options.params[0];
-      searchResultsCollection.fetch({
+      itemSearchResultCollection.fetch({
         data: query,
         success: _.bind(function(results){
           var html = this.template({

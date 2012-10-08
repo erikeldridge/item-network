@@ -27,13 +27,12 @@ put '/api/1/item/:id' do
   item.to_json
 end
 
-get '/api/1/search' do
+get '/api/1/item' do
   def empty_param? name
     params[name].nil? || params[name].empty?
   end
   items = Item
   items = items.filter(Sequel.like(:name, "%#{params[:name]}%")) unless empty_param? :name
-  items = items.filter(Sequel.like(:state, "%#{params[:state]}%")) unless empty_param? :state
   unless empty_param? :owner
     user_ids = User.select(:id).filter(Sequel.like(:name, "%#{params[:owner]}%"))
     items = items.filter(:owner_id => user_ids)
