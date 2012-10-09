@@ -1,5 +1,5 @@
 define([
-  'backbone',
+  'backbone-marionette',
   'router'
 ], function(Backbone, Router){
 
