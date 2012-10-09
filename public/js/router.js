@@ -19,8 +19,8 @@ define([
           'edit_item/:itemId' : EditItemPageView,
           'item/:itemId'      : ShowItemPageView,
           'search_form'       : SearchFormPageView,
-          'item?*query'     : ItemSearchPageView,
-          'item'            : ItemSearchPageView
+          'item?*query'       : ItemSearchPageView,
+          'item'              : ItemSearchPageView
         },
         initialize: function(){
 

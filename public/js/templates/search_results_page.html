@@ -3,10 +3,7 @@
   <li class="active">Search results</li>
 </ul>
 
-<div class="stream">
-  <% results.each(function(result){ %>
-    <div>
-      <a href="/item/<%= result.get('id') %>"><%= result.get('name') %></a>
-    </div>
-  <% }) %>
-</div>
+
+<div class="item-search-results"></div>
+
+<div class="user-search-results"></div>

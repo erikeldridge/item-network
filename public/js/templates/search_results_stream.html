@@ -1,0 +1,7 @@
+<div class="search-results-stream">
+  <% results.each(function(result){ %>
+    <div>
+      <a href="/item/<%= result.get('id') %>"><%= result.get('name') %></a>
+    </div>
+  <% }) %>
+</div>

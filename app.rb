@@ -44,6 +44,15 @@ get '/api/1/item' do
   items.to_json
 end
 
+get '/api/1/user' do
+  def empty_param? name
+    params[name].nil? || params[name].empty?
+  end
+  users = User
+  users = users.filter(Sequel.like(:name, "%#{params[:name]}%")) unless empty_param? :name
+  users.to_json
+end
+
 get '/api/1/activity' do
   Activity.all.to_json
 end
