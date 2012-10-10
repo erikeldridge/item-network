@@ -1,6 +1,7 @@
 define([
   'zepto',
   'backbone',
+  'views/layout',
   'views/nav_page',
   'views/create_item_page',
   'views/edit_item_page',
@@ -8,7 +9,8 @@ define([
   'views/search_form_page',
   'views/search_results_page'
 ], function(
-  $, Backbone, NavPageView,
+  $, Backbone,
+  LayoutView, NavPageView,
   CreateItemPageView, EditItemPageView, ShowItemPageView,
   SearchFormPageView, ItemSearchPageView){
 
@@ -23,13 +25,16 @@ define([
           'item'              : ItemSearchPageView
         },
         initialize: function(){
-
+          var layout = new LayoutView();
+          $('#container').html(layout.el);
           Backbone.history.on('route', function(router, viewClass, params){
             if(this.view){
               this.view.remove();
             }
-            this.view = new viewClass({params: params});
-            $('#container').html(this.view.el);
+            this.view = new viewClass({
+              params: params
+            });
+            layout.$('#page').html(this.view.el);
           }, this);
 
           // Internally handle anchor clicks if route is defined
