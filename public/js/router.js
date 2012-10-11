@@ -7,12 +7,13 @@ define([
   'views/edit_item_page',
   'views/show_item_page',
   'views/search_form_page',
-  'views/search_results_page'
+  'views/search_results_page',
+  'views/show_user_page'
 ], function(
   $, Backbone,
   LayoutView, NavPageView,
   CreateItemPageView, EditItemPageView, ShowItemPageView,
-  SearchFormPageView, ItemSearchPageView){
+  SearchFormPageView, ItemSearchPageView, ShowUserPageView){
 
   var Router = Backbone.Router.extend({
         routes: {
@@ -20,9 +21,10 @@ define([
           'create'            : CreateItemPageView,
           'edit_item/:itemId' : EditItemPageView,
           'item/:itemId'      : ShowItemPageView,
-          'search_form'       : SearchFormPageView,
           'item?*query'       : ItemSearchPageView,
-          'item'              : ItemSearchPageView
+          'item'              : ItemSearchPageView,
+          'search_form'       : SearchFormPageView,
+          'profile'           : ShowUserPageView
         },
         initialize: function(){
           var layout = new LayoutView();
