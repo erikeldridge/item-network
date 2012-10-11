@@ -16,6 +16,12 @@ Sequel.migration do
       foreign_key :owner_id, :users, :key => :id
     end
 
+    create_table :comments do
+      primary_key :id
+      String :text
+      foreign_key :owner_id, :users, :key => :id
+    end
+
     create_table :activities do
       primary_key :id
       String :table

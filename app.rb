@@ -44,6 +44,15 @@ get '/api/1/item' do
   items.to_json
 end
 
+post '/api/1/comment' do
+  session!
+  data = JSON.parse request.body.read
+  data['owner_id'] = session[:user_id]
+  record = Comment.create(data)
+  Activity.create(:table => 'comments', :row => record[:id], :action => 'create', :owner_id => session[:user_id])
+  record.to_json
+end
+
 get '/api/1/user' do
   def empty_param? name
     params[name].nil? || params[name].empty?

@@ -9,3 +9,5 @@ class Tag < Sequel::Model
 end
 class Activity < Sequel::Model
 end
+class Comment < Sequel::Model
+end

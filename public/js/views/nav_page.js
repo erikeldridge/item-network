@@ -1,17 +1,28 @@
 define([
   'underscore',
   'backbone',
+  'collections/users',
+  'collections/comments',
   'text!templates/nav_page.html'
-], function module(_, Backbone, template){
+], function module(_, Backbone, userCollection, commentCollection, template){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
     events: {
-      'submit .navbar-search': 'search'
+      'submit form': 'comment',
     },
-    search: function(e){
-      var query = this.$('.navbar-search').serialize();
-      Backbone.history.navigate('item?'+query, {trigger: true});
+    comment: function(e){
+      var $input = this.$('input[name="text"]'),
+          text = $input.val(),
+          owner = userCollection.get({id: 1}), // HACK: current user
+          comment = {
+            text: text
+          };
+      commentCollection.on('sync', function(){
+        this.$('.alert-success').show();
+        $input.val('');
+      }, this);
+      commentCollection.create(comment);
       return false;
     },
     initialize: function(){
