@@ -15,6 +15,7 @@ define([
       var $input = this.$('input[name="text"]'),
           text = $input.val(),
           comment = {
+            item_id: this.item.get('id'),
             text: text
           };
       commentCollection.on('sync', function(comment){
@@ -24,7 +25,9 @@ define([
       commentCollection.create(comment);
       return false;
     },
-    initialize: function(){
+    initialize: function(options){
+      var id = options.params[0];
+      this.item = itemCollection.get(id);
       this.render();
     },
     remove: function(){
@@ -32,11 +35,9 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var id = this.options.params[0],
-          item = itemCollection.get(id);
-          html = this.template({
-            item: item
-          });
+      var html = this.template({
+          item: this.item
+        });
       this.$el.html( html );
     }
   });

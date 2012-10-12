@@ -3,6 +3,7 @@ require 'sequel'
 
 Sequel.migration do
   change do
+
     create_table :tags do
       primary_key :id
       String :text
@@ -20,6 +21,7 @@ Sequel.migration do
       primary_key :id
       String :text
       foreign_key :owner_id, :users, :key => :id
+      foreign_key :item_id, :items, :key => :id
     end
 
     create_table :activities do
@@ -46,5 +48,9 @@ Sequel.migration do
     self[:tags].insert({:owner_id => 1, :item_id => 1, :text => 'a'})
     self[:tags].insert({:owner_id => 1, :item_id => 2, :text => 'b'})
     self[:tags].insert({:owner_id => 1, :item_id => 3, :text => 'c'})
+
+    self[:comments].insert({:owner_id => 1, :item_id => 1, :text => 'a comment'})
+    self[:comments].insert({:owner_id => 2, :item_id => 2, :text => 'another comment'})
+    self[:comments].insert({:owner_id => 2, :item_id => 3, :text => 'a third comment'})
   end
 end
