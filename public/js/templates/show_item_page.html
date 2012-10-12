@@ -7,4 +7,16 @@
 <h1>
   <%= item.get('name') %>
 </h1>
+
 <a href="/edit_item/<%= item.get('id') %>">Edit</a>
+
+<h2>Comments</h2>
+<div class="comment-stream"></div>
+
+<form class="form" name="comment">
+  <div class="control-group">
+    <div class="controls">
+      <input class="span12" type="text" name="text" placeholder="Comment">
+    </div>
+  </div>
+</form>

@@ -2,11 +2,28 @@ define([
   'underscore',
   'backbone',
   'collections/items',
+  'collections/comments',
   'text!templates/show_item_page.html'
-], function module(_, Backbone, itemCollection, template){
+], function module(_, Backbone, itemCollection, commentCollection, template){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
+    events: {
+      'submit form[name="comment"]': 'comment',
+    },
+    comment: function(e){
+      var $input = this.$('input[name="text"]'),
+          text = $input.val(),
+          comment = {
+            text: text
+          };
+      commentCollection.on('sync', function(comment){
+        this.$('.comment-stream').prepend('<div class="comment"><a href="/comment/'+comment.get('id')+'">'+text+'</a></div>');
+        $input.val('');
+      }, this);
+      commentCollection.create(comment);
+      return false;
+    },
     initialize: function(){
       this.render();
     },
@@ -15,8 +32,8 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var itemId = this.options.params[0],
-          item = itemCollection.get(itemId);
+      var id = this.options.params[0],
+          item = itemCollection.get(id);
           html = this.template({
             item: item
           });
