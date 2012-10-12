@@ -91,7 +91,8 @@ get '/*' do
     :items => Item.all,
     :users => User.all,
     :tags => Tag.all,
-    :comments => Comment.all
+    :comments => Comment.all,
+    :activities => Activity.all
   }.to_json
   erb :default
 end

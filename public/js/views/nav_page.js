@@ -3,8 +3,11 @@ define([
   'backbone',
   'collections/users',
   'collections/comments',
+  'collections/activities',
   'text!templates/nav_page.html'
-], function module(_, Backbone, userCollection, commentCollection, template){
+], function module(_, Backbone,
+  userCollection, commentCollection, activityCollection,
+  template){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
@@ -33,7 +36,9 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var html = this.template();
+      var html = this.template({
+        activities: activityCollection.first(3)
+      });
       this.$el.html( html );
     }
   });

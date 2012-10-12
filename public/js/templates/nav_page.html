@@ -6,7 +6,7 @@
     <li class="active">Home</li>
   </ul>
 
-  Comment
+  <h2>Comment</h2>
   <form class="form" name="comment">
     <div class="control-group">
       <div class="controls">
@@ -15,7 +15,14 @@
     </div>
   </form>
 
-  <a href="/create">Create item</a>
-  <a href="/item">All items</a>
-  <a href="/search_form">Search</a>
+  <h2>Activity</h2>
+  <div class="activity-preview">
+    <% _.each(activities, function(activity){ %>
+      <div class="activity">
+        <a href="/activity/<%= activity.get('id') %>"><%= activity.get('owner_id') %> <%= activity.get('action') %> <%= activity.get('table') %></a>
+      </div>
+    <% }) %>
+    <a href="/activity">More</a>
+  </div>
+
 </div>

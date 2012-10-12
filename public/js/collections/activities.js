@@ -1,10 +1,9 @@
 define([
   'backbone',
-  'models/item'
+  'models/activity'
 ], function(Backbone, Model){
   var Collection = Backbone.Collection.extend({
-    model: Model,
-    url: '/api/1/activity'
+    model: Model
   });
-  return new Collection(init.items);
+  return new Collection(init.activities);
 });
