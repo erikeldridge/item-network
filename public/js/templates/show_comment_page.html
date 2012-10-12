@@ -1,0 +1,10 @@
+<ul class="breadcrumb">
+  <li><a href="/">Home</a><span class="divider">/</span></li>
+  <li><a href="/comment">Comments</a><span class="divider">/</span></li>
+  <li class="active"><%= comment.get('id') %></li>
+</ul>
+
+<h1>
+  <%= comment.get('text') %>
+</h1>
+<a href="/edit_comment/<%= comment.get('id') %>">Edit</a>
