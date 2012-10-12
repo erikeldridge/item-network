@@ -16,10 +16,11 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var id = 1, // HACK: current user
-          user = userCollection.get(id);
+      var id = this.options.params[0],
+          user = userCollection.get(id),
           html = this.template({
-            user: user
+            user: user,
+            comments: commentCollection.first(3)
           });
       this.$el.html( html );
     }

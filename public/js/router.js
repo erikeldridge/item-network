@@ -24,7 +24,7 @@ define([
           'item?*query'       : ItemSearchPageView,
           'item'              : ItemSearchPageView,
           'search_form'       : SearchFormPageView,
-          'profile'           : ShowUserPageView
+          'user/:userId'      : ShowUserPageView
         },
         initialize: function(){
           var layout = new LayoutView();

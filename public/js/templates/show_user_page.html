@@ -1,9 +1,19 @@
 <ul class="breadcrumb">
   <li><a href="/">Home</a><span class="divider">/</span></li>
-  <li><a href="/item">Items</a><span class="divider">/</span></li>
+  <li><a href="/user">Users</a><span class="divider">/</span></li>
   <li class="active"><%= user.get('id') %></li>
 </ul>
 
 <h1>
   <%= user.get('name') %>
 </h1>
+
+Comments
+<div class="comment-preview">
+  <% _.each(comments, function(comment){ %>
+    <div>
+      <a href="/comment/<%= comment.get('id') %>"><%= comment.get('text') %></a>
+    </div>
+  <% }) %>
+  <a href="/comment?owner_id=<%= user.get('id') %>">More</a>
+</div>

@@ -90,7 +90,8 @@ get '/*' do
   @init_json = {
     :items => Item.all,
     :users => User.all,
-    :tags => Tag.all
+    :tags => Tag.all,
+    :comments => Comment.all
   }.to_json
   erb :default
 end
