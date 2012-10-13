@@ -1,0 +1,14 @@
+<ul class="breadcrumb">
+  <li><a href="/">Home</a> <span class="divider">/</span></li>
+  <li class="active">Activity search results</li>
+</ul>
+
+<h2>Activity</h2>
+<div class="stream">
+  <% _.each(activities, function(activity){ %>
+    <div class="activity">
+      <%= activity.get('owner_id') %> <%= activity.get('action') %> <%= activity.get('table') %>
+    </div>
+  <% }) %>
+</div>
+
