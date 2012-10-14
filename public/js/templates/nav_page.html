@@ -10,7 +10,11 @@
   <form class="form" name="comment">
     <div class="control-group">
       <div class="controls">
-        <input class="span12" type="text" name="text" placeholder="Comment">
+        <div>
+          <span class="input"></span>
+          <input type="text" name="text">
+          <div class="typeahead-suggestions"></div>
+        </div>
       </div>
     </div>
   </form>
@@ -19,7 +23,7 @@
   <div class="activity-preview">
     <% _.each(activities, function(activity){ %>
       <div class="activity">
-        <a href="/activity/<%= activity.get('id') %>"><%= activity.get('owner_id') %> <%= activity.get('action') %> <%= activity.get('table') %></a>
+        <%= activity.get('owner_id') %> <%= activity.get('action') %> <%= activity.get('table') %>
       </div>
     <% }) %>
     <a href="/activity">More</a>
