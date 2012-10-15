@@ -34,22 +34,23 @@ define([
         return false;
       },
       typeahead: function(e){
+        var text = e.target.value.replace(/^\s+|\s+$/g, ''),
+            re = new RegExp(text);
         if(8 === e.keyCode){
-          // on bakspace, remove word from input
+          // on backspace, remove word from input
           this.$('.input .phrase:last').remove();
-        }else if(32 === e.keyCode){
+        }else if(text && 32 === e.keyCode){
           // on space, add word to input
-          this.$('.input').append('<span class="phrase">'+e.target.value+'</span>');
+          this.$('.input').append('<span class="phrase">'+text+'</span>');
           e.target.value = '';
-        }else{
+        }else if(text){
+          // if the text is non-blank, fetch suggestions
           var items = itemCollection.filter(function(model){
-                var name = model.get('name'),
-                    re = new RegExp(e.target.value);
+                var name = model.get('name');
                 return re.test(name);
               }),
               users = userCollection.filter(function(model){
-                var name = model.get('name'),
-                    re = new RegExp(e.target.value);
+                var name = model.get('name');
                 return re.test(name);
               }),
               html = _.template(typeaheadSuggestionsTemplate, {
@@ -60,9 +61,9 @@ define([
         }
       },
       loadSuggestion: function(e){
-        var text = $(e.target).text();
+        var text = $(e.target).text().replace(/^\s+|\s+$/g, '');
         this.$('.input').append('<span class="phrase">'+text+'</span>');
-        this.$('input').val('');
+        this.$('input').val('').focus();
         this.$('.typeahead-suggestions').empty();
       },
       initialize: function(){
