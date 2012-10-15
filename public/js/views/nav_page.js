@@ -20,15 +20,22 @@ define([
         'click .suggestion': 'loadSuggestion'
       },
       comment: function(e){
-        var $input = this.$('input[name="text"]'),
-            text = $input.val(),
-            owner = userCollection.get({id: 1}), // HACK: current user
-            comment = {
-              text: text
-            };
+        var $input = this.$('input'),
+            text;
+        if($input.val()){
+          this.$('.input').append('<span class="phrase">'+$input.val()+'</span>');
+          $input.val('');
+        }
+        text = this.$('.input .phrase').map(function(){
+          return $(this).text();
+        }).toArray().join(' '),
+        comment = {
+          text: text
+        };
         commentCollection.on('sync', function(){
           this.$('.alert-success').show();
           $input.val('');
+          this.$('.input').empty();
         }, this);
         commentCollection.create(comment);
         return false;

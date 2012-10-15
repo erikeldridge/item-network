@@ -14,6 +14,7 @@
   color: #333;
 }
 .nav-page form[name="comment"] .textarea {
+  padding: 5px;
   background-color: white;
   border: 1px solid #CCC;
   -webkit-border-radius: 3px;
