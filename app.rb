@@ -90,6 +90,15 @@ delete '/api/1/tags/:id' do
   Activity.create(:table => 'tags', :row => tag[:id], :action => 'delete', :owner_id => session[:user_id])
 end
 
+post '/api/1/user_likes' do
+  session!
+  data = JSON.parse request.body.read
+  data['owner_id'] = session[:user_id]
+  record = UserLike.create(data)
+  Activity.create(:table => 'user_likes', :row => record[:id], :action => 'create', :owner_id => session[:user_id])
+  record.to_json
+end
+
 get '/login' do
   session_start!
   session[:user_id] = 1
@@ -102,7 +111,8 @@ get '/*' do
     :users => User.all,
     :tags => Tag.all,
     :comments => Comment.all,
-    :activities => Activity.all
+    :activities => Activity.all,
+    :user_likes => UserLike.filter(:owner_id=>session[:user_id])
   }.to_json
   erb :default
 end

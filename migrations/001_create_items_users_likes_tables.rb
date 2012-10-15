@@ -29,6 +29,14 @@ Sequel.migration do
       timestamp :updated_at
     end
 
+    create_table :user_likes do
+      primary_key :id
+      foreign_key :user_id, :users, :key => :id
+      foreign_key :owner_id, :users, :key => :id
+      timestamp :created_at
+      timestamp :updated_at
+    end
+
     create_table :activities do
       primary_key :id
       String :table
@@ -57,6 +65,8 @@ Sequel.migration do
     self[:tags].insert({:owner_id => 1, :item_id => 1, :text => 'a', :created_at => Time.now})
     self[:tags].insert({:owner_id => 1, :item_id => 2, :text => 'b', :created_at => Time.now})
     self[:tags].insert({:owner_id => 1, :item_id => 3, :text => 'c', :created_at => Time.now})
+
+    self[:user_likes].insert({:owner_id => 1, :user_id => 2, :created_at => Time.now})
 
     self[:comments].insert({:owner_id => 1, :text => 'a comment', :created_at => Time.now})
     self[:comments].insert({:owner_id => 2, :text => 'another comment', :created_at => Time.now})

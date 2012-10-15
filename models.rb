@@ -11,3 +11,5 @@ class Activity < Sequel::Model
 end
 class Comment < Sequel::Model
 end
+class UserLike < Sequel::Model
+end
