@@ -20,7 +20,7 @@ define([
           user = userCollection.get(id),
           html = this.template({
             user: user,
-            comments: commentCollection.first(3)
+            comments: commentCollection.where({owner_id:user.get('id')})
           });
       this.$el.html( html );
     }
