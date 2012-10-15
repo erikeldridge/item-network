@@ -22,7 +22,7 @@ define([
     },
     submit: function(e){
       var query = this.$('.form').serialize();
-      Backbone.history.navigate('item?'+query, {trigger: true});
+      Backbone.history.navigate('items?'+query, {trigger: true});
       return false;
     }
   });
