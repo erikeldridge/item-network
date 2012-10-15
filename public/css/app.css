@@ -1,3 +1,6 @@
 .nav-page a {
   display: block;
 }
+.nav-page form[name="comment"] .phrase {
+  margin-right: 1ex;
+}
