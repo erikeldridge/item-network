@@ -25,10 +25,10 @@
   <div class="activity-preview">
     <% _.each(activities, function(activity){ %>
       <div class="activity">
-        <a href="/user/<%= activity.get('owner_id') %>"><%= activity.get('owner_id') %></a> <%= activity.get('action') %> <a href="/<%= activity.get('table') %>/<%= activity.get('row') %>"><%= activity.get('table') %></a>
+        <a href="/users/<%= activity.get('owner_id') %>"><%= activity.get('owner_id') %></a> <%= activity.get('action') %> <a href="/<%= activity.get('table') %>/<%= activity.get('row') %>"><%= activity.get('table') %></a>
       </div>
     <% }) %>
-    <a href="/activity">More</a>
+    <a href="/activities">More</a>
   </div>
 
 </div>

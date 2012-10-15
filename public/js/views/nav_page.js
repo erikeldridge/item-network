@@ -33,7 +33,7 @@ define([
           text: text
         };
         commentCollection.on('sync', function(model){
-          var html = _.template('<a href="/comment/<%= id %>">Comment</a> posted', {id: model.get('id')})
+          var html = _.template('<a href="/comments/<%= id %>">Comment</a> posted', {id: model.get('id')})
           this.$('.alert-success').html(html).show();
           $input.val('');
           this.$('.input').empty();

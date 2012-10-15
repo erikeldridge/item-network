@@ -24,16 +24,16 @@ define([
           ''                  : NavPageView,
           'create'            : CreateItemPageView,
           'edit_item/:id'     : EditItemPageView,
-          'item/:id'          : ShowItemPageView,
-          'item?*query'       : ItemSearchPageView,
-          'item'              : ItemSearchPageView,
+          'items/:id'          : ShowItemPageView,
+          'items?*query'       : ItemSearchPageView,
+          'items'              : ItemSearchPageView,
           'search_form'       : SearchFormPageView,
-          'user/:id'          : ShowUserPageView,
-          'comment/:id'       : ShowCommentPageView,
-          'comment?*query'    : CommentSearchResultsPageView,
-          'comment'           : CommentSearchResultsPageView,
-          'activity?*query'   : ActivitySearchPageView,
-          'activity'          : ActivitySearchPageView
+          'users/:id'          : ShowUserPageView,
+          'comments/:id'       : ShowCommentPageView,
+          'comments?*query'    : CommentSearchResultsPageView,
+          'comments'           : CommentSearchResultsPageView,
+          'activities?*query'   : ActivitySearchPageView,
+          'activities'          : ActivitySearchPageView
         },
         initialize: function(){
           var layout = new LayoutView();
