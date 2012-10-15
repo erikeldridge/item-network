@@ -53,6 +53,15 @@ post '/api/1/comment' do
   record.to_json
 end
 
+get '/api/1/comment' do
+  def empty_param? name
+    params[name].nil? || params[name].empty?
+  end
+  comments = Comment
+  comments = comments.filter(:owner_id => params[:owner_id]) unless empty_param? :owner_id
+  comments.to_json
+end
+
 get '/api/1/user' do
   def empty_param? name
     params[name].nil? || params[name].empty?

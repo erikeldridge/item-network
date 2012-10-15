@@ -1,0 +1,14 @@
+<ul class="breadcrumb">
+  <li><a href="/">Home</a> <span class="divider">/</span></li>
+  <li class="active">Comment search results</li>
+</ul>
+
+<h2>Comment</h2>
+<div class="stream">
+  <% _.each(comments, function(comment){ %>
+    <div class="comment">
+      <a href="/user/<%= comment.get('owner_id') %>"><%= comment.get('owner_id') %></a> <%= comment.get('text') %>
+    </div>
+  <% }) %>
+</div>
+
