@@ -10,7 +10,7 @@ require './models'
 set :session_fail, '/login'
 set :session_secret, 'secret'
 
-post '/api/1/item' do
+post '/api/1/items' do
   session!
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
@@ -19,7 +19,7 @@ post '/api/1/item' do
   item.to_json
 end
 
-put '/api/1/item/:id' do
+put '/api/1/items/:id' do
   session!
   item = JSON.parse request.body.read
   Item.where(:id => params[:id]).update(item.to_hash)
@@ -27,7 +27,7 @@ put '/api/1/item/:id' do
   item.to_json
 end
 
-get '/api/1/item' do
+get '/api/1/items' do
   def empty_param? name
     params[name].nil? || params[name].empty?
   end
@@ -44,7 +44,7 @@ get '/api/1/item' do
   items.to_json
 end
 
-post '/api/1/comment' do
+post '/api/1/comments' do
   session!
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
@@ -53,7 +53,7 @@ post '/api/1/comment' do
   record.to_json
 end
 
-get '/api/1/comment' do
+get '/api/1/comments' do
   def empty_param? name
     params[name].nil? || params[name].empty?
   end
@@ -62,7 +62,7 @@ get '/api/1/comment' do
   comments.to_json
 end
 
-get '/api/1/user' do
+get '/api/1/users' do
   def empty_param? name
     params[name].nil? || params[name].empty?
   end
@@ -71,11 +71,11 @@ get '/api/1/user' do
   users.to_json
 end
 
-get '/api/1/activity' do
+get '/api/1/activities' do
   Activity.all.to_json
 end
 
-post '/api/1/tag' do
+post '/api/1/tags' do
   session!
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
@@ -84,7 +84,7 @@ post '/api/1/tag' do
   tag.to_json
 end
 
-delete '/api/1/tag/:id' do
+delete '/api/1/tags/:id' do
   session!
   tag = Tag.first(:id => params[:id]).delete
   Activity.create(:table => 'tags', :row => tag[:id], :action => 'delete', :owner_id => session[:user_id])
