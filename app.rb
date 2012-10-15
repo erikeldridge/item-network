@@ -7,7 +7,7 @@ DB = Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://sqlite.db')
 
 require './models'
 
-set :session_fail, '/auth'
+set :session_fail, '/login'
 set :session_secret, 'secret'
 
 post '/api/1/item' do
@@ -84,6 +84,7 @@ end
 get '/login' do
   session_start!
   session[:user_id] = 1
+  200
 end
 
 get '/*' do
