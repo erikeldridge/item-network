@@ -10,15 +10,26 @@ define([
   var View = Backbone.View.extend({
     template: _.template( template ),
     events: {
-      'submit form': 'addTag'
+      'submit form': 'createTag'
     },
-    addTag: function(e){
-      var text = e.currentTarget.value;
-      commentTagCollection.create({
-        text: text,
-        comment_id: this.comment.get('id')
-      });
+    createTag: function(e){
+      var $input = this.$('input'),
+          text = $input.val(),
+          tag = commentTagCollection.create({
+            text: text,
+            comment_id: this.comment.get('id')
+          }, {
+            success: _.bind(this.appendTag, this)
+          });
+          $input.val('');
       return false;
+    },
+    appendTag: function(tag){
+      var view = new CommentTagView({
+        tag: tag
+      });
+      this.on('remove', view.remove);
+      this.$('.tag-stream').append(view.el);
     },
     initialize: function(options){
       var id = options.params[0];
@@ -35,12 +46,7 @@ define([
           }),
           tags = commentTagCollection.where({comment_id: this.comment.get('id')});
       this.$el.html( html );
-      _.each(tags, function(tag){
-        var view = new CommentTagView({
-          tag: tag
-        });
-        this.$('.tag-stream').append(view.el);
-      }, this);
+      _.each(tags, this.appendTag, this);
     }
   });
   return View;
