@@ -2,12 +2,27 @@ define([
   'underscore',
   'backbone',
   'collections/comments',
+  'collections/comment_tags',
+  'views/comment_tag',
   'text!templates/show_comment_page.html'
-], function module(_, Backbone, commentCollection, template){
+], function module(_, Backbone, commentCollection, commentTagCollection, CommentTagView, template){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
-    initialize: function(){
+    events: {
+      'submit form': 'addTag'
+    },
+    addTag: function(e){
+      var text = e.currentTarget.value;
+      commentTagCollection.create({
+        text: text,
+        comment_id: this.comment.get('id')
+      });
+      return false;
+    },
+    initialize: function(options){
+      var id = options.params[0];
+      this.comment = commentCollection.get(id);
       this.render();
     },
     remove: function(){
@@ -15,12 +30,17 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var id = this.options.params[0],
-          comment = commentCollection.get(id);
-          html = this.template({
-            comment: comment
-          });
+      var html = this.template({
+            comment: this.comment
+          }),
+          tags = commentTagCollection.where({comment_id: this.comment.get('id')});
       this.$el.html( html );
+      _.each(tags, function(tag){
+        var view = new CommentTagView({
+          tag: tag
+        });
+        this.$('.tag-stream').append(view.el);
+      }, this);
     }
   });
   return View;

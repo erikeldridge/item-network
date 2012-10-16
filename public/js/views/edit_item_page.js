@@ -2,9 +2,8 @@ define([
   'underscore',
   'backbone',
   'collections/items',
-  'collections/tags',
   'text!templates/edit_item_page.html'
-], function module(_, Backbone, itemCollection, tagCollection, template){
+], function module(_, Backbone, itemCollection, template){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
@@ -15,10 +14,10 @@ define([
       var name = this.$('input[name="name"]').val(),
           tag = this.$('input[name="tag"]').val();
       this.tag.destroy();
-      tagCollection.create({
-        text: tag,
-        item_id: this.item.get('id')
-      });
+      // tagCollection.create({
+      //   text: tag,
+      //   item_id: this.item.get('id')
+      // });
     },
     initialize: function(config){
       var itemId = parseInt(config.params[0], 10);

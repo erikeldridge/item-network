@@ -109,7 +109,7 @@ get '/*' do
   @init_json = {
     :items => Item.all,
     :users => User.all,
-    :tags => Tag.all,
+    :comment_tags => CommentTag.all,
     :comments => Comment.all,
     :activities => Activity.all,
     :user_likes => UserLike.filter(:owner_id=>session[:user_id])

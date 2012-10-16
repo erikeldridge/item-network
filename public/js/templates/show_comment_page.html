@@ -7,4 +7,9 @@
 <h1>
   <%= comment.get('text') %>
 </h1>
-<a href="/edit_comment/<%= comment.get('id') %>">Edit</a>
+
+<h2>Tags</h2>
+<div class="tag-stream"></div>
+<form>
+  <input name="tag" type="text">
+</form>

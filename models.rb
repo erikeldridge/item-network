@@ -5,7 +5,7 @@ class User < Sequel::Model
 end
 class Item < Sequel::Model
 end
-class Tag < Sequel::Model
+class CommentTag < Sequel::Model
 end
 class Activity < Sequel::Model
 end

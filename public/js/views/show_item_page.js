@@ -15,11 +15,10 @@ define([
       var $input = this.$('input[name="text"]'),
           text = $input.val(),
           comment = {
-            item_id: this.item.get('id'),
             text: text
           };
       commentCollection.on('sync', function(comment){
-        this.$('.comment-stream').prepend('<div class="comment"><a href="/comment/'+comment.get('id')+'">'+text+'</a></div>');
+        this.$('.comment-stream').prepend('<div class="comment"><a href="/comments/'+comment.get('id')+'">'+text+'</a></div>');
         $input.val('');
       }, this);
       commentCollection.create(comment);
