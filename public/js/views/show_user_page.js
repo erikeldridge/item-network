@@ -4,8 +4,13 @@ define([
   'collections/users',
   'collections/comments',
   'collections/user_likes',
+  'views/comment',
+  'views/comment_form',
   'text!templates/show_user_page.html'
-], function module(_, Backbone, userCollection, commentCollection, userLikesCollection, template){
+], function module(_, Backbone,
+  userCollection, commentCollection, userLikesCollection,
+  CommentView, CommentFormView,
+  template){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
@@ -35,10 +40,29 @@ define([
     render: function(){
       var html = this.template({
             user: this.user,
-            comments: commentCollection.where({owner_id:this.user.get('id')}),
             isLiked: userLikesCollection.where({user_id:this.user.get('id'), owner_id:1}).length > 0 // HACK: current user
-          });
+          }),
+          comments = commentCollection.where({owner_id:this.user.get('id')});
       this.$el.html( html );
+      // comment form
+      var commentForm = new CommentFormView();
+      this.on('remove', commentForm.remove);
+      this.$('.comment-form').append(commentForm.el);
+      // comment stream
+      commentCollection.on('add', function(comment){
+        var view = new CommentView({
+          comment: comment
+        });
+        this.on('remove', view.remove);
+        this.$('.comment-stream').append(view.el);
+      }, this);
+      _.each(comments, function(comment){
+        var view = new CommentView({
+          comment: comment
+        });
+        this.on('remove', view.remove);
+        this.$('.comment-stream').append(view.el);
+      }, this);
     }
   });
   return View;

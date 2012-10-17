@@ -15,11 +15,6 @@
 <% } %>
 
 <h2>Comments</h2>
-<div class="comment-preview">
-  <% _.each(comments, function(comment){ %>
-    <div>
-      <%= comment.get('text') %>
-    </div>
-  <% }) %>
-  <a href="/comments?owner_id=<%= user.get('id') %>">More</a>
-</div>
+<div class="comment-form"></div>
+<div class="comment-stream"></div>
+<a href="/comments?owner_id=<%= user.get('id') %>">More</a>

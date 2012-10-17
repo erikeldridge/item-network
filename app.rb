@@ -62,6 +62,21 @@ get '/api/1/comments' do
   comments.to_json
 end
 
+put '/api/1/comments/:id' do
+  session!
+  data = JSON.parse request.body.read
+  Comment.where(:id => params[:id]).update(data.to_hash)
+  Activity.create(:table => 'comments', :row => params[:id], :action => 'update', :owner_id => session[:user_id])
+  data.to_json
+end
+
+delete '/api/1/comments/:id' do
+  session!
+  Comment.where(:id => params[:id]).destroy
+  Activity.create(:table => 'comments', :row => params[:id], :action => 'delete', :owner_id => session[:user_id])
+  200
+end
+
 get '/api/1/users' do
   def empty_param? name
     params[name].nil? || params[name].empty?
