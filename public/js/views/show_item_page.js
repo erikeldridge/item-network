@@ -18,7 +18,7 @@ define([
             text: text
           };
       commentCollection.on('sync', function(comment){
-        this.$('.comment-stream').prepend('<div class="comment"><a href="/comments/'+comment.get('id')+'">'+text+'</a></div>');
+        this.$('.comment-stream').prepend('<div class="comment">'+text+'</div>');
         $input.val('');
       }, this);
       commentCollection.create(comment);

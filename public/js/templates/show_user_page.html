@@ -18,7 +18,7 @@
 <div class="comment-preview">
   <% _.each(comments, function(comment){ %>
     <div>
-      <a href="/comments/<%= comment.get('id') %>"><%= comment.get('text') %></a>
+      <%= comment.get('text') %>
     </div>
   <% }) %>
   <a href="/comments?owner_id=<%= user.get('id') %>">More</a>
