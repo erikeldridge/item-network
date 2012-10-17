@@ -1,0 +1,17 @@
+todo
+- define current user
+- add comments to unified search results page
+- edit user profile
+- fix backspace bug (backspace deletes preceding word) in typeahead
+- add arrow navigation to typeahead suggestions
+- update activity stream on nav page after creating comment
+- cache recent searches (start by logging cache misses)
+- enable comment delete
+- split out comment template
+- enable typeahead on item pages
+- update activity stream to behave like http://www.rdio.com/notifications/
+- use comment form view on nav page
+- use comment view on comment search page
+- denote user/item/comment by symbol on search page, rather than separate list
+- wire up user search
+- inline item edit

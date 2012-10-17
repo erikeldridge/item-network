@@ -3,27 +3,16 @@ define([
   'backbone',
   'collections/items',
   'collections/comments',
+  'views/comment',
+  'views/comment_form',
   'text!templates/show_item_page.html'
-], function module(_, Backbone, itemCollection, commentCollection, template){
+], function module(_, Backbone,
+  itemCollection, commentCollection,
+  CommentView, CommentFormView,
+  template){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
-    events: {
-      'submit form[name="comment"]': 'comment',
-    },
-    comment: function(e){
-      var $input = this.$('input[name="text"]'),
-          text = $input.val(),
-          comment = {
-            text: text
-          };
-      commentCollection.on('sync', function(comment){
-        this.$('.comment-stream').prepend('<div class="comment">'+text+'</div>');
-        $input.val('');
-      }, this);
-      commentCollection.create(comment);
-      return false;
-    },
     initialize: function(options){
       var id = options.params[0];
       this.item = itemCollection.get(id);
@@ -35,9 +24,29 @@ define([
     },
     render: function(){
       var html = this.template({
-          item: this.item
-        });
+            item: this.item
+          }),
+          comments = commentCollection.toArray();
       this.$el.html( html );
+      // comment form
+      var commentForm = new CommentFormView();
+      this.on('remove', commentForm.remove);
+      this.$('.comment-form').append(commentForm.el);
+      // comment stream
+      commentCollection.on('add', function(comment){
+        var view = new CommentView({
+          comment: comment
+        });
+        this.on('remove', view.remove);
+        this.$('.comment-stream').append(view.el);
+      }, this);
+      _.each(comments, function(comment){
+        var view = new CommentView({
+          comment: comment
+        });
+        this.on('remove', view.remove);
+        this.$('.comment-stream').append(view.el);
+      }, this);
     }
   });
   return View;
