@@ -90,6 +90,21 @@ get '/api/1/activities' do
   Activity.all.to_json
 end
 
+post '/api/1/comment_tags' do
+  session!
+  data = JSON.parse request.body.read
+  data['owner_id'] = session[:user_id]
+  tag = CommentTag.create(data)
+  Activity.create(:table => 'comment_tags', :row => tag[:id], :action => 'create', :owner_id => session[:user_id])
+  tag.to_json
+end
+
+delete '/api/1/comment_tags/:id' do
+  session!
+  tag = CommentTag.first(:id => params[:id]).delete
+  Activity.create(:table => 'comment_tags', :row => tag[:id], :action => 'delete', :owner_id => session[:user_id])
+end
+
 post '/api/1/user_likes' do
   session!
   data = JSON.parse request.body.read
@@ -109,6 +124,7 @@ get '/*' do
   @init_json = {
     :items => Item.all,
     :users => User.all,
+    :comment_tags => CommentTag.all,
     :comments => Comment.all,
     :activities => Activity.all,
     :user_likes => UserLike.filter(:owner_id=>session[:user_id])
