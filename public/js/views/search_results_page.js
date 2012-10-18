@@ -3,12 +3,14 @@ define([
   'backbone',
   'collections/item_search_results',
   'collections/user_search_results',
+  'collections/comment_search_results',
   'text!templates/search_results_page.html',
   'text!templates/item_search_results.html',
   'text!templates/user_search_results.html',
+  'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
-  itemSearchResultCollection, userSearchResultCollection,
-  template, itemSearchResultsTemplate, userSearchResultsTemplate){
+  itemSearchResultCollection, userSearchResultCollection, commentSearchResultCollection,
+  template, itemSearchResultsTemplate, userSearchResultsTemplate, commentSearchResultsTemplate){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
@@ -41,6 +43,15 @@ define([
             users: results
           });
           this.$('.user-search-results').html( html );
+        }, this)
+      });
+      commentSearchResultCollection.fetch({
+        data: query,
+        success: _.bind(function(results){
+          var html = _.template(commentSearchResultsTemplate, {
+            comments: results
+          });
+          this.$('.comment-search-results').html( html );
         }, this)
       });
     }

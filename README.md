@@ -1,6 +1,4 @@
 todo
-- define current user
-- add comments to unified search results page
 - edit user profile
 - fix backspace bug (backspace deletes preceding word) in typeahead
 - add arrow navigation to typeahead suggestions
@@ -15,3 +13,4 @@ todo
 - denote user/item/comment by symbol on search page, rather than separate list
 - wire up user search
 - inline item edit
+- define current user

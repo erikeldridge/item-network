@@ -1,0 +1,5 @@
+<% comments.each(function(comment){ %>
+  <div>
+    <a href="/comments/<%= comment.get('id') %>"><%= comment.get('text') %></a>
+  </div>
+<% }) %>
