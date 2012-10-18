@@ -3,24 +3,17 @@ define([
   'underscore',
   'backbone',
   'collections/comments',
+  'views/typeahead_input',
   'text!templates/comment_form.html'
-], function module($, _, Backbone, commentCollection, template){
+], function module($, _, Backbone, commentCollection, TypeaheadInputView, template){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
     events: {
-      'submit form': 'save',
+      'submit form': function(){return false;} // ignore form submission
     },
-    save: function(e){
-      var $input = this.$('input'),
-          comment = {
-            text: $input.val()
-          };
-      commentCollection.on('sync', function(){
-        $input.val('');
-      }, this);
+    save: function(comment){
       commentCollection.create(comment);
-      return false;
     },
     initialize: function(){
       this.render();
@@ -30,8 +23,12 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var html = this.template();
+      var html = this.template(),
+          typeaheadInput = new TypeaheadInputView();
       this.$el.html( html );
+      typeaheadInput.on('return', this.save);
+      this.on('remove', typeaheadInput.remove);
+      this.$('.typeahead-input').append(typeaheadInput.el);
     }
   });
   return View;
