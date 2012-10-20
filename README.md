@@ -1,10 +1,12 @@
 todo
+- create view class for typeahead suggestions
+- create view class for phrases
+- map template param in comment phrasing to item tag
+- create tags from selected suggestions
 - edit user profile
-- fix backspace bug (backspace deletes preceding word) in typeahead
 - add arrow navigation to typeahead suggestions
 - update activity stream on nav page after creating comment
 - cache recent searches (start by logging cache misses)
-- enable comment delete
 - split out comment template
 - enable typeahead on item pages
 - update activity stream to behave like http://www.rdio.com/notifications/
@@ -14,3 +16,4 @@ todo
 - wire up user search
 - inline item edit
 - define current user
+- inline comment edit/delete

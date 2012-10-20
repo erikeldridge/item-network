@@ -1,10 +1,5 @@
-<% _.each(items, function(item){ %>
-  <div class="suggestion">
-    <%= item.get('name') %>
-  </div>
-<% }) %>
-<% _.each(users, function(user){ %>
-  <div class="suggestion">
-    <%= user.get('name') %>
+<% _.each(suggestions, function(suggestion){ %>
+  <div class="suggestion" data-model="<%= suggestion.get('type') %>" data-id="<%= suggestion.get('id') %>">
+    <%= suggestion.get('text') %>
   </div>
 <% }) %>
