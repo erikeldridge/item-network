@@ -3,62 +3,18 @@ define([
   'backbone',
   'collections/items',
   'collections/users',
-  'text!templates/typeahead_suggestions.html',
-  'text!templates/typeahead_input.html'
+  'collections/typeahead/phrases',
+  'collections/typeahead/suggestions',
+  'views/typeahead/draft',
+  'views/typeahead/suggestions',
+  'text!templates/typeahead/suggestions.html',
+  'text!templates/typeahead/input.html'
 ], function module(_, Backbone,
-  itemCollection, userCollection,
+  itemCollection, userCollection, phraseCollection, suggestionCollection,
+  DraftView, SuggestionsView,
   typeaheadSuggestionsTemplate, typeaheadInputTemplate){
 
-  var suggestionCollection = new Backbone.Collection(),
-      phraseCollection = new Backbone.Collection();
-
-  var DraftView = Backbone.View.extend({
-        initialize: function(){
-          phraseCollection.on('add remove', this.render, this);
-          this.render();
-        },
-        remove: function(){
-          this.undelegateEvents();
-          Backbone.View.prototype.remove.call(this);
-        },
-        render: function(){
-          var text = phraseCollection.pluck('text').join(' ');
-          this.$el.html( text );
-          return this;
-        }
-      });
-
-  var SuggestionsView = Backbone.View.extend({
-        template: _.template(typeaheadSuggestionsTemplate),
-        events: {
-          'click .suggestion': 'select'
-        },
-        initialize: function(){
-          suggestionCollection.on('add reset', this.render, this);
-          this.render();
-        },
-        remove: function(){
-          this.undelegateEvents();
-          Backbone.View.prototype.remove.call(this);
-        },
-        select: function(e){
-          this.trigger('select');
-          var $target = $(e.target),
-              modelId = $target.data('model-id'),
-              suggestion = suggestionCollection.where({model_id: modelId})[0];
-          phraseCollection.push(suggestion.toJSON());
-          suggestionCollection.reset();
-        },
-        render: function(){
-          var html = this.template({
-            suggestions: suggestionCollection.toArray()
-          });
-          this.$el.html( html );
-          return this;
-        }
-      });
-
-  var TypeaheadInputView = Backbone.View.extend({
+  var View = Backbone.View.extend({
     template: _.template( typeaheadInputTemplate ),
     events: {
       'keyup input': 'handleKey'
@@ -139,6 +95,6 @@ define([
     }
   });
 
-  return TypeaheadInputView;
+  return View;
 
 });

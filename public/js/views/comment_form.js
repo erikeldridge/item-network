@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   'collections/comments',
-  'views/typeahead_input',
+  'views/typeahead/input',
   'text!templates/comment_form.html'
 ], function module($, _, Backbone, commentCollection, TypeaheadInputView, template){
 
