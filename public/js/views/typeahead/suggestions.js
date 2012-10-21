@@ -2,8 +2,9 @@ define([
   'underscore',
   'backbone',
   'collections/typeahead/suggestions',
+  'collections/typeahead/phrases',
   'text!templates/typeahead/suggestions.html'
-], function module(_, Backbone, collection, template){
+], function module(_, Backbone, suggestionCollection, phraseCollection, template){
 
   var View = Backbone.View.extend({
         template: _.template(template),
@@ -11,8 +12,7 @@ define([
           'click .suggestion': 'select'
         },
         initialize: function(){
-          collection.on('add reset', this.render, this);
-          this.render();
+          suggestionCollection.on('add reset', this.render, this);
         },
         remove: function(){
           this.undelegateEvents();
@@ -22,13 +22,13 @@ define([
           this.trigger('select');
           var $target = $(e.target),
               modelId = $target.data('model-id'),
-              suggestion = collection.where({model_id: modelId})[0];
-          collection.push(suggestion.toJSON());
-          collection.reset();
+              suggestion = suggestionCollection.where({model_id: modelId})[0];
+          phraseCollection.push(suggestion.toJSON());
+          suggestionCollection.reset();
         },
         render: function(){
           var html = this.template({
-            suggestions: collection.toArray()
+            suggestions: suggestionCollection.toArray()
           });
           this.$el.html( html );
           return this;

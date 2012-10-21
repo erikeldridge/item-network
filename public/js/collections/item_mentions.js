@@ -1,9 +1,9 @@
 define([
   'backbone',
-  'models/comment_tag'
+  'models/item_mention'
 ], function(Backbone, model){
   var Collection = Backbone.Collection.extend({
     model: model
   });
-  return new Collection(init.comment_tags);
+  return new Collection(init.item_mentions);
 });

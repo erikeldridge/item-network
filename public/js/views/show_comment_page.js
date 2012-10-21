@@ -2,10 +2,9 @@ define([
   'underscore',
   'backbone',
   'collections/comments',
-  'collections/comment_tags',
   'views/comment_tag',
   'text!templates/show_comment_page.html'
-], function module(_, Backbone, commentCollection, commentTagCollection, CommentTagView, template){
+], function module(_, Backbone, commentCollection, CommentTagView, template){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
@@ -43,8 +42,8 @@ define([
     render: function(){
       var html = this.template({
             comment: this.comment
-          }),
-          tags = commentTagCollection.where({comment_id: this.comment.get('id')});
+          });
+          // tags = commentTagCollection.where({comment_id: this.comment.get('id')});
       this.$el.html( html );
       _.each(tags, this.appendTag, this);
     }

@@ -6,7 +6,6 @@ define([
   var View = Backbone.View.extend({
         initialize: function(){
           collection.on('add remove', this.render, this);
-          this.render();
         },
         remove: function(){
           this.undelegateEvents();

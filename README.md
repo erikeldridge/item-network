@@ -1,9 +1,5 @@
 todo
-- create view class for typeahead suggestions
-- create view class for phrases
 - map template param in comment phrasing to item tag
-- create tags from selected suggestions
-- edit user profile
 - add arrow navigation to typeahead suggestions
 - update activity stream on nav page after creating comment
 - cache recent searches (start by logging cache misses)
@@ -17,3 +13,4 @@ todo
 - inline item edit
 - define current user
 - inline comment edit/delete
+- edit user profile
