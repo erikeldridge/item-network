@@ -50,7 +50,7 @@ define([
 
           // Internally handle anchor clicks if route is defined
           $(document).delegate('a', 'click', function(e){
-            var route = e.target.getAttribute('href').replace(/^\//, '');
+            var route = e.currentTarget.getAttribute('href').replace(/^\//, '');
             Backbone.history.navigate(route, {trigger: true});
             return false;
           });
