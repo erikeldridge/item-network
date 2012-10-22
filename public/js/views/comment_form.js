@@ -17,8 +17,16 @@ define([
       'submit form': function(){return false;} // ignore form submission
     },
     save: function(input){
-      var text = _.pluck(input.phrases, 'text').join(' ');
-      commentCollection.create({text: text}, {success: function(comment){
+      var phrases = [];
+      _.each(input.phrases, function(phrase){
+        var modelId = phrase.get('model_id');
+        if(modelId){
+          phrases.push('{'+modelId+'}');
+        }else{
+          phrases.push(phrase.get('text'));
+        }
+      });
+      commentCollection.create({text: phrases.join(' ')}, {success: function(comment){
         _.each(input.phrases, function(phrase){
           var modelId = phrase.get('model_id') || '',
               matches = modelId.match(/([^-]+)-(\d+)/) || [];

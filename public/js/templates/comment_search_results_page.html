@@ -7,7 +7,8 @@
 <div class="stream">
   <% _.each(comments, function(comment){ %>
     <div class="comment">
-      <a href="/users/<%= comment.get('owner_id') %>"><%= comment.get('owner_id') %></a> <%= comment.get('text') %>
+      <a href="/users/<%= comment.get('owner_id') %>"><%= comment.get('owner_id') %></a>:
+      <a href="/comments/<%= comment.get('id') %>"><%= comment.get('text') %></a>
     </div>
   <% }) %>
 </div>

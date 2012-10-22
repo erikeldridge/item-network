@@ -63,7 +63,7 @@ Sequel.migration do
 
     self[:items].insert({:owner_id => 1, :name => 'item1', :created_at => Time.now})
     self[:items].insert({:owner_id => 2, :name => 'item2', :created_at => Time.now})
-    self[:items].insert({:owner_id => 3, :name => 'item2', :created_at => Time.now})
+    self[:items].insert({:owner_id => 3, :name => 'item3', :created_at => Time.now})
 
     self[:user_likes].insert({:owner_id => 1, :user_id => 2, :created_at => Time.now})
 
