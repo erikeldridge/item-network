@@ -1,5 +1,4 @@
 todo
-- map template param in comment phrasing to item tag
 - add arrow navigation to typeahead suggestions
 - update activity stream on nav page after creating comment
 - cache recent searches (start by logging cache misses)
@@ -22,3 +21,4 @@ todo
 - show comments mentioning an item on the show item page
 - show comments mentioning a user on the show user page
 - rule: if i comment on your page, you get notified, but the comment only appears on
+- create comment stream view, ie abstract comment stream rendering

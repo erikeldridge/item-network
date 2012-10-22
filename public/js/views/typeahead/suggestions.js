@@ -7,11 +7,29 @@ define([
 ], function module(_, Backbone, suggestionCollection, phraseCollection, template){
 
   var View = Backbone.View.extend({
+        tagName: 'ul',
+        className: 'unstyled',
         template: _.template(template),
         events: {
           'click .suggestion': 'select'
         },
         initialize: function(){
+          this.on('up', function(){
+            var $current = this.$('.suggestion.active'),
+                $prev = $current.prev('.suggestion');
+            if($prev.length){
+              $current.removeClass('active');
+              $prev.addClass('active');
+            }
+          });
+          this.on('down', function(){
+            var $current = this.$('.suggestion.active'),
+                $next = $current.next('.suggestion');
+            if($next.length){
+              $current.removeClass('active');
+              $next.addClass('active');
+            }
+          });
           suggestionCollection.on('add reset', this.render, this);
         },
         remove: function(){

@@ -28,15 +28,15 @@ define([
       },
       render: function(){
         var html = this.template(),
-            suggestionsView = new SuggestionsView(),
             draftView = new DraftView();
+        this.suggestionsView = new SuggestionsView();
         this.$el.html( html );
         this.$input = this.$('input');
-        this.on('remove', suggestionsView.remove);
+        this.on('remove', this.suggestionsView.remove);
         this.on('remove', draftView.remove);
-        this.$('.suggestions').html(suggestionsView.render().el);
+        this.$('.suggestions').html(this.suggestionsView.render().el);
         this.$('.draft').html(draftView.render().el);
-        suggestionsView.on('select', function(){
+        this.suggestionsView.on('select', function(){
           this.$input.focus().val('');
         }, this);
       },
@@ -87,6 +87,12 @@ define([
               phraseCollection.push({text: text});
             }
             this.$input.val('');
+            break;
+          case 38: // up
+            this.suggestionsView.trigger('up');
+            break;
+          case 40: // down
+            this.suggestionsView.trigger('down');
             break;
           default:
             if(text){
