@@ -6,31 +6,16 @@ define([
   'collections/comments',
   'collections/activities',
   'collections/items',
+  'views/comment_form',
   'text!templates/nav_page.html',
   'text!templates/typeahead_suggestions.html',
 ], function module($, _, Backbone,
   userCollection, commentCollection, activityCollection, itemCollection,
+  CommentFormView,
   navPageTemplate, typeaheadSuggestionsTemplate){
 
   var View = Backbone.View.extend({
       template: _.template( navPageTemplate ),
-      events: {
-        'submit form': 'comment'
-      },
-      comment: function(e){
-        var $input = this.$('input'),
-            text = $input.val(),
-            comment = {
-              text: text
-            };
-        commentCollection.on('sync', function(model){
-          var html = _.template('<a href="/comments/<%= id %>">Comment</a> posted', {id: model.get('id')})
-          this.$('.alert-success').html(html).show();
-          $input.val('');
-        }, this);
-        commentCollection.create(comment);
-        return false;
-      },
       initialize: function(){
         this.render();
       },
@@ -43,6 +28,10 @@ define([
           activities: activityCollection.first(3)
         });
         this.$el.html( html );
+        // comment form
+        var commentForm = new CommentFormView();
+        this.on('remove', commentForm.remove);
+        this.$('.comment-form').append(commentForm.el);
       }
     });
   return View;
