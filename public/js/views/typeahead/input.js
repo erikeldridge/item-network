@@ -17,7 +17,8 @@ define([
   var View = Backbone.View.extend({
       template: _.template( typeaheadInputTemplate ),
       events: {
-        'keyup input': 'handleKey'
+        'keyup input': 'handleKeyup',
+        'keydown input': 'handleKeydown'
       },
       initialize: function(){
         this.render();
@@ -63,7 +64,15 @@ define([
           }
         });
       },
-      handleKey: function(e){
+      handleKeydown: function(e){
+        switch(e.keyCode){
+          case 9: // tab
+            this.suggestionsView.trigger('tab');
+            this.$input.focus();
+            e.preventDefault();
+        }
+      },
+      handleKeyup: function(e){
         var text = this.$input.val().replace(/^\s+|\s+$/g, ''),
             $draft = this.$('.draft');
         switch(e.keyCode){
@@ -99,6 +108,8 @@ define([
               this.suggest(text);
             }
         }
+        e.stopPropagation();
+        return false;
       }
     });
 

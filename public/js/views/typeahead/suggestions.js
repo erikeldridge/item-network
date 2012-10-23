@@ -30,6 +30,14 @@ define([
               $next.addClass('active');
             }
           });
+          this.on('tab', function(){
+            this.trigger('select');
+            var $target = this.$('.suggestion.active'),
+                modelId = $target.data('model-id'),
+                suggestion = suggestionCollection.where({model_id: modelId})[0];
+            phraseCollection.push(suggestion.toJSON());
+            suggestionCollection.reset();
+          });
           suggestionCollection.on('add reset', this.render, this);
         },
         remove: function(){
