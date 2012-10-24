@@ -1,10 +1,4 @@
 todo
-- cache recent searches (start by logging cache misses)
-- split out comment template
-- enable typeahead on item pages
-- update activity stream to behave like http://www.rdio.com/notifications/
-- use comment form view on nav page
-- use comment view on comment search page
 - denote user/item/comment by symbol on search page, rather than separate list
 - wire up user search, i.e., /users
 - inline item edit
@@ -20,3 +14,6 @@ todo
 - show comments mentioning a user on the show user page
 - rule: if i comment on your page, you get notified, but the comment only appears on
 - create comment stream view, ie abstract comment stream rendering
+- cache recent searches (start by logging cache misses)
+- split out comment template
+- update activity stream to behave like http://www.rdio.com/notifications/

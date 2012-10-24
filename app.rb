@@ -58,6 +58,7 @@ get '/api/1/comments' do
     params[name].nil? || params[name].empty?
   end
   comments = Comment
+  comments = comments.filter(Sequel.like(:text, "%#{params[:name]}%")) unless empty_param? :name
   comments = comments.filter(:owner_id => params[:owner_id]) unless empty_param? :owner_id
   comments.to_json
 end
