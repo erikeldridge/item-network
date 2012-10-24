@@ -1,6 +1,4 @@
 todo
-- add arrow navigation to typeahead suggestions
-- update activity stream on nav page after creating comment
 - cache recent searches (start by logging cache misses)
 - split out comment template
 - enable typeahead on item pages

@@ -10,13 +10,7 @@
   <div class="comment-form"></div>
 
   <h2>Activity</h2>
-  <div class="activity-preview">
-    <% _.each(activities, function(activity){ %>
-      <div class="activity">
-        <a href="/users/<%= activity.get('owner_id') %>"><%= activity.get('owner_id') %></a> <%= activity.get('action') %> <a href="/<%= activity.get('table') %>/<%= activity.get('row') %>"><%= activity.get('table') %></a>
-      </div>
-    <% }) %>
-    <a href="/activities">More</a>
-  </div>
+  <div class="activity-stream"></div>
+  <a href="/activities">More</a>
 
 </div>

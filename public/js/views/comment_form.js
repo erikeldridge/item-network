@@ -5,10 +5,11 @@ define([
   'collections/comments',
   'collections/items',
   'collections/item_mentions',
+  'collections/activities',
   'views/typeahead/input',
   'text!templates/comment_form.html'
 ], function module($, _, Backbone,
-  commentCollection, itemCollection, itemMentionCollection,
+  commentCollection, itemCollection, itemMentionCollection, activityCollection,
   TypeaheadInputView, template){
 
   var View = Backbone.View.extend({
@@ -37,6 +38,7 @@ define([
             });
           }
         });
+        activityCollection.fetch(); // activity created server-side; pull in latest
       }});
     },
     initialize: function(){
