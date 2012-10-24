@@ -6,5 +6,5 @@ define([
     model: Model,
     url: '/api/1/comments'
   });
-  return new Collection(init.comments);
+  return new Collection();
 });

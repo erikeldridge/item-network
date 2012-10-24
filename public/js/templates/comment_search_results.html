@@ -1,5 +1,6 @@
-<% comments.each(function(comment){ %>
-  <div>
+<% _.each(collection, function(comment){ %>
+  <div class="comment">
     <a href="/comments/<%= comment.get('id') %>"><%= comment.get('text') %></a>
   </div>
 <% }) %>
+

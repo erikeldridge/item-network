@@ -5,14 +5,16 @@ define([
   'collections/user_search_results',
   'collections/comment_search_results',
   'collections/comments',
-  'views/comment_stream',
+  'collections/users',
+  'views/stream',
   'text!templates/search_results_page.html',
   'text!templates/item_search_results.html',
   'text!templates/user_search_results.html',
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
-  itemSearchResultCollection, userSearchResultCollection, commentSearchResultCollection, commentCollection,
-  CommentStreamView,
+  itemSearchResultCollection, userSearchResultCollection, commentSearchResultCollection,
+  commentCollection, userCollection,
+  StreamView,
   template, itemSearchResultsTemplate, userSearchResultsTemplate, commentSearchResultsTemplate){
 
   var View = Backbone.View.extend({
@@ -25,7 +27,9 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var query = this.options.params[0];
+      var query = this.options.params[0],
+          params = formDecode(query),
+          re = new RegExp(params.name);
 
       function formDecode(string){
         var params = {};
@@ -48,19 +52,26 @@ define([
           this.$('.item-search-results').html( html );
         }, this)
       });
+
+      // user stream
+      var models = userCollection.filter(function(user){
+            var text = user.get('name');
+            return re.test(text);
+          }),
+          userStream;
+      userSearchResultCollection.reset(models);
       userSearchResultCollection.fetch({
-        data: query,
-        success: _.bind(function(results){
-          var html = _.template(userSearchResultsTemplate, {
-            users: results
-          });
-          this.$('.user-search-results').html( html );
-        }, this)
+        data: query
       });
+      userStream = new StreamView({
+        template: userSearchResultsTemplate,
+        collection: userSearchResultCollection
+      });
+      this.on('remove', userStream.remove);
+      this.$('.user-stream').html(userStream.render().el);
+
       // comment stream
-      var params = formDecode(query),
-          re = new RegExp(params.name),
-          comments = commentCollection.filter(function(comment){
+      var comments = commentCollection.filter(function(comment){
             var text = comment.get('text');
             return re.test(text);
           }),
@@ -69,7 +80,8 @@ define([
       commentSearchResultCollection.fetch({
         data: query
       });
-      commentStream = new CommentStreamView({
+      commentStream = new StreamView({
+        template: commentSearchResultsTemplate,
         collection: commentSearchResultCollection
       });
       this.on('remove', commentStream.remove);

@@ -1,14 +1,12 @@
 define([
-  'zepto',
   'underscore',
-  'backbone',
-  'text!templates/comment_stream.html'
-], function module($, _, Backbone, template){
+  'backbone'
+], function module(_, Backbone){
 
   var View = Backbone.View.extend({
-    template: _.template( template ),
     initialize: function(options){
-      options.collection.on('add reset', function(){
+      this.template = _.template( options.template )
+      this.collection.on('add reset', function(){
         this.render();
       }, this);
     },

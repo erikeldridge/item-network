@@ -1,5 +1,8 @@
 todo
+- define item stream for search results page
 - denote user/item/comment by symbol on search page, rather than separate list
+- define universal search page that's distinct from item search page
+- create universal comment view that can hydrate comment templates
 - wire up user search, i.e., /users
 - inline item edit
 - define current user
