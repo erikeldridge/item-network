@@ -3,13 +3,16 @@ define([
   'backbone',
   'collections/items',
   'collections/comments',
+  'collections/comment_search_results',
   'views/comment',
   'views/comment_form',
-  'text!templates/show_item_page.html'
+  'views/stream',
+  'text!templates/show_item_page.html',
+  'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
-  itemCollection, commentCollection,
-  CommentView, CommentFormView,
-  template){
+  itemCollection, commentCollection, commentSearchResultCollection,
+  CommentView, CommentFormView, StreamView,
+  template, commentSearchResultsTemplate){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
@@ -26,27 +29,32 @@ define([
       var html = this.template({
             item: this.item
           }),
-          comments = commentCollection.toArray();
+          commentForm = new CommentFormView(),
+          name = this.item.get('name'),
+          re = new RegExp(name),
+          comments,
+          commentStream;
+
       this.$el.html( html );
+
       // comment form
-      var commentForm = new CommentFormView();
       this.on('remove', commentForm.remove);
       this.$('.comment-form').append(commentForm.el);
       // comment stream
-      commentCollection.on('add', function(comment){
-        var view = new CommentView({
-          comment: comment
-        });
-        this.on('remove', view.remove);
-        this.$('.comment-stream').append(view.el);
+      comments = commentCollection.filter(function(comment){
+        var text = comment.get('text');
+        return re.test(text);
       }, this);
-      _.each(comments, function(comment){
-        var view = new CommentView({
-          comment: comment
-        });
-        this.on('remove', view.remove);
-        this.$('.comment-stream').append(view.el);
-      }, this);
+      commentSearchResultCollection.reset(comments);
+      commentSearchResultCollection.fetch({
+        data: 'name='+this.item.get('name')
+      });
+      commentStream = new StreamView({
+        template: commentSearchResultsTemplate,
+        collection: commentSearchResultCollection
+      });
+      this.on('remove', commentStream.remove);
+      this.$('.comment-stream').html(commentStream.render().el);
     }
   });
   return View;
