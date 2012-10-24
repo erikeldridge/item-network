@@ -6,6 +6,7 @@ define([
   'collections/comment_search_results',
   'collections/comments',
   'collections/users',
+  'collections/items',
   'views/stream',
   'text!templates/search_results_page.html',
   'text!templates/item_search_results.html',
@@ -13,7 +14,7 @@ define([
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
   itemSearchResultCollection, userSearchResultCollection, commentSearchResultCollection,
-  commentCollection, userCollection,
+  commentCollection, userCollection, itemCollection,
   StreamView,
   template, itemSearchResultsTemplate, userSearchResultsTemplate, commentSearchResultsTemplate){
 
@@ -43,23 +44,30 @@ define([
       var html = this.template();
       this.$el.html( html );
 
+      // user stream
+      var items = itemCollection.filter(function(item){
+            var text = item.get('name');
+            return re.test(text);
+          }),
+          itemStream;
+      itemSearchResultCollection.reset(items);
       itemSearchResultCollection.fetch({
-        data: query,
-        success: _.bind(function(results){
-          var html = _.template(itemSearchResultsTemplate, {
-            items: results
-          });
-          this.$('.item-search-results').html( html );
-        }, this)
+        data: query
       });
+      itemStream = new StreamView({
+        template: itemSearchResultsTemplate,
+        collection: itemSearchResultCollection
+      });
+      this.on('remove', itemStream.remove);
+      this.$('.item-stream').html(itemStream.render().el);
 
       // user stream
-      var models = userCollection.filter(function(user){
+      var users = userCollection.filter(function(user){
             var text = user.get('name');
             return re.test(text);
           }),
           userStream;
-      userSearchResultCollection.reset(models);
+      userSearchResultCollection.reset(users);
       userSearchResultCollection.fetch({
         data: query
       });

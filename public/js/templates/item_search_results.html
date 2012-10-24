@@ -1,4 +1,4 @@
-<% items.each(function(item){ %>
+<% _.each(collection, function(item){ %>
   <div>
     <a href="/items/<%= item.get('id') %>"><%= item.get('name') %></a>
   </div>
