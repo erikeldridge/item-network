@@ -11,7 +11,6 @@ todo
 - define mention page
 - update comment search to use "by" for owner_id, and "mentioning" for search by mention
 - show comments mentioning an item on the show item page
-- show comments mentioning a user on the show user page
 - rule: if i comment on your page, you get notified, but the comment only appears on
 - create comment stream view, ie abstract comment stream rendering
 - cache recent searches (start by logging cache misses)
