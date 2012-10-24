@@ -1,6 +1,4 @@
 todo
-- denote user/item/comment by symbol on search page, rather than separate list
-- define universal search page that's distinct from item search page
 - create universal comment view that can hydrate comment templates
 - wire up user search, i.e., /users
 - inline item edit
@@ -19,3 +17,4 @@ todo
 - cache recent searches (start by logging cache misses)
 - split out comment template
 - update activity stream to behave like http://www.rdio.com/notifications/
+- denote user/item/comment by symbol on search page, rather than separate list

@@ -10,7 +10,7 @@ define([
     },
     search: function(e){
       var query = this.$('.navbar-search').serialize();
-      Backbone.history.navigate('items?'+query, {trigger: true});
+      Backbone.history.navigate('search?'+query, {trigger: true});
       return false;
     },
     initialize: function(){

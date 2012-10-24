@@ -18,6 +18,16 @@ define([
   StreamView,
   template, itemSearchResultsTemplate, userSearchResultsTemplate, commentSearchResultsTemplate){
 
+  function formDecode(string){
+    string = string || '';
+    var params = {};
+    _.each(string.split('&'), function(pairs){
+      pairs = pairs.split('=').map(decodeURIComponent);
+      params[pairs[0]] = pairs[1];
+    });
+    return params;
+  }
+
   var View = Backbone.View.extend({
     template: _.template( template ),
     initialize: function(){
@@ -30,21 +40,13 @@ define([
     render: function(){
       var query = this.options.params[0],
           params = formDecode(query),
-          re = new RegExp(params.name);
-
-      function formDecode(string){
-        var params = {};
-        _.each(string.split('&'), function(pairs){
-          pairs = pairs.split('=').map(decodeURIComponent);
-          params[pairs[0]] = pairs[1];
-        });
-        return params;
-      }
+          name = params.name || '',
+          re = new RegExp(name);
 
       var html = this.template();
       this.$el.html( html );
 
-      // user stream
+      // item stream
       var items = itemCollection.filter(function(item){
             var text = item.get('name');
             return re.test(text);

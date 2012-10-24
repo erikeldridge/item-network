@@ -10,30 +10,34 @@ define([
   'views/search_results_page',
   'views/show_user_page',
   'views/show_comment_page',
+  'views/item_search_results_page',
   'views/comment_search_results_page',
   'views/activity_search_results_page',
 ], function(
   $, Backbone,
   LayoutView, NavPageView,
   CreateItemPageView, EditItemPageView, ShowItemPageView,
-  SearchFormPageView, ItemSearchPageView, ShowUserPageView,
-  ShowCommentPageView, CommentSearchResultsPageView, ActivitySearchPageView){
+  SearchFormPageView, SearchResultsPageView,
+  ShowUserPageView, ShowCommentPageView,
+  ItemSearchResultsPageView, CommentSearchResultsPageView, ActivitySearchPageView){
 
   var Router = Backbone.Router.extend({
         routes: {
           ''                  : NavPageView,
           'create'            : CreateItemPageView,
           'edit_item/:id'     : EditItemPageView,
-          'items/:id'          : ShowItemPageView,
-          'items?*query'       : ItemSearchPageView,
-          'items'              : ItemSearchPageView,
-          'search_form'       : SearchFormPageView,
-          'users/:id'          : ShowUserPageView,
-          'comments/:id'       : ShowCommentPageView,
-          'comments?*query'    : CommentSearchResultsPageView,
-          'comments'           : CommentSearchResultsPageView,
-          'activities?*query'   : ActivitySearchPageView,
-          'activities'          : ActivitySearchPageView
+          'items/:id'         : ShowItemPageView,
+          'items?*query'      : ItemSearchResultsPageView,
+          'items'             : ItemSearchResultsPageView,
+          'users/:id'         : ShowUserPageView,
+          'comments/:id'      : ShowCommentPageView,
+          'comments?*query'   : CommentSearchResultsPageView,
+          'comments'          : CommentSearchResultsPageView,
+          'activities?*query' : ActivitySearchPageView,
+          'activities'        : ActivitySearchPageView,
+          'search'            : SearchResultsPageView,
+          'search?*query'     : SearchResultsPageView,
+          'search_form'       : SearchFormPageView
         },
         initialize: function(){
           var layout = new LayoutView();
