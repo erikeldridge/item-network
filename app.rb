@@ -78,6 +78,24 @@ delete '/api/1/comments/:id' do
   200
 end
 
+post '/api/1/item_comments' do
+  session!
+  data = JSON.parse request.body.read
+  data['owner_id'] = session[:user_id]
+  record = ItemComment.create(data)
+  Activity.create(:table => 'item_comments', :row => record[:id], :action => 'create', :owner_id => session[:user_id])
+  record.to_json
+end
+
+get '/api/1/item_comments' do
+  def empty_param? name
+    params[name].nil? || params[name].empty?
+  end
+  comments = ItemComment
+  comments = comments.filter(:owner_id => params[:owner_id]) unless empty_param? :owner_id
+  comments.to_json
+end
+
 get '/api/1/users' do
   def empty_param? name
     params[name].nil? || params[name].empty?
@@ -147,6 +165,7 @@ get '/*' do
     :item_mentions => ItemMention.all,
     :comment_tags => CommentTag.all,
     :comments => Comment.all,
+    :item_comments => ItemComment.all,
     :activities => Activity.all,
     :user_likes => UserLike.filter(:owner_id=>session[:user_id])
   }.to_json

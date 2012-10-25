@@ -12,9 +12,20 @@ Sequel.migration do
       timestamp :updated_at
     end
 
+    # open comments
     create_table :comments do
       primary_key :id
       String :text
+      foreign_key :owner_id, :users, :key => :id
+      timestamp :created_at
+      timestamp :updated_at
+    end
+
+    # directed comments
+    create_table :item_comments do
+      primary_key :id
+      String :text
+      foreign_key :item_id, :items, :key => :id
       foreign_key :owner_id, :users, :key => :id
       timestamp :created_at
       timestamp :updated_at
@@ -79,6 +90,10 @@ Sequel.migration do
     self[:comments].insert({:owner_id => 1, :text => 'a comment', :created_at => Time.now})
     self[:comments].insert({:owner_id => 2, :text => 'another comment', :created_at => Time.now})
     self[:comments].insert({:owner_id => 2, :text => 'a third comment', :created_at => Time.now})
+
+    self[:item_comments].insert({:owner_id => 1, :item_id => 1, :text => 'a comment (about item 1)', :created_at => Time.now})
+    self[:item_comments].insert({:owner_id => 2, :item_id => 2, :text => 'comment (about item 2)', :created_at => Time.now})
+    self[:item_comments].insert({:owner_id => 2, :item_id => 2, :text => 'comment (about item 2)', :created_at => Time.now})
 
     self[:comment_tags].insert({:owner_id => 1, :text => 'asd', :comment_id => 1, :created_at => Time.now})
     self[:comment_tags].insert({:owner_id => 1, :text => 'asd', :comment_id => 2, :created_at => Time.now})

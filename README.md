@@ -1,5 +1,7 @@
 todo
-- create tag stream
+- on item page, create item comments
+- on user page, create user comments
+- return hydrated comments (w/ mention/tag info) from API
 - create universal comment view that can hydrate comment templates
 - wire up user search, i.e., /users
 - inline item edit
