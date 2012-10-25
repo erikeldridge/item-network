@@ -1,5 +1,5 @@
 todo
-- enable users to tag comments
+- create tag stream
 - create universal comment view that can hydrate comment templates
 - wire up user search, i.e., /users
 - inline item edit

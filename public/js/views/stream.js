@@ -16,9 +16,16 @@ define([
     },
     render: function(){
       var limit = this.options.limit || 20,
-          html = this.template({
-            collection: this.collection.last(limit)
-          });
+          collection,
+          html;
+      if(this.options.filter){
+        collection = this.collection.filter(this.options.filter).splice(-limit)
+      }else{
+        collection = this.collection.last(limit)
+      }
+      html = this.template({
+        collection: collection
+      });
       this.$el.html( html );
       return this;
     }

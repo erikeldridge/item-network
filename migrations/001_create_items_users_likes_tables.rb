@@ -37,6 +37,15 @@ Sequel.migration do
       timestamp :updated_at
     end
 
+    create_table :comment_tags do
+      primary_key :id
+      String :text
+      foreign_key :comment_id, :comments, :key => :id
+      foreign_key :owner_id, :users, :key => :id
+      timestamp :created_at
+      timestamp :updated_at
+    end
+
     create_table :user_likes do
       primary_key :id
       foreign_key :user_id, :users, :key => :id
@@ -70,6 +79,11 @@ Sequel.migration do
     self[:comments].insert({:owner_id => 1, :text => 'a comment', :created_at => Time.now})
     self[:comments].insert({:owner_id => 2, :text => 'another comment', :created_at => Time.now})
     self[:comments].insert({:owner_id => 2, :text => 'a third comment', :created_at => Time.now})
+
+    self[:comment_tags].insert({:owner_id => 1, :text => 'asd', :comment_id => 1, :created_at => Time.now})
+    self[:comment_tags].insert({:owner_id => 1, :text => 'asd', :comment_id => 2, :created_at => Time.now})
+    self[:comment_tags].insert({:owner_id => 1, :text => 'qwe', :comment_id => 2, :created_at => Time.now})
+    self[:comment_tags].insert({:owner_id => 2, :text => 'qwe', :comment_id => 3, :created_at => Time.now})
 
     self[:item_mentions].insert({:owner_id => 1, :item_id => 2, :comment_id => 1, :created_at => Time.now})
     self[:item_mentions].insert({:owner_id => 1, :item_id => 2, :comment_id => 2, :created_at => Time.now})

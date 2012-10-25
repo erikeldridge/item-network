@@ -91,6 +91,25 @@ get '/api/1/activities' do
   Activity.all.to_json
 end
 
+post '/api/1/comment_tags' do
+  session!
+  data = JSON.parse request.body.read
+  data['owner_id'] = session[:user_id]
+  tag = CommentTag.create(data)
+  Activity.create(:table => 'comment_tags', :row => tag[:id], :action => 'create', :owner_id => session[:user_id])
+  tag.to_json
+end
+
+get '/api/1/comment_tags' do
+  def empty_param? name
+    params[name].nil? || params[name].empty?
+  end
+  rows = CommentTag
+  rows = rows.filter(Sequel.like(:text, "%#{params[:text]}%")) unless empty_param? :text
+  rows = rows.filter(:comment_id => params[:comment_id]) unless empty_param? :comment_id
+  rows.to_json
+end
+
 post '/api/1/item_mentions' do
   session!
   data = JSON.parse request.body.read
@@ -126,6 +145,7 @@ get '/*' do
     :items => Item.all,
     :users => User.all,
     :item_mentions => ItemMention.all,
+    :comment_tags => CommentTag.all,
     :comments => Comment.all,
     :activities => Activity.all,
     :user_likes => UserLike.filter(:owner_id=>session[:user_id])
