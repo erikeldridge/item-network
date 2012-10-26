@@ -1,6 +1,10 @@
 todo
+- on item page, show item comments
 - on item page, create item comments
+- create user_comments model & API
+- create user_comments JS model & collection
 - on user page, create user comments
+- on user page, show user comments
 - return hydrated comments (w/ mention/tag info) from API
 - create universal comment view that can hydrate comment templates
 - wire up user search, i.e., /users
