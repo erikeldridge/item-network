@@ -3,19 +3,37 @@ define([
   'backbone',
   'collections/items',
   'collections/item_comments',
-  'collections/comment_search_results',
+  'collections/activities',
   'views/comment',
   'views/comment_form',
   'views/stream',
+  'views/typeahead/input',
   'text!templates/show_item_page.html',
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
-  itemCollection, commentCollection, commentSearchResultCollection,
-  CommentView, CommentFormView, StreamView,
+  itemCollection, commentCollection, activityCollection,
+  CommentView, CommentFormView, StreamView, TypeaheadInputView,
   template, commentSearchResultsTemplate){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
+    events: {
+      'submit form': 'save'
+    },
+    save: function(){
+      var $input = this.$('input'),
+          comment = {
+            text: $input.val()
+          },
+          opts = {
+            success: function(){
+              $input.val('');
+              activityCollection.fetch(); // activity created server-side; pull in latest
+            }
+          };
+      commentCollection.create(comment, opts);
+      return false;
+    },
     initialize: function(options){
       var id = options.params[0];
       this.item = itemCollection.get(id);
@@ -29,17 +47,10 @@ define([
       var html = this.template({
             item: this.item
           }),
-          commentForm = new CommentFormView(),
-          name = this.item.get('name'),
-          re = new RegExp(name),
-          comments,
           commentStream;
 
       this.$el.html( html );
 
-      // comment form
-      this.on('remove', commentForm.remove);
-      this.$('.comment-form').append(commentForm.el);
       // comment stream
       commentStream = new StreamView({
         template: commentSearchResultsTemplate,

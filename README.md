@@ -1,5 +1,4 @@
 todo
-- on item page, create item comments
 - create user_comments model & API
 - create user_comments JS model & collection
 - on user page, create user comments
