@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
   'collections/items',
-  'collections/comments',
+  'collections/item_comments',
   'collections/comment_search_results',
   'views/comment',
   'views/comment_form',
@@ -41,17 +41,9 @@ define([
       this.on('remove', commentForm.remove);
       this.$('.comment-form').append(commentForm.el);
       // comment stream
-      comments = commentCollection.filter(function(comment){
-        var text = comment.get('text');
-        return re.test(text);
-      }, this);
-      commentSearchResultCollection.reset(comments);
-      commentSearchResultCollection.fetch({
-        data: 'name='+this.item.get('name')
-      });
       commentStream = new StreamView({
         template: commentSearchResultsTemplate,
-        collection: commentSearchResultCollection
+        collection: commentCollection
       });
       this.on('remove', commentStream.remove);
       this.$('.comment-stream').html(commentStream.render().el);
