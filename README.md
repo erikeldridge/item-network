@@ -1,12 +1,6 @@
 todo
-- update typeahead for @usernames
-- return hydrated comments (w/ mention/tag info) from API
-- create universal comment view that can hydrate comment templates
-- wire up user search, i.e., /users
-- inline item edit
-- define current user
-- inline comment edit/delete
 - edit user profile
+- link to user profile
 - apply label styling to item mentions
 - add "mentions" list to comment
 - add author to comment page
@@ -17,5 +11,11 @@ todo
 - create comment stream view, ie abstract comment stream rendering
 - cache recent searches (start by logging cache misses)
 - split out comment template
-- update activity stream to behave like http://www.rdio.com/notifications/
+- create separate notifications stream
+- only show activities applying to the user in the activity stream, eg http://www.rdio.com/notifications/
 - denote user/item/comment by symbol on search page, rather than separate list
+- update typeahead for @usernames
+- allow user to sign in w/ twitter
+- item edit/delete
+- define current user
+- comment edit/delete

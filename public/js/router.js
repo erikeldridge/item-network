@@ -9,6 +9,7 @@ define([
   'views/search_form_page',
   'views/search_results_page',
   'views/show_user_page',
+  'views/user_search_results_page',
   'views/show_comment_page',
   'views/item_search_results_page',
   'views/comment_search_results_page',
@@ -18,7 +19,7 @@ define([
   LayoutView, NavPageView,
   CreateItemPageView, EditItemPageView, ShowItemPageView,
   SearchFormPageView, SearchResultsPageView,
-  ShowUserPageView, ShowCommentPageView,
+  ShowUserPageView, UserSearchResultsPageView, ShowCommentPageView,
   ItemSearchResultsPageView, CommentSearchResultsPageView, ActivitySearchPageView){
 
   var Router = Backbone.Router.extend({
@@ -30,6 +31,8 @@ define([
           'items?*query'      : ItemSearchResultsPageView,
           'items'             : ItemSearchResultsPageView,
           'users/:id'         : ShowUserPageView,
+          'users?*query'      : UserSearchResultsPageView,
+          'users'             : UserSearchResultsPageView,
           'comments/:id'      : ShowCommentPageView,
           'comments?*query'   : CommentSearchResultsPageView,
           'comments'          : CommentSearchResultsPageView,
