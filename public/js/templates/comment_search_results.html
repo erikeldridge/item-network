@@ -1,5 +1,6 @@
 <% _.each(collection, function(comment){ %>
   <div class="comment">
+    <span class="owner"><%= comment.get('owner_id') %>:</span>
     <a href="/comments/<%= comment.get('id') %>"><%= comment.get('text') %></a>
   </div>
 <% }) %>

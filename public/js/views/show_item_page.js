@@ -18,16 +18,16 @@ define([
   var View = Backbone.View.extend({
     template: _.template( template ),
     events: {
-      'submit form': 'save'
+      'submit form': 'comment'
     },
-    save: function(){
+    comment: function(){
       var $input = this.$('input'),
           comment = {
             text: $input.val(),
             item_id: this.item.get('id')
           },
           opts = {
-            success: function(){
+            success: function(comment){
               $input.val('');
               activityCollection.fetch(); // activity created server-side; pull in latest
             }

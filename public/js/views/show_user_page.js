@@ -4,21 +4,36 @@ define([
   'collections/users',
   'collections/comments',
   'collections/user_likes',
-  'collections/comment_search_results',
-  'views/comment',
-  'views/comment_form',
+  'collections/activities',
   'views/stream',
   'text!templates/show_user_page.html',
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
-  userCollection, commentCollection, userLikesCollection, commentSearchResultCollection,
-  CommentView, CommentFormView, StreamView,
+  userCollection, commentCollection, userLikesCollection, activityCollection,
+  StreamView,
   showUserPageTemplate, commentSearchResultsTemplate){
 
   var View = Backbone.View.extend({
     template: _.template( showUserPageTemplate ),
     events: {
-      'click .btn': 'like'
+      'click .btn': 'like',
+      'submit form': 'comment'
+    },
+    comment: function(){
+      var $input = this.$('input'),
+          comment = {
+            text: $input.val(),
+            user_id: this.user.get('id')
+          },
+          opts = {
+            success: function(comment){
+              $input.val('');
+              activityCollection.fetch(); // activity created server-side; pull in latest
+            },
+            wait: true
+          };
+      commentCollection.create(comment, opts);
+      return false;
     },
     like: function(e){
       var like = {
@@ -41,30 +56,23 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var html = this.template({
+      var that = this,
+          html = this.template({
             user: this.user,
             isLiked: userLikesCollection.where({user_id:this.user.get('id'), owner_id:1}).length > 0 // HACK: current user
           }),
-          comments = commentCollection.where({owner_id:this.user.get('id')});
+          stream = new StreamView({
+            template: commentSearchResultsTemplate,
+            collection: commentCollection,
+            filter: function(comment){
+              var isOwner = comment.get('owner_id') === that.user.get('id'),
+                  isTo = comment.get('user_id') === that.user.get('id');
+              return isOwner || isTo;
+            }
+          });
       this.$el.html( html );
-      // comment form
-      var commentForm = new CommentFormView();
-      this.on('remove', commentForm.remove);
-      this.$('.comment-form').append(commentForm.el);
-      // comment stream
-      comments = commentCollection.where({
-        owner_id: this.user.get('id')
-      });
-      commentSearchResultCollection.reset(comments);
-      commentSearchResultCollection.fetch({
-        data: 'owner_id='+this.user.get('id')
-      });
-      commentStream = new StreamView({
-        template: commentSearchResultsTemplate,
-        collection: commentSearchResultCollection
-      });
-      this.on('remove', commentStream.remove);
-      this.$('.comment-stream').html(commentStream.render().el);
+      this.$('.comment-stream').html(stream.render().el);
+      this.on('remove', stream.remove);
     }
   });
   return View;
