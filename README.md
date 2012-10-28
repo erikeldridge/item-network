@@ -1,4 +1,5 @@
 todo
+- update typeahead for @usernames
 - return hydrated comments (w/ mention/tag info) from API
 - create universal comment view that can hydrate comment templates
 - wire up user search, i.e., /users

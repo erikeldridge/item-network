@@ -47,32 +47,6 @@ define([
         var user = userCollection.get(id);
         this.$('a[data-model-id=user-'+id+']').attr('href', '/users/'+id).html(user.get('name'));
       }, this);
-      // tag form
-      var tagForm = new CommentTagFormView({
-        comment: this.comment
-      });
-      this.$('.comment-tag-form').html(tagForm.render().el);
-      tagCollection.on('add', function(){
-        tagForm.$('input').val('');
-      });
-      // tag stream
-      tagCollection.fetch({
-        data: 'comment_id='+this.comment.get('id'),
-        add: true
-      });
-      var that = this,
-          tagStream = new StreamView({
-            template: tagStreamTemplate,
-            collection: tagCollection,
-            filter: function(tag){
-              return tag.get('comment_id') === that.comment.get('id');
-            }
-          });
-      this.$('.comment-tag-stream').html(tagStream.render().el);
-      this.on('remove', function(){
-        tagForm.remove();
-        tagStream.remove();
-      });
     }
   });
   return View;
