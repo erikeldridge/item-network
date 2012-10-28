@@ -5,17 +5,37 @@ define([
   'collections/items',
   'collections/users',
   'collections/comment_tags',
+  'collections/activities',
   'views/comment_tag_form',
   'views/stream',
   'text!templates/show_comment_page.html',
   'text!templates/comment_tag_stream.html'
 ], function module(_, Backbone,
-  commentCollection, itemCollection, userCollection, tagCollection,
+  commentCollection, itemCollection, userCollection, tagCollection, activityCollection,
   CommentTagFormView, StreamView,
   showItemPageTemplate, tagStreamTemplate){
 
   var View = Backbone.View.extend({
     template: _.template( showItemPageTemplate ),
+    events: {
+      'submit form': 'createComment'
+    },
+    createComment: function(){
+      var $input = this.$('input'),
+          comment = {
+            text: $input.val(),
+            reply_to_id: this.comment.get('id')
+          },
+          opts = {
+            success: function(comment){
+              $input.val('');
+              activityCollection.fetch(); // activity created server-side; pull in latest
+            },
+            wait: true
+          };
+      commentCollection.create(comment, opts);
+      return false;
+    },
     initialize: function(options){
       var id = options.params[0];
       this.comment = commentCollection.get(id);

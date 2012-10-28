@@ -162,7 +162,7 @@ end
 
 get '/login' do
   session_start!
-  session[:user_id] = 2
+  session[:user_id] = 1
   200
 end
 

@@ -17,6 +17,7 @@ Sequel.migration do
       String :text
       foreign_key :item_id, :items, :key => :id # comment on an item
       foreign_key :user_id, :users, :key => :id # comment to user
+      foreign_key :reply_to_id, :comments, :key => :id # reply to another comment
       foreign_key :owner_id, :users, :key => :id
       timestamp :created_at
       timestamp :updated_at
@@ -87,6 +88,16 @@ Sequel.migration do
     self[:comments].insert({:owner_id => 1, :item_id => 1, :text => 'comment 1 about item 1', :created_at => Time.now})
     self[:comments].insert({:owner_id => 1, :item_id => 1, :text => 'comment 2 about item 1', :created_at => Time.now})
     self[:comments].insert({:owner_id => 2, :item_id => 2, :text => 'comment 3 about item 2', :created_at => Time.now})
+
+    # replies
+    self[:comments].insert({:owner_id => 1, :reply_to_id => 4, :text => 'reply 1 to comment 1', :created_at => Time.now})
+    self[:comments].insert({:owner_id => 2, :reply_to_id => 7, :text => 'reply 2 to reply 1', :created_at => Time.now})
+    self[:comments].insert({:owner_id => 3, :reply_to_id => 8, :text => 'reply 3 to reply 2', :created_at => Time.now})
+
+    # activity
+    self[:activities].insert(:table => 'comments', :row => 7, :action => 'create', :owner_id => 1)
+    self[:activities].insert(:table => 'comments', :row => 8, :action => 'create', :owner_id => 2)
+    self[:activities].insert(:table => 'comments', :row => 9, :action => 'create', :owner_id => 3)
 
     self[:comment_tags].insert({:owner_id => 1, :text => 'asd', :comment_id => 1, :created_at => Time.now})
     self[:comment_tags].insert({:owner_id => 1, :text => 'asd', :comment_id => 2, :created_at => Time.now})
