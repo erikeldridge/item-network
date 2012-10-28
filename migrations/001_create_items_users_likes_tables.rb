@@ -12,20 +12,11 @@ Sequel.migration do
       timestamp :updated_at
     end
 
-    # open comments
     create_table :comments do
       primary_key :id
       String :text
-      foreign_key :owner_id, :users, :key => :id
-      timestamp :created_at
-      timestamp :updated_at
-    end
-
-    # directed comments
-    create_table :item_comments do
-      primary_key :id
-      String :text
-      foreign_key :item_id, :items, :key => :id
+      foreign_key :item_id, :items, :key => :id # comment on an item
+      foreign_key :user_id, :users, :key => :id # comment to user
       foreign_key :owner_id, :users, :key => :id
       timestamp :created_at
       timestamp :updated_at
@@ -87,13 +78,15 @@ Sequel.migration do
 
     self[:user_likes].insert({:owner_id => 1, :user_id => 2, :created_at => Time.now})
 
-    self[:comments].insert({:owner_id => 1, :text => 'a comment', :created_at => Time.now})
-    self[:comments].insert({:owner_id => 2, :text => 'another comment', :created_at => Time.now})
-    self[:comments].insert({:owner_id => 2, :text => 'a third comment', :created_at => Time.now})
+    # status
+    self[:comments].insert({:owner_id => 1, :text => 'status 1', :created_at => Time.now})
+    self[:comments].insert({:owner_id => 2, :text => 'status 2', :created_at => Time.now})
+    self[:comments].insert({:owner_id => 2, :text => 'status 3', :created_at => Time.now})
 
-    self[:item_comments].insert({:owner_id => 1, :item_id => 1, :text => 'a comment (about item 1)', :created_at => Time.now})
-    self[:item_comments].insert({:owner_id => 2, :item_id => 2, :text => 'comment (about item 2)', :created_at => Time.now})
-    self[:item_comments].insert({:owner_id => 2, :item_id => 2, :text => 'comment (about item 2)', :created_at => Time.now})
+    # comments
+    self[:comments].insert({:owner_id => 1, :item_id => 1, :text => 'comment 1 about item 1', :created_at => Time.now})
+    self[:comments].insert({:owner_id => 1, :item_id => 1, :text => 'comment 2 about item 1', :created_at => Time.now})
+    self[:comments].insert({:owner_id => 2, :item_id => 2, :text => 'comment 3 about item 2', :created_at => Time.now})
 
     self[:comment_tags].insert({:owner_id => 1, :text => 'asd', :comment_id => 1, :created_at => Time.now})
     self[:comment_tags].insert({:owner_id => 1, :text => 'asd', :comment_id => 2, :created_at => Time.now})

@@ -165,7 +165,6 @@ get '/*' do
     :item_mentions => ItemMention.all,
     :comment_tags => CommentTag.all,
     :comments => Comment.all,
-    :item_comments => ItemComment.all,
     :activities => Activity.all,
     :user_likes => UserLike.filter(:owner_id=>session[:user_id])
   }.to_json

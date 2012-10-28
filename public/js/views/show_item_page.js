@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
   'collections/items',
-  'collections/item_comments',
+  'collections/comments',
   'collections/activities',
   'views/comment',
   'views/comment_form',
@@ -23,7 +23,8 @@ define([
     save: function(){
       var $input = this.$('input'),
           comment = {
-            text: $input.val()
+            text: $input.val(),
+            item_id: this.item.get('id')
           },
           opts = {
             success: function(){
@@ -47,6 +48,7 @@ define([
       var html = this.template({
             item: this.item
           }),
+          that = this,
           commentStream;
 
       this.$el.html( html );
@@ -54,7 +56,8 @@ define([
       // comment stream
       commentStream = new StreamView({
         template: commentSearchResultsTemplate,
-        collection: commentCollection
+        collection: commentCollection,
+        filter: function(comment){return comment.get('item_id') === that.item.get('id')}
       });
       this.on('remove', commentStream.remove);
       this.$('.comment-stream').html(commentStream.render().el);
