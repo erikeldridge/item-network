@@ -162,12 +162,13 @@ end
 
 get '/login' do
   session_start!
-  session[:user_id] = 1
+  session[:user_id] = 2
   200
 end
 
 get '/*' do
   @init_json = {
+    :current_user => session,
     :items => Item.all,
     :users => User.all,
     :item_mentions => ItemMention.all,

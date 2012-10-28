@@ -4,6 +4,7 @@
   <li class="active"><%= comment.get('id') %></li>
 </ul>
 
-<h1>
-  <%= text %>
-</h1>
+<div class="comment">
+  <a class="owner" href="/users/<%= comment.get('owner_id') %>"><%= comment.get('owner_id') %></a>:
+  <span class="text"><%= comment.get('text') %></span>
+</div>

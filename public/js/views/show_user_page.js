@@ -76,8 +76,8 @@ define([
       var that = this,
           html = this.template({
             user: this.user,
-            isCurrentUser: this.user.get('id') === currentUser.id,
-            isLiked: userLikesCollection.where({user_id:this.user.get('id'), owner_id:currentUser.id}).length > 0
+            isCurrentUser: this.user.get('id') === currentUser.user_id,
+            isLiked: userLikesCollection.where({user_id:this.user.get('id'), owner_id:currentUser.user_id}).length > 0
           }),
           stream = new StreamView({
             template: commentSearchResultsTemplate,

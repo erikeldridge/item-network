@@ -1,4 +1,4 @@
 define([
 ], function(){
-  return {id: 1};
+  return init.current_user;
 });
