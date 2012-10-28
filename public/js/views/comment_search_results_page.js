@@ -1,16 +1,27 @@
 define([
   'underscore',
   'backbone',
-  'collections/comment_search_results',
-  'collections/items',
-  'collections/users',
+  'collections/comments',
+  'views/stream',
   'text!templates/comment_search_results_page.html',
+  'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
-  commentSearchResultCollection, itemCollection, userCollection,
-  template){
+  commentCollection,
+  StreamView,
+  pageTemplate, streamTemplate){
+
+  function formDecode(string){
+    string = string || '';
+    var params = {};
+    _.each(string.split('&'), function(pairs){
+      pairs = pairs.split('=').map(decodeURIComponent);
+      params[pairs[0]] = pairs[1];
+    });
+    return params;
+  }
 
   var View = Backbone.View.extend({
-    template: _.template( template ),
+    template: _.template( pageTemplate ),
     initialize: function(){
       this.render();
     },
@@ -19,37 +30,28 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var query = this.options.params[0];
-      commentSearchResultCollection.fetch({
+      var query = this.options.params[0],
+          params = formDecode(query),
+          name = params.name || '',
+          re = new RegExp(name),
+          that = this,
+          html = this.template(),
+          stream = new StreamView({
+            template: streamTemplate,
+            collection: commentCollection,
+            filter: function(comment){
+              var text = comment.get('name');
+              return re.test(text);
+            }
+          });
+      this.$el.html( html );
+      this.$('.comment-stream').html(stream.render().el);
+      commentCollection.fetch({
         data: query,
-        success: _.bind(function(commentCollection){
-          var itemIds = [],
-              userIds = [],
-              comments = [];
-          commentCollection.each(function(comment){
-            comment = comment.toJSON();
-            var itemIdMatches = _.toArray( comment.text.match(/{item-(\d+)}/) ),
-                userIdMatches = _.toArray( comment.text.match(/{user-(\d+)}/) );
-            itemIdMatches.shift();
-            userIdMatches.shift();
-            itemIds = itemIds.concat(itemIdMatches);
-            userIds = userIds.concat(userIdMatches);
-            comment.text = comment.text.replace(/{([^-]+-\d+)}/g, '<span data-model-id="$1"></span>');
-            comments.push(comment);
-          });
-          var html = this.template({
-            comments: comments
-          });
-          this.$el.html( html );
-          _.each(_.uniq(itemIds), function(id){
-            var item = itemCollection.get(id);
-            this.$('span[data-model-id=item-'+id+']').html(item.get('name'));
-          }, this);
-          _.each(_.uniq(userIds), function(id){
-            var user = userCollection.get(id);
-            this.$('span[data-model-id=user-'+id+']').html(user.get('name'));
-          }, this);
-        }, this)
+        add: true
+      });
+      this.on('remove', function(){
+        stream.remove();
       });
     }
   });

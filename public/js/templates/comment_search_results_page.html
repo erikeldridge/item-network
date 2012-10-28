@@ -3,13 +3,5 @@
   <li class="active">Comment search results</li>
 </ul>
 
-<h2>Comment</h2>
-<div class="stream">
-  <% _.each(comments, function(comment){ %>
-    <div class="comment">
-      <a href="/users/<%= comment.owner_id %>"><%= comment.owner_id %></a>:
-      <a href="/comments/<%= comment.id %>"><%= comment.text %></a>
-    </div>
-  <% }) %>
-</div>
+<div class="comment-stream"></div>
 

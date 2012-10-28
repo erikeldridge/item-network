@@ -1,5 +1,4 @@
 todo
-- update comment search page to use summarized content
 - create separate notifications stream
 - rule: if i comment on your page, you get notified, but the comment only appears on
 - create comment stream view, ie abstract comment stream rendering
