@@ -1,6 +1,7 @@
 define([
   'underscore',
   'backbone',
+  'current_user',
   'collections/users',
   'collections/comments',
   'collections/user_likes',
@@ -8,7 +9,7 @@ define([
   'views/stream',
   'text!templates/show_user_page.html',
   'text!templates/comment_search_results.html'
-], function module(_, Backbone,
+], function module(_, Backbone, currentUser,
   userCollection, commentCollection, userLikesCollection, activityCollection,
   StreamView,
   showUserPageTemplate, commentSearchResultsTemplate){
@@ -59,7 +60,8 @@ define([
       var that = this,
           html = this.template({
             user: this.user,
-            isLiked: userLikesCollection.where({user_id:this.user.get('id'), owner_id:1}).length > 0 // HACK: current user
+            isCurrentUser: this.user.get('id') === currentUser.id,
+            isLiked: userLikesCollection.where({user_id:this.user.get('id'), owner_id:currentUser.id}).length > 0
           }),
           stream = new StreamView({
             template: commentSearchResultsTemplate,
