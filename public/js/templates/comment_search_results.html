@@ -1,7 +1,7 @@
 <% _.each(collection, function(comment){ %>
   <div class="comment">
-    <span class="owner"><%= comment.get('owner_id') %>:</span>
-    <a href="/comments/<%= comment.get('id') %>"><%= comment.get('text') %></a>
+    <a href="/user/<%= comment.get('owener_id') %>"><%= comment.get('owner_id') %></a>:
+    <%= comment.get('text').slice(0,50) %> <a href="/comments/<%= comment.get('id') %>">...</a>
   </div>
 <% }) %>
 
