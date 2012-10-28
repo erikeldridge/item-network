@@ -4,10 +4,19 @@
   <li class="active"><%= comment.get('id') %></li>
 </ul>
 
-<div class="comment">
-  <a class="owner" href="/users/<%= comment.get('owner_id') %>"><%= comment.get('owner_id') %></a>:
-  <span class="text"><%= comment.get('text') %></span>
-</div>
+<p>
+  Author: <a href="/users/<%= comment.get('owner_id') %>"><%= comment.get('owner_id') %></a>
+</p>
+
+<% if(comment.get('reply_to_id')){ %>
+  <p>
+    In reply to: <a href="/comments/<%= comment.get('reply_to_id') %>"><%= comment.get('reply_to_id') %></a>
+  </p>
+<% } %>
+
+<h1><%= comment.get('text') %></h1>
+Replies
+<div class="comment-stream"></div>
 <form class="form" name="comment">
   <div class="control-group">
     <div class="controls">

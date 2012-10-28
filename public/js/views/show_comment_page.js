@@ -9,14 +9,14 @@ define([
   'views/comment_tag_form',
   'views/stream',
   'text!templates/show_comment_page.html',
-  'text!templates/comment_tag_stream.html'
+  'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
   commentCollection, itemCollection, userCollection, tagCollection, activityCollection,
   CommentTagFormView, StreamView,
-  showItemPageTemplate, tagStreamTemplate){
+  pageTemplate, streamTemplate){
 
   var View = Backbone.View.extend({
-    template: _.template( showItemPageTemplate ),
+    template: _.template( pageTemplate ),
     events: {
       'submit form': 'createComment'
     },
@@ -53,20 +53,21 @@ define([
       text = text.replace(/{([^-]+-\d+)}/g, '<a data-model-id="$1"></a>');
       itemIds.shift();
       userIds.shift();
-      var html = this.template({
+      var that = this,
+          html = this.template({
             comment: this.comment,
             text: text
+          }),
+          stream = new StreamView({
+            template: streamTemplate,
+            collection: commentCollection,
+            filter: function(comment){
+              return comment.get('reply_to_id') === that.comment.get('id');
+            }
           });
       this.$el.html( html );
-
-      _.each(itemIds, function(id){
-        var item = itemCollection.get(id);
-        this.$('a[data-model-id=item-'+id+']').attr('href', '/items/'+id).html(item.get('name'));
-      }, this);
-      _.each(userIds, function(id){
-        var user = userCollection.get(id);
-        this.$('a[data-model-id=user-'+id+']').attr('href', '/users/'+id).html(user.get('name'));
-      }, this);
+      this.$('.comment-stream').html(stream.render().el);
+      this.on('remove', stream.remove);
     }
   });
   return View;

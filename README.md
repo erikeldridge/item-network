@@ -1,6 +1,6 @@
 todo
+- summarize comment text in stream view
 - create separate notifications stream
-- show comments mentioning an item on the show item page
 - rule: if i comment on your page, you get notified, but the comment only appears on
 - create comment stream view, ie abstract comment stream rendering
 - cache recent searches (start by logging cache misses)
@@ -15,3 +15,5 @@ todo
 - hightlight usernames in comments
 - update comment search to use "by" for owner_id, and "mentioning" for search by mention
 - enable users to direct a comment to a user (by starting the message with the users name, adding "to" field?)
+- show comments mentioning an item on the show item page
+- show count of replies to comment
