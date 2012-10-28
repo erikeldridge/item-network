@@ -18,7 +18,23 @@ define([
     template: _.template( showUserPageTemplate ),
     events: {
       'click .btn': 'like',
+      'click h1.editable': 'editName',
+      'blur input[data-field="name"]': 'saveName',
       'submit form': 'comment'
+    },
+    editName: function(e){
+      var $el = $(e.target),
+          name = $el.text().replace(/^\s+|\s+$/, ''),
+          $input = $('<input type="text" value="'+name+'" data-field="name">');
+      $el.replaceWith($input);
+      $input.focus();
+    },
+    saveName: function(e){
+      var $input = $(e.target),
+          name = $input.val().replace(/^\s+|\s+$/, ''),
+          $el = $('<h1 class="editable">'+name+'</h1>');
+      this.user.set('name', name).save();
+      $input.replaceWith($el);
     },
     comment: function(){
       var $input = this.$('input'),

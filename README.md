@@ -1,6 +1,4 @@
 todo
-- edit user profile
-- link to user profile
 - apply label styling to item mentions
 - add "mentions" list to comment
 - add author to comment page

@@ -105,6 +105,14 @@ get '/api/1/users' do
   users.to_json
 end
 
+put '/api/1/users/:id' do
+  session!
+  data = JSON.parse request.body.read
+  User.where(:id => params[:id]).update(data.to_hash)
+  Activity.create(:table => 'users', :row => params[:id], :action => 'update', :owner_id => session[:user_id])
+  data.to_json
+end
+
 get '/api/1/activities' do
   Activity.all.to_json
 end
