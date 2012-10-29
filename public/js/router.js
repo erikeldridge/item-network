@@ -2,7 +2,7 @@ define([
   'zepto',
   'backbone',
   'views/layout',
-  'views/nav_page',
+  'views/home_page',
   'views/create_item_page',
   'views/edit_item_page',
   'views/show_item_page',
@@ -16,7 +16,7 @@ define([
   'views/activity_search_results_page',
 ], function(
   $, Backbone,
-  LayoutView, NavPageView,
+  LayoutView, HomePageView,
   CreateItemPageView, EditItemPageView, ShowItemPageView,
   SearchFormPageView, SearchResultsPageView,
   ShowUserPageView, UserSearchResultsPageView, ShowCommentPageView,
@@ -24,7 +24,7 @@ define([
 
   var Router = Backbone.Router.extend({
         routes: {
-          ''                  : NavPageView,
+          ''                  : HomePageView,
           'create'            : CreateItemPageView,
           'edit_item/:id'     : EditItemPageView,
           'items/:id'         : ShowItemPageView,

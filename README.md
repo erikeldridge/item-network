@@ -1,5 +1,7 @@
 todo
 - link to item create
+-- rename "nav" page to "home" page
+-- link to nav page from layout header
 - item edit/delete
 - comment edit/delete
 - hightlight usernames in comments
