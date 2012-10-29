@@ -3,6 +3,7 @@ define([
   'backbone',
   'views/layout',
   'views/home_page',
+  'views/nav_page',
   'views/create_item_page',
   'views/edit_item_page',
   'views/show_item_page',
@@ -16,7 +17,7 @@ define([
   'views/activity_search_results_page',
 ], function(
   $, Backbone,
-  LayoutView, HomePageView,
+  LayoutView, HomePageView, NavPageView,
   CreateItemPageView, EditItemPageView, ShowItemPageView,
   SearchFormPageView, SearchResultsPageView,
   ShowUserPageView, UserSearchResultsPageView, ShowCommentPageView,
@@ -25,6 +26,7 @@ define([
   var Router = Backbone.Router.extend({
         routes: {
           ''                  : HomePageView,
+          'nav'               : NavPageView,
           'create'            : CreateItemPageView,
           'edit_item/:id'     : EditItemPageView,
           'items/:id'         : ShowItemPageView,
