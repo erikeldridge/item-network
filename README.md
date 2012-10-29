@@ -1,18 +1,14 @@
 todo
-- create separate notifications stream
-- rule: if i comment on your page, you get notified, but the comment only appears on
-- create comment stream view, ie abstract comment stream rendering
-- cache recent searches (start by logging cache misses)
-- split out comment template
-- only show activities applying to the user in the activity stream, eg http://www.rdio.com/notifications/
-- denote user/item/comment by symbol on search page, rather than separate list
-- update typeahead for @usernames
-- allow user to sign in w/ twitter
+- link to item create
 - item edit/delete
-- define current user
 - comment edit/delete
 - hightlight usernames in comments
-- update comment search to use "by" for owner_id, and "mentioning" for search by mention
 - enable users to direct a comment to a user (by starting the message with the users name, adding "to" field?)
 - show comments mentioning an item on the show item page
 - show count of replies to comment
+- only show activities applying to the user in the activity stream, eg http://www.rdio.com/notifications/
+- create separate notifications stream (once we have private messages)
+- denote user/item/comment by symbol on search page, rather than separate list
+- update typeahead for @usernames
+- allow user to sign in w/ twitter
+- update comment search to use "by" for owner_id, and "mentioning" for search by mention

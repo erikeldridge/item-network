@@ -1,13 +1,27 @@
 define([
   'underscore',
   'backbone',
-  'collections/activity_search_results',
+  'collections/activities',
+  'views/activity_stream',
   'text!templates/activity_search_results_page.html',
+  'text!templates/activity_stream.html'
 ], function module(_, Backbone,
-  activitySearchResultCollection, template){
+  activityCollection,
+  ActivityStreamView,
+  pageTemplate, streamTemplate){
+
+  function formDecode(string){
+    string = string || '';
+    var params = {};
+    _.each(string.split('&'), function(pairs){
+      pairs = pairs.split('=').map(decodeURIComponent);
+      params[pairs[0]] = pairs[1];
+    });
+    return params;
+  }
 
   var View = Backbone.View.extend({
-    template: _.template( template ),
+    template: _.template( pageTemplate ),
     initialize: function(){
       this.render();
     },
@@ -16,15 +30,17 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var query = this.options.params[0];
-      activitySearchResultCollection.fetch({
+      var query = this.options.params[0],
+          html = this.template(),
+          stream = new ActivityStreamView();
+      this.$el.html( html );
+      this.$('.activity-stream').html(stream.render().el);
+      activityCollection.fetch({
         data: query,
-        success: _.bind(function(collection){
-          var html = this.template({
-            activities: collection.toArray()
-          });
-          this.$el.html( html );
-        }, this)
+        add: true
+      });
+      this.on('remove', function(){
+        stream.remove();
       });
     }
   });

@@ -1,9 +1,6 @@
 define([
   'underscore',
   'backbone',
-  'collections/item_search_results',
-  'collections/user_search_results',
-  'collections/comment_search_results',
   'collections/comments',
   'collections/users',
   'collections/items',
@@ -13,7 +10,6 @@ define([
   'text!templates/user_search_results.html',
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
-  itemSearchResultCollection, userSearchResultCollection, commentSearchResultCollection,
   commentCollection, userCollection, itemCollection,
   StreamView,
   template, itemSearchResultsTemplate, userSearchResultsTemplate, commentSearchResultsTemplate){
@@ -41,61 +37,63 @@ define([
       var query = this.options.params[0],
           params = formDecode(query),
           name = params.name || '',
-          re = new RegExp(name);
+          re = new RegExp(name),
+          itemStream,
+          userStream,
+          commentStream;
 
       var html = this.template();
       this.$el.html( html );
 
       // item stream
-      var items = itemCollection.filter(function(item){
-            var text = item.get('name');
-            return re.test(text);
-          }),
-          itemStream;
-      itemSearchResultCollection.reset(items);
-      itemSearchResultCollection.fetch({
-        data: query
-      });
       itemStream = new StreamView({
         template: itemSearchResultsTemplate,
-        collection: itemSearchResultCollection
+        collection: itemCollection,
+        filter: function(item){
+          var text = item.get('name');
+          return re.test(text);
+        }
       });
-      this.on('remove', itemStream.remove);
+      itemCollection.fetch({
+        data: query,
+        add: true
+      });
       this.$('.item-stream').html(itemStream.render().el);
 
       // user stream
-      var users = userCollection.filter(function(user){
-            var text = user.get('name');
-            return re.test(text);
-          }),
-          userStream;
-      userSearchResultCollection.reset(users);
-      userSearchResultCollection.fetch({
-        data: query
-      });
       userStream = new StreamView({
         template: userSearchResultsTemplate,
-        collection: userSearchResultCollection
+        collection: userCollection,
+        filter: function(user){
+          var text = user.get('name');
+          return re.test(text);
+        }
       });
-      this.on('remove', userStream.remove);
+      userCollection.fetch({
+        data: query,
+        add: true
+      });
       this.$('.user-stream').html(userStream.render().el);
 
       // comment stream
-      var comments = commentCollection.filter(function(comment){
-            var text = comment.get('text');
-            return re.test(text);
-          }),
-          commentStream;
-      commentSearchResultCollection.reset(comments);
-      commentSearchResultCollection.fetch({
-        data: query
-      });
       commentStream = new StreamView({
         template: commentSearchResultsTemplate,
-        collection: commentSearchResultCollection
+        collection: commentCollection,
+        filter: function(comment){
+          var text = comment.get('text');
+          return re.test(text);
+        }
       });
-      this.on('remove', commentStream.remove);
+      commentCollection.fetch({
+        data: query,
+        add: true
+      });
       this.$('.comment-stream').html(commentStream.render().el);
+      this.on('remove', function(){
+        commentStream.remove()
+        userStream.remove()
+        itemStream.remove()
+      });
     }
   });
   return View;

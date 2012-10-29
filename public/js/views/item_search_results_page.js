@@ -2,14 +2,13 @@ define([
   'underscore',
   'backbone',
   'collections/items',
-  'collections/item_search_results',
   'views/stream',
   'text!templates/item_search_results.html',
   'text!templates/item_search_results_page.html',
 ], function module(_, Backbone,
-  itemCollection, itemSearchResultCollection,
+  itemCollection,
   StreamView,
-  itemSearchResultsTemplate, itemSearchResultsPageTemplate){
+  streamTemplate, pageTemplate){
 
   function formDecode(string){
     string = string || '';
@@ -22,7 +21,7 @@ define([
   }
 
   var View = Backbone.View.extend({
-    template: _.template( itemSearchResultsPageTemplate ),
+    template: _.template( pageTemplate ),
     initialize: function(){
       this.render();
     },
@@ -36,25 +35,22 @@ define([
           name = params.name || '',
           re = new RegExp(name),
           html = this.template(),
-          items,
-          itemStream;
+          stream = new StreamView({
+            template: streamTemplate,
+            collection: itemCollection,
+            filter: function(item){
+              var text = item.get('name');
+              return re.test(text);
+            }
+          });
 
       this.$el.html(html);
-
-      items = itemCollection.filter(function(item){
-        var text = item.get('name');
-        return re.test(text);
+      itemCollection.fetch({
+        data: query,
+        add: true
       });
-      itemSearchResultCollection.reset(items);
-      itemSearchResultCollection.fetch({
-        data: query
-      });
-      itemStream = new StreamView({
-        template: itemSearchResultsTemplate,
-        collection: itemSearchResultCollection
-      });
-      this.on('remove', itemStream.remove);
-      this.$('.item-stream').html(itemStream.render().el);
+      this.$('.item-stream').html(stream.render().el);
+      this.on('remove', stream.remove);
     }
   });
   return View;

@@ -3,7 +3,8 @@ define([
   'models/user'
 ], function(Backbone, model){
   var Collection = Backbone.Collection.extend({
-    model: model
+    model: model,
+    url: '/api/1/users'
   });
   return new Collection(init.users);
 });

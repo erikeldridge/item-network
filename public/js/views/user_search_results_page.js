@@ -45,6 +45,10 @@ define([
           });
       this.$el.html( html );
       this.$('.user-stream').html(stream.render().el);
+      userCollection.fetch({
+        data: query,
+        add: true
+      });
       this.on('remove', function(){
         stream.remove();
       });

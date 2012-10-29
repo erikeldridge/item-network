@@ -4,11 +4,5 @@
 </ul>
 
 <h2>Activity</h2>
-<div class="stream">
-  <% _.each(activities, function(activity){ %>
-    <div class="activity">
-      <a href="/users/<%= activity.get('owner_id') %>"><%= activity.get('owner_id') %></a> <%= activity.get('action') %> <a href="/<%= activity.get('table') %>/<%= activity.get('row') %>"><%= activity.get('table') %></a>
-    </div>
-  <% }) %>
-</div>
+<div class="activity-stream"></div>
 
