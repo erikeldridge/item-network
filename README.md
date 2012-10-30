@@ -1,7 +1,4 @@
 todo
-- link to item create
--- rename "nav" page to "home" page
--- link to nav page from layout header
 - item edit/delete
 - comment edit/delete
 - hightlight usernames in comments
@@ -14,3 +11,4 @@ todo
 - update typeahead for @usernames
 - allow user to sign in w/ twitter
 - update comment search to use "by" for owner_id, and "mentioning" for search by mention
+- define different layout for nav

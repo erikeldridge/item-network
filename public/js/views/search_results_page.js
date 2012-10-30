@@ -15,7 +15,7 @@ define([
   template, itemSearchResultsTemplate, userSearchResultsTemplate, commentSearchResultsTemplate){
 
   function formDecode(string){
-    string = string || '';
+    string = string.replace(/\+/g, '%20') || '';
     var params = {};
     _.each(string.split('&'), function(pairs){
       pairs = pairs.split('=').map(decodeURIComponent);

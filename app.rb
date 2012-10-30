@@ -175,6 +175,7 @@ get '/*' do
     :comment_tags => CommentTag.all,
     :comments => Comment.all,
     :activities => Activity.all,
+    :bookmarks => Bookmark.all,
     :user_likes => UserLike.filter(:owner_id=>session[:user_id])
   }.to_json
   erb :default

@@ -8,7 +8,7 @@ define([
   'collections/items',
   'views/comment_form',
   'views/activity_stream',
-  'text!templates/nav_page.html',
+  'text!templates/home_page.html',
   'text!templates/typeahead_suggestions.html',
 ], function module($, _, Backbone,
   userCollection, commentCollection, activityCollection, itemCollection,

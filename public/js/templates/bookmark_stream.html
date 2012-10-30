@@ -1,0 +1,5 @@
+<% _.each(bookmarks, function(bookmark){ %>
+  <div class="bookmark">
+    <a href="<%= bookmark.get('url') %>"><%= bookmark.get('name') %></a>
+  </div>
+<% }) %>

@@ -15,3 +15,5 @@ class UserLike < Sequel::Model
 end
 class CommentTag < Sequel::Model
 end
+class Bookmark < Sequel::Model
+end

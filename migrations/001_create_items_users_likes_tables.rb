@@ -67,7 +67,13 @@ Sequel.migration do
       timestamp :updated_at
     end
 
-
+    create_table :bookmarks do
+      primary_key :id
+      String :name
+      String :url
+      timestamp :created_at
+      timestamp :updated_at
+    end
 
     self[:users].insert({:name => 'user1', :created_at => Time.now})
     self[:users].insert({:name => 'user2', :created_at => Time.now})
@@ -98,6 +104,12 @@ Sequel.migration do
     self[:activities].insert(:table => 'comments', :row => 7, :action => 'create', :owner_id => 1)
     self[:activities].insert(:table => 'comments', :row => 8, :action => 'create', :owner_id => 2)
     self[:activities].insert(:table => 'comments', :row => 9, :action => 'create', :owner_id => 3)
+
+    # bookmarks
+    self[:bookmarks].insert(:name => 'Home', :url => '/')
+    self[:bookmarks].insert(:name => 'All items', :url => '/items')
+    self[:bookmarks].insert(:name => 'All users', :url => '/users')
+    self[:bookmarks].insert(:name => 'Create item', :url => '/create')
 
     self[:comment_tags].insert({:owner_id => 1, :text => 'asd', :comment_id => 1, :created_at => Time.now})
     self[:comment_tags].insert({:owner_id => 1, :text => 'asd', :comment_id => 2, :created_at => Time.now})
