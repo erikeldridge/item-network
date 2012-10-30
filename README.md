@@ -1,5 +1,5 @@
 todo
-- item edit/delete
+- item delete
 - comment edit/delete
 - hightlight usernames in comments
 - enable users to direct a comment to a user (by starting the message with the users name, adding "to" field?)
@@ -12,3 +12,7 @@ todo
 - allow user to sign in w/ twitter
 - update comment search to use "by" for owner_id, and "mentioning" for search by mention
 - define different layout for nav
+- add like to item page
+- add "created by" attribute to show item page
+- add "leave a comment" placeholder text to comment box
+- show a user's activity on the show user page
