@@ -7,7 +7,7 @@ Sequel.migration do
     create_table :items do
       primary_key :id
       String :name
-      foreign_key :owner_id, :users, :key => :id
+      Integer :owner_id
       timestamp :created_at
       timestamp :updated_at
     end
@@ -15,10 +15,10 @@ Sequel.migration do
     create_table :comments do
       primary_key :id
       String :text
-      foreign_key :item_id, :items, :key => :id # comment on an item
-      foreign_key :user_id, :users, :key => :id # comment to user
-      foreign_key :reply_to_id, :comments, :key => :id # reply to another comment
-      foreign_key :owner_id, :users, :key => :id
+      Integer :item_id
+      Integer :user_id
+      Integer :reply_to_id
+      Integer :owner_id
       timestamp :created_at
       timestamp :updated_at
     end
@@ -33,9 +33,9 @@ Sequel.migration do
     # item mentioned in comment
     create_table :item_mentions do
       primary_key :id
-      foreign_key :comment_id, :comments, :key => :id
-      foreign_key :item_id, :items, :key => :id
-      foreign_key :owner_id, :users, :key => :id
+      Integer :comment_id
+      Integer :item_id
+      Integer :owner_id
       timestamp :created_at
       timestamp :updated_at
     end
@@ -62,7 +62,7 @@ Sequel.migration do
       String :table
       Integer :row
       String :action
-      foreign_key :owner_id, :users, :key => :id
+      Integer :owner_id
       timestamp :created_at
       timestamp :updated_at
     end
