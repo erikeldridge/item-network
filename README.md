@@ -1,5 +1,4 @@
 todo
-- comment delete
 - re-enable typeahead
 - enable users to direct a comment to a user (by starting the message with the users name, adding "to" field?)
 - show comments mentioning an item on the show item page
@@ -21,3 +20,5 @@ todo
 - show reply prompt if no replies
 - refresh activity after item create
 - fix link to show user page on comment search results page
+- reinstate foreign keys
+- update activitiy only when loading an activity stream

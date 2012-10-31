@@ -21,7 +21,16 @@ define([
     events: {
       'submit form': 'createComment',
       'click h1.editable': 'editText',
-      'blur input[data-field="text"]': 'saveText'
+      'blur input[data-field="text"]': 'saveText',
+      'click .destroy': 'destroyItem'
+    },
+    destroyItem: function(){
+      this.comment.destroy();
+      this.comment.on('sync', function(){
+        Backbone.history.navigate('/comments', {trigger: true});
+        activityCollection.fetch();
+      });
+      this.remove();
     },
     editText: function(e){
       var $el = $(e.target),
@@ -34,7 +43,7 @@ define([
       var $input = $(e.target),
           text = $input.val().replace(/^\s+|\s+$/, ''),
           $el = $('<h1 class="editable">'+text+'</h1>');
-      this.comment.set('text', text).save();
+      this.comment.save('text', text);
       $input.replaceWith($el);
     },
     createComment: function(){
@@ -46,7 +55,6 @@ define([
           opts = {
             success: function(comment){
               $input.val('');
-              activityCollection.fetch(); // activity created server-side; pull in latest
             },
             wait: true
           };

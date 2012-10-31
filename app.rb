@@ -80,6 +80,7 @@ end
 
 delete '/api/1/comments/:id' do
   session!
+  CommentTag.where(:comment_id => params[:id]).destroy
   Comment.where(:id => params[:id]).destroy
   Activity.create(:table => 'comments', :row => params[:id], :action => 'delete', :owner_id => session[:user_id])
   200
