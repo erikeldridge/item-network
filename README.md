@@ -1,9 +1,8 @@
 todo
-- comment edit/delete
-- hightlight usernames in comments
+- comment delete
+- re-enable typeahead
 - enable users to direct a comment to a user (by starting the message with the users name, adding "to" field?)
 - show comments mentioning an item on the show item page
-- show count of replies to comment
 - only show activities applying to the user in the activity stream, eg http://www.rdio.com/notifications/
 - create separate notifications stream (once we have private messages)
 - denote user/item/comment by symbol on search page, rather than separate list
@@ -17,3 +16,8 @@ todo
 - show a user's activity on the show user page
 - define an "owner id hash" field on editable models that can be checked w/o reading the db
 - redirect to show item page after item creation
+- show count of replies to comment
+- hightlight usernames in comments
+- show reply prompt if no replies
+- refresh activity after item create
+- fix link to show user page on comment search results page

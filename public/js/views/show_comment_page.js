@@ -1,6 +1,7 @@
 define([
   'underscore',
   'backbone',
+  'current_user',
   'collections/comments',
   'collections/items',
   'collections/users',
@@ -10,7 +11,7 @@ define([
   'views/stream',
   'text!templates/show_comment_page.html',
   'text!templates/comment_search_results.html'
-], function module(_, Backbone,
+], function module(_, Backbone, currentUser,
   commentCollection, itemCollection, userCollection, tagCollection, activityCollection,
   CommentTagFormView, StreamView,
   pageTemplate, streamTemplate){
@@ -18,7 +19,23 @@ define([
   var View = Backbone.View.extend({
     template: _.template( pageTemplate ),
     events: {
-      'submit form': 'createComment'
+      'submit form': 'createComment',
+      'click h1.editable': 'editText',
+      'blur input[data-field="text"]': 'saveText'
+    },
+    editText: function(e){
+      var $el = $(e.target),
+          text = $el.text().replace(/^\s+|\s+$/, ''),
+          $input = $('<input type="text" value="'+text+'" data-field="text">');
+      $el.replaceWith($input);
+      $input.focus();
+    },
+    saveText: function(e){
+      var $input = $(e.target),
+          text = $input.val().replace(/^\s+|\s+$/, ''),
+          $el = $('<h1 class="editable">'+text+'</h1>');
+      this.comment.set('text', text).save();
+      $input.replaceWith($el);
     },
     createComment: function(){
       var $input = this.$('input'),
@@ -55,6 +72,7 @@ define([
       userIds.shift();
       var that = this,
           html = this.template({
+            currentUserIsOwner: this.comment.get('owner_id') === currentUser.user_id,
             comment: this.comment,
             text: text
           }),

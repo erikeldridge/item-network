@@ -14,8 +14,11 @@
   </p>
 <% } %>
 
-<h1><%= comment.get('text') %></h1>
-Replies
+<h1 class="<%= currentUserIsOwner ? 'editable' : '' %>">
+  <%= comment.get('text') %>
+</h1>
+
+<h2>Replies</h2>
 <div class="comment-stream"></div>
 <form class="form" name="comment">
   <div class="control-group">
