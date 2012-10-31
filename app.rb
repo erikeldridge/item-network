@@ -44,6 +44,13 @@ get '/api/1/items' do
   items.to_json
 end
 
+delete '/api/1/items/:id' do
+  session!
+  Item.where(:id => params[:id]).destroy
+  Activity.create(:table => 'items', :row => params[:id], :action => 'delete', :owner_id => session[:user_id])
+  200
+end
+
 post '/api/1/comments' do
   session!
   data = JSON.parse request.body.read

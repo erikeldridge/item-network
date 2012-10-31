@@ -22,6 +22,14 @@ define([
       'submit form': 'comment',
       'click h1.editable': 'editName',
       'blur input[data-field="name"]': 'saveName',
+      'click .delete': 'destroyItem'
+    },
+    destroyItem: function(){
+      this.item.destroy();
+      this.item.on('sync', function(){
+        Backbone.history.navigate('/items', {trigger: true});
+      });
+      this.remove();
     },
     editName: function(e){
       var $el = $(e.target),
@@ -58,6 +66,7 @@ define([
       this.render();
     },
     remove: function(){
+      this.trigger('remove');
       this.undelegateEvents();
       Backbone.View.prototype.remove.call(this);
     },

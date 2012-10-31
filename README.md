@@ -1,5 +1,4 @@
 todo
-- item delete
 - comment edit/delete
 - hightlight usernames in comments
 - enable users to direct a comment to a user (by starting the message with the users name, adding "to" field?)
@@ -16,3 +15,5 @@ todo
 - add "created by" attribute to show item page
 - add "leave a comment" placeholder text to comment box
 - show a user's activity on the show user page
+- define an "owner id hash" field on editable models that can be checked w/o reading the db
+- redirect to show item page after item creation
