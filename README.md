@@ -1,5 +1,4 @@
 todo
-- re-enable typeahead
 - enable users to direct a comment to a user (by starting the message with the users name, adding "to" field?)
 - show comments mentioning an item on the show item page
 - only show activities applying to the user in the activity stream, eg http://www.rdio.com/notifications/
@@ -22,3 +21,4 @@ todo
 - fix link to show user page on comment search results page
 - reinstate foreign keys
 - update activitiy only when loading an activity stream
+- add owner to list of items on item search result page

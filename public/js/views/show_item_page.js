@@ -1,8 +1,10 @@
 define([
+  'zepto',
   'underscore',
   'backbone',
   'current_user',
   'collections/items',
+  'collections/users',
   'collections/comments',
   'collections/activities',
   'views/comment',
@@ -11,15 +13,14 @@ define([
   'views/typeahead/input',
   'text!templates/show_item_page.html',
   'text!templates/comment_search_results.html'
-], function module(_, Backbone, currentUser,
-  itemCollection, commentCollection, activityCollection,
+], function module($, _, Backbone, currentUser,
+  itemCollection, userCollection, commentCollection, activityCollection,
   CommentView, CommentFormView, StreamView, TypeaheadInputView,
   template, commentSearchResultsTemplate){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
     events: {
-      'submit form': 'comment',
       'click h1.editable': 'editName',
       'blur input[data-field="name"]': 'saveName',
       'click .destroy': 'destroyItem'
@@ -46,20 +47,6 @@ define([
       this.item.save('name', name);
       $input.replaceWith($el);
     },
-    comment: function(){
-      var $input = this.$('input'),
-          comment = {
-            text: $input.val(),
-            item_id: this.item.get('id')
-          },
-          opts = {
-            success: function(comment){
-              $input.val('');
-            }
-          };
-      commentCollection.create(comment, opts);
-      return false;
-    },
     initialize: function(options){
       var id = options.params[0];
       this.item = itemCollection.get(id);
@@ -79,6 +66,15 @@ define([
           commentStream;
 
       this.$el.html( html );
+
+      // input
+      var input = new TypeaheadInputView({
+        comment: {
+          item_id: this.item.get('id')
+        }
+      });
+      this.on('remove', input.remove);
+      this.$('.typeahead').html(input.render().el);
 
       // comment stream
       commentStream = new StreamView({

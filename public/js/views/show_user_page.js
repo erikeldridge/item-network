@@ -7,11 +7,12 @@ define([
   'collections/user_likes',
   'collections/activities',
   'views/stream',
+  'views/typeahead/input',
   'text!templates/show_user_page.html',
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone, currentUser,
   userCollection, commentCollection, userLikesCollection, activityCollection,
-  StreamView,
+  StreamView, TypeaheadInputView,
   showUserPageTemplate, commentSearchResultsTemplate){
 
   var View = Backbone.View.extend({
@@ -19,8 +20,7 @@ define([
     events: {
       'click .btn': 'like',
       'click h1.editable': 'editName',
-      'blur input[data-field="name"]': 'saveName',
-      'submit form': 'comment'
+      'blur input[data-field="name"]': 'saveName'
     },
     editName: function(e){
       var $el = $(e.target),
@@ -35,22 +35,6 @@ define([
           $el = $('<h1 class="editable">'+name+'</h1>');
       this.user.set('name', name).save();
       $input.replaceWith($el);
-    },
-    comment: function(){
-      var $input = this.$('input'),
-          comment = {
-            text: $input.val(),
-            user_id: this.user.get('id')
-          },
-          opts = {
-            success: function(comment){
-              $input.val('');
-              activityCollection.fetch(); // activity created server-side; pull in latest
-            },
-            wait: true
-          };
-      commentCollection.create(comment, opts);
-      return false;
     },
     like: function(e){
       var like = {
@@ -87,10 +71,17 @@ define([
                   isTo = comment.get('user_id') === that.user.get('id');
               return isOwner || isTo;
             }
+          }),
+          input = new TypeaheadInputView({
+            comment: {
+              user_id: this.user.get('id')
+            }
           });
       this.$el.html( html );
+      this.$('.typeahead').html(input.render().el);
       this.$('.comment-stream').html(stream.render().el);
       this.on('remove', stream.remove);
+      this.on('remove', input.remove);
     }
   });
   return View;

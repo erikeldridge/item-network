@@ -1,5 +1,3 @@
-<% _.each(suggestions, function(suggestion, i){ %>
-  <li class="suggestion <%= 0 === i ? 'active' : '' %>" data-model-id="<%= suggestion.get('model_id') %>">
-    <%= suggestion.get('text') %>
-  </li>
+<% _.each(suggestions, function(suggestion){ %>
+  <div class="suggestion"><%= suggestion.get('text') %></div>
 <% }) %>
