@@ -18,7 +18,6 @@ todo
 - hightlight usernames in comments
 - show reply prompt if no replies
 - refresh activity after item create
-- fix link to show user page on comment search results page
 - reinstate foreign keys
 - update activitiy only when loading an activity stream
 - add owner to list of items on item search result page
