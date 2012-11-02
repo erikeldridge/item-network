@@ -52,7 +52,6 @@ define([
       this.render();
     },
     remove: function(){
-      this.trigger('remove');
       this.undelegateEvents();
       Backbone.View.prototype.remove.call(this);
     },

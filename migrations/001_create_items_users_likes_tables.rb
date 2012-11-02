@@ -30,11 +30,11 @@ Sequel.migration do
       timestamp :updated_at
     end
 
-    # item mentioned in comment
-    create_table :item_mentions do
+    create_table :mentions do
       primary_key :id
       Integer :comment_id
       Integer :item_id
+      Integer :user_id
       Integer :owner_id
       timestamp :created_at
       timestamp :updated_at
@@ -91,9 +91,9 @@ Sequel.migration do
     self[:comments].insert({:owner_id => 2, :text => 'status 3', :created_at => Time.now})
 
     # comments
-    self[:comments].insert({:owner_id => 1, :item_id => 1, :text => 'comment 1 about item 1', :created_at => Time.now})
-    self[:comments].insert({:owner_id => 1, :item_id => 1, :text => 'comment 2 about item 1', :created_at => Time.now})
-    self[:comments].insert({:owner_id => 2, :item_id => 2, :text => 'comment 3 about item 2', :created_at => Time.now})
+    self[:comments].insert({:owner_id => 1, :item_id => 1, :text => 'comment 1 about [item-1]', :created_at => Time.now})
+    self[:comments].insert({:owner_id => 1, :item_id => 1, :text => 'comment 2 about [item-1]', :created_at => Time.now})
+    self[:comments].insert({:owner_id => 2, :item_id => 2, :text => 'comment 3 about [user-2]', :created_at => Time.now})
 
     # replies
     self[:comments].insert({:owner_id => 1, :reply_to_id => 4, :text => 'reply 1 to comment 1', :created_at => Time.now})
@@ -116,8 +116,8 @@ Sequel.migration do
     self[:comment_tags].insert({:owner_id => 1, :text => 'qwe', :comment_id => 2, :created_at => Time.now})
     self[:comment_tags].insert({:owner_id => 2, :text => 'qwe', :comment_id => 3, :created_at => Time.now})
 
-    self[:item_mentions].insert({:owner_id => 1, :item_id => 2, :comment_id => 1, :created_at => Time.now})
-    self[:item_mentions].insert({:owner_id => 1, :item_id => 2, :comment_id => 2, :created_at => Time.now})
-    self[:item_mentions].insert({:owner_id => 2, :item_id => 1, :comment_id => 1, :created_at => Time.now})
+    self[:mentions].insert({:owner_id => 1, :item_id => 1, :comment_id => 4, :created_at => Time.now})
+    self[:mentions].insert({:owner_id => 1, :item_id => 1, :comment_id => 5, :created_at => Time.now})
+    self[:mentions].insert({:owner_id => 2, :user_id => 2, :comment_id => 6, :created_at => Time.now})
   end
 end

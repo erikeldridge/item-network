@@ -1,5 +1,5 @@
 todo
-- enable users to direct a comment to a user (by starting the message with the users name, adding "to" field?)
+- create mention stream (where?)
 - show comments mentioning an item on the show item page
 - only show activities applying to the user in the activity stream, eg http://www.rdio.com/notifications/
 - create separate notifications stream (once we have private messages)
@@ -21,3 +21,9 @@ todo
 - reinstate foreign keys
 - update activitiy only when loading an activity stream
 - add owner to list of items on item search result page
+- define group
+- add "deleted" attribute to models
+
+rules
+- send mentions to anyone named in a comment if they follow the author
+- on delete, clear details from record and set "deleted" attribute to true (to avoid 404)

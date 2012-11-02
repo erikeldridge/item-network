@@ -53,11 +53,25 @@ end
 
 post '/api/1/comments' do
   session!
+
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
-  record = Comment.create(data)
-  Activity.create(:table => 'comments', :row => record[:id], :action => 'create', :owner_id => session[:user_id])
-  record.to_json
+  comment = Comment.create(data)
+  Activity.create(:table => 'comments', :row => comment[:id], :action => 'create', :owner_id => session[:user_id])
+
+  comment[:text].scan(/\[((?:item|user)-\d+)\]/).each do |match|
+    data = {
+      :comment_id => comment[:id],
+      :owner_id => session[:user_id]
+    }
+    type, id = match.first.split('-')
+    data["#{type}_id".to_sym] = id.to_i
+    puts data, '='*50
+    mention = Mention.create(data)
+    Activity.create(:table => 'mentions', :row => mention[:id], :action => 'create', :owner_id => session[:user_id])
+  end
+
+  comment.to_json
 end
 
 get '/api/1/comments' do
@@ -144,19 +158,19 @@ get '/api/1/comment_tags' do
   rows.to_json
 end
 
-post '/api/1/item_mentions' do
+post '/api/1/mentions' do
   session!
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
   tag = ItemMention.create(data)
-  Activity.create(:table => 'item_mentions', :row => tag[:id], :action => 'create', :owner_id => session[:user_id])
+  Activity.create(:table => 'mentions', :row => tag[:id], :action => 'create', :owner_id => session[:user_id])
   tag.to_json
 end
 
-delete '/api/1/item_mentions/:id' do
+delete '/api/1/mentions/:id' do
   session!
   tag = ItemMention.first(:id => params[:id]).delete
-  Activity.create(:table => 'item_mentions', :row => tag[:id], :action => 'delete', :owner_id => session[:user_id])
+  Activity.create(:table => 'mentions', :row => tag[:id], :action => 'delete', :owner_id => session[:user_id])
 end
 
 post '/api/1/user_likes' do
@@ -179,7 +193,7 @@ get '/*' do
     :current_user => session,
     :items => Item.all,
     :users => User.all,
-    :item_mentions => ItemMention.all,
+    :mentions => Mention.all,
     :comment_tags => CommentTag.all,
     :comments => Comment.all,
     :activities => Activity.all,

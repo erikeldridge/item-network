@@ -4,7 +4,7 @@ define([
   'backbone',
   'collections/comments',
   'collections/items',
-  'collections/item_mentions',
+  'collections/mentions',
   'collections/activities',
   'views/typeahead/input',
   'text!templates/comment_form.html'
