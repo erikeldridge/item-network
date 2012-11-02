@@ -133,11 +133,6 @@ define([
         that.$('.suggestions').html(html);
       });
     },
-    remove: function(){
-      this.trigger('remove');
-      this.undelegateEvents();
-      Backbone.View.prototype.remove.call(this);
-    },
     render: function(){
       var html = this.template();
       this.$el.html( html );

@@ -1,8 +1,4 @@
 todo
-- show comments mentioning an item on the show item page
-- only show activities applying to the user in the activity stream, eg http://www.rdio.com/notifications/
-- create separate notifications stream (once we have private messages)
-- denote user/item/comment by symbol on search page, rather than separate list
 - allow user to sign in w/ twitter
 - update comment search to use "by" for owner_id, and "mentioning" for search by mention
 - define different layout for nav
@@ -22,6 +18,7 @@ todo
 - define group
 - add "deleted" attribute to models
 - support saved search
+- create separate notifications stream (once we have private messages)
 
 rules
 - send mentions to anyone named in a comment if they follow the author
