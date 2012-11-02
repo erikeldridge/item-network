@@ -136,7 +136,10 @@ put '/api/1/users/:id' do
 end
 
 get '/api/1/activities' do
-  Activity.all.to_json
+  session!
+  user_ids = UserLike.select(:user_id).filter(:owner_id => session[:user_id])
+  activities = Activity.filter(:owner_id => user_ids)
+  activities.all.to_json
 end
 
 post '/api/1/comment_tags' do
@@ -189,6 +192,8 @@ get '/login' do
 end
 
 get '/*' do
+    user_ids = UserLike.select(:user_id).filter(:owner_id => session[:user_id])
+    activities = Activity.filter(:owner_id => user_ids)
   @init_json = {
     :current_user => session,
     :items => Item.all,
@@ -196,7 +201,7 @@ get '/*' do
     :mentions => Mention.all,
     :comment_tags => CommentTag.all,
     :comments => Comment.all,
-    :activities => Activity.all,
+    :activities => activities.all,
     :bookmarks => Bookmark.all,
     :user_likes => UserLike.filter(:owner_id=>session[:user_id])
   }.to_json
