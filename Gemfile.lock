@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     json (1.7.5)
+    pg (0.14.1)
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
@@ -20,6 +21,7 @@ PLATFORMS
 
 DEPENDENCIES
   json
+  pg
   sequel
   sinatra
   sinatra-session
