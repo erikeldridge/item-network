@@ -3,10 +3,11 @@ define([
   'backbone',
   'collections/bookmarks',
   'views/bookmark_stream',
+  'views/nav_layout',
   'text!templates/nav_page.html'
 ], function module(_, Backbone,
   bookmarkCollection,
-  StreamView,
+  StreamView, LayoutView,
   pageTemplate){
 
   var View = Backbone.View.extend({
@@ -15,12 +16,16 @@ define([
         this.render();
       },
       remove: function(){
-        this.undelegateEvents();
+        this.off();
         Backbone.View.prototype.remove.call(this);
       },
       render: function(){
-        var html = this.template();
-        this.$el.html( html );
+        var layout = new LayoutView({
+          page: this.template()
+        });
+        this.on('remove', layout.remove);
+        this.$el.html( layout.el );
+
         var stream = new StreamView();
         this.on('remove', stream.remove);
         this.$('.bookmark-stream').append(stream.render().el);

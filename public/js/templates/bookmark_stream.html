@@ -1,5 +1,7 @@
-<% _.each(bookmarks, function(bookmark){ %>
-  <div class="bookmark">
-    <a href="<%= bookmark.get('url') %>"><%= bookmark.get('name') %></a>
-  </div>
-<% }) %>
+<ul class="nav nav-tabs nav-stacked">
+  <% _.each(bookmarks, function(bookmark){ %>
+    <li class="bookmark">
+      <a href="<%= bookmark.get('url') %>"><%= bookmark.get('name') %></a>
+    </li>
+  <% }) %>
+</ul>
