@@ -2,7 +2,8 @@ require 'rubygems'
 require 'sequel'
 
 Sequel.migration do
-  change do
+
+  up do
 
     create_table :items do
       primary_key :id
@@ -120,4 +121,5 @@ Sequel.migration do
     self[:mentions].insert({:owner_id => 1, :item_id => 1, :comment_id => 5, :created_at => Time.now})
     self[:mentions].insert({:owner_id => 2, :user_id => 2, :comment_id => 6, :created_at => Time.now})
   end
+
 end
