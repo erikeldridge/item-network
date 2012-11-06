@@ -4,7 +4,7 @@ require "sequel"
 namespace :db do
   namespace :migrate do
     Sequel.extension :migration
-    DB = Sequel.connect(ENV['HEROKU_POSTGRESQL_RED_URL'])
+    DB = Sequel.connect(ENV['HEROKU_POSTGRESQL_RED_URL'] || 'postgres://localhost/erik')
 
     desc "Perform migration reset (full erase and migration up)"
     task :reset do
