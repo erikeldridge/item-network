@@ -6,17 +6,23 @@ namespace :db do
   Sequel.extension :migration
   DB = Sequel.connect(ENV['HEROKU_POSTGRESQL_RED_URL'] || 'sqlite://sqlite.db')
 
-  desc "Perform migration"
-  task :migrate do
-    Sequel::Migrator.run(DB, "migrations")
-    puts ":)"
-  end
-
-  desc "Reset DB"
+  desc "Perform migration reset (full erase and migration up)"
   task :reset do
     Sequel::Migrator.run(DB, "migrations", :target => 0)
     Sequel::Migrator.run(DB, "migrations")
-    puts ':)'
+    puts "<= sq:migrate:reset executed"
+  end
+
+  desc "Perform migration up to latest migration available"
+  task :up do
+    Sequel::Migrator.run(DB, "migrations")
+    puts "<= sq:migrate:up executed"
+  end
+
+  desc "Perform migration down (erase all data)"
+  task :down do
+    Sequel::Migrator.run(DB, "migrations", :target => 0)
+    puts "<= sq:migrate:down executed"
   end
 
   desc "List tables"
@@ -26,4 +32,4 @@ namespace :db do
   end
 end
 
-task :default => ['db:migrate']
+task :default => ['db:up']
