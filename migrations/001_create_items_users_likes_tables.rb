@@ -126,6 +126,6 @@ Sequel.migration do
   end
 
   down do
-    drop_table :items, :comments, :users, :mentions, :likes, :activities, :bookmarks, :comment_tags
+    drop_table :items, :comment_tags, :comments, :users, :mentions, :likes, :activities, :bookmarks
   end
 end

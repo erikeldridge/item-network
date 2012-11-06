@@ -1,5 +1,4 @@
 todo
-- add like to item page
 - add "created by" attribute to show item page
 - add "leave a comment" placeholder text to comment box
 - show a user's activity on the show user page
