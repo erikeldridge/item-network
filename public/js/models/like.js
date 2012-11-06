@@ -2,7 +2,7 @@ define([
   'backbone'
 ], function(Backbone){
   var Model = Backbone.Model.extend({
-    urlRoot: '/api/1/user_likes'
+    urlRoot: '/api/1/likes'
   });
   return Model;
 });

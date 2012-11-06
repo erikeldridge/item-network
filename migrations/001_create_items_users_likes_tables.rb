@@ -41,19 +41,11 @@ Sequel.migration do
       timestamp :updated_at
     end
 
-    create_table :comment_tags do
+    create_table :likes do
       primary_key :id
-      String :text
-      foreign_key :comment_id, :comments, :key => :id
-      foreign_key :owner_id, :users, :key => :id
-      timestamp :created_at
-      timestamp :updated_at
-    end
-
-    create_table :user_likes do
-      primary_key :id
-      foreign_key :user_id, :users, :key => :id
-      foreign_key :owner_id, :users, :key => :id
+      Integer :user_id
+      Integer :item_id
+      Integer :owner_id
       timestamp :created_at
       timestamp :updated_at
     end
@@ -76,6 +68,15 @@ Sequel.migration do
       timestamp :updated_at
     end
 
+    create_table :comment_tags do
+      primary_key :id
+      String :text
+      foreign_key :comment_id, :comments, :key => :id
+      foreign_key :owner_id, :users, :key => :id
+      timestamp :created_at
+      timestamp :updated_at
+    end
+
     self[:users].insert({:name => 'user1', :created_at => Time.now})
     self[:users].insert({:name => 'user2', :created_at => Time.now})
     self[:users].insert({:name => 'user3', :created_at => Time.now})
@@ -84,7 +85,9 @@ Sequel.migration do
     self[:items].insert({:owner_id => 2, :name => 'item2', :created_at => Time.now})
     self[:items].insert({:owner_id => 3, :name => 'item3', :created_at => Time.now})
 
-    self[:user_likes].insert({:owner_id => 1, :user_id => 2, :created_at => Time.now})
+    self[:likes].insert({:owner_id => 1, :user_id => 1, :created_at => Time.now})
+    self[:likes].insert({:owner_id => 1, :item_id => 2, :created_at => Time.now})
+    self[:likes].insert({:owner_id => 2, :item_id => 1, :created_at => Time.now})
 
     # status
     self[:comments].insert({:owner_id => 1, :text => 'status 1', :created_at => Time.now})
@@ -122,4 +125,7 @@ Sequel.migration do
     self[:mentions].insert({:owner_id => 2, :user_id => 2, :comment_id => 6, :created_at => Time.now})
   end
 
+  down do
+    drop_table :items, :comments, :users, :mentions, :likes, :activities, :bookmarks, :comment_tags
+  end
 end

@@ -137,7 +137,7 @@ end
 
 get '/api/1/activities' do
   session!
-  user_ids = UserLike.select(:user_id).filter(:owner_id => session[:user_id])
+  user_ids = Like.select(:user_id).filter(:owner_id => session[:user_id])
   activities = Activity.filter(:owner_id => user_ids)
   activities.all.to_json
 end
@@ -176,12 +176,12 @@ delete '/api/1/mentions/:id' do
   Activity.create(:table => 'mentions', :row => tag[:id], :action => 'delete', :owner_id => session[:user_id])
 end
 
-post '/api/1/user_likes' do
+post '/api/1/likes' do
   session!
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
-  record = UserLike.create(data)
-  Activity.create(:table => 'user_likes', :row => record[:id], :action => 'create', :owner_id => session[:user_id])
+  record = Like.create(data)
+  Activity.create(:table => 'likes', :row => record[:id], :action => 'create', :owner_id => session[:user_id])
   record.to_json
 end
 
@@ -192,8 +192,8 @@ get '/login' do
 end
 
 get '/*' do
-    user_ids = UserLike.select(:user_id).filter(:owner_id => session[:user_id])
-    activities = Activity.filter(:owner_id => user_ids)
+  user_ids = Like.select(:user_id).filter(:owner_id => session[:user_id])
+  activities = Activity.filter(:owner_id => user_ids)
   @init_json = {
     :current_user => session,
     :items => Item.all,
@@ -203,7 +203,7 @@ get '/*' do
     :comments => Comment.all,
     :activities => activities.all,
     :bookmarks => Bookmark.all,
-    :user_likes => UserLike.filter(:owner_id=>session[:user_id])
+    :likes => Like.filter(:owner_id=>session[:user_id])
   }.to_json
   erb :default
 end

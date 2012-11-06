@@ -1,10 +1,10 @@
 define([
   'backbone',
-  'models/user_like'
+  'models/like'
 ], function(Backbone, Model){
   var Collection = Backbone.Collection.extend({
     model: Model,
-    url: '/api/1/user_likes'
+    url: '/api/1/likes'
   });
-  return new Collection(init.user_likes);
+  return new Collection(init.likes);
 });

@@ -4,7 +4,7 @@ define([
   'current_user',
   'collections/users',
   'collections/comments',
-  'collections/user_likes',
+  'collections/likes',
   'collections/activities',
   'views/layout',
   'views/stream',
@@ -12,7 +12,7 @@ define([
   'text!templates/show_user_page.html',
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone, currentUser,
-  userCollection, commentCollection, userLikesCollection, activityCollection,
+  userCollection, commentCollection, likeCollection, activityCollection,
   LayoutView, StreamView, TypeaheadInputView,
   showUserPageTemplate, commentSearchResultsTemplate){
 
@@ -41,12 +41,12 @@ define([
       var like = {
         user_id: this.user.get('id')
       };
-      userLikesCollection.on('sync', function(model){
+      likeCollection.on('sync', function(model){
         var $btn = $(e.currentTarget);
         $btn.addClass('btn-success');
         $btn.find('i').addClass('icon-white');
       }, this);
-      userLikesCollection.create(like);
+      likeCollection.create(like);
     },
     initialize: function(options){
       var id = options.params[0];
@@ -62,7 +62,7 @@ define([
           page = this.template({
             user: this.user,
             isCurrentUser: this.user.get('id') === currentUser.user_id,
-            isLiked: userLikesCollection.where({user_id:this.user.get('id'), owner_id:currentUser.user_id}).length > 0
+            isLiked: likeCollection.where({user_id:this.user.get('id'), owner_id:currentUser.user_id}).length > 0
           }),
           stream = new StreamView({
             template: commentSearchResultsTemplate,
