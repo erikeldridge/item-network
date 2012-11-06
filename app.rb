@@ -3,7 +3,7 @@ require 'sinatra/session'
 require 'json'
 require 'sequel'
 
-DB = Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://sqlite.db')
+DB = Sequel.connect(ENV['HEROKU_POSTGRESQL_RED_URL'] || "postgres://localhost/erik")
 
 require './models'
 

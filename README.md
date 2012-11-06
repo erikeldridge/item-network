@@ -1,5 +1,4 @@
 todo
-- define different layout for nav
 - add like to item page
 - add "created by" attribute to show item page
 - add "leave a comment" placeholder text to comment box
