@@ -8,6 +8,12 @@
   <%= item.get('name') %>
 </h1>
 
+<% if(isLiked){ %>
+  <button class="btn btn-success unlike"><i class="icon-star icon-white"></i></button>
+<% }else{ %>
+  <button class="btn"><i class="icon-star"></i></button>
+<% } %>
+
 <h2>Comments</h2>
 <div class="typeahead"></div>
 <div class="comment-stream"></div>

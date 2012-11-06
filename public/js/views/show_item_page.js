@@ -7,6 +7,7 @@ define([
   'collections/users',
   'collections/comments',
   'collections/activities',
+  'collections/likes',
   'views/layout',
   'views/comment',
   'views/comment_form',
@@ -15,7 +16,7 @@ define([
   'text!templates/show_item_page.html',
   'text!templates/comment_search_results.html'
 ], function module($, _, Backbone, currentUser,
-  itemCollection, userCollection, commentCollection, activityCollection,
+  itemCollection, userCollection, commentCollection, activityCollection, likeCollection,
   LayoutView, CommentView, CommentFormView, StreamView, TypeaheadInputView,
   template, commentSearchResultsTemplate){
 
@@ -60,6 +61,7 @@ define([
     render: function(){
       var page = this.template({
             currentUserIsOwner: this.item.get('owner_id') === currentUser.user_id,
+            isLiked: likeCollection.where({item_id:this.item.get('id'), owner_id:currentUser.user_id}).length > 0,
             item: this.item
           }),
           that = this,
