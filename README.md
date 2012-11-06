@@ -22,6 +22,7 @@ todo
 - enable private comments
 - define comment view that renders comment templates
 - define pipe syntax, eg [item-123|My item]
+- "show" pages should reference "model", not uniquely named model object, e.g., "item", "user", etc
 
 rules
 - send mentions to anyone named in a comment if they follow the author

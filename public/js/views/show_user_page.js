@@ -2,6 +2,7 @@ define([
   'underscore',
   'backbone',
   'current_user',
+  'likeable',
   'collections/users',
   'collections/comments',
   'collections/likes',
@@ -11,7 +12,8 @@ define([
   'views/typeahead/input',
   'text!templates/show_user_page.html',
   'text!templates/comment_search_results.html'
-], function module(_, Backbone, currentUser,
+], function module(_, Backbone,
+  currentUser, likeable,
   userCollection, commentCollection, likeCollection, activityCollection,
   LayoutView, StreamView, TypeaheadInputView,
   showUserPageTemplate, commentSearchResultsTemplate){
@@ -19,10 +21,11 @@ define([
   var View = Backbone.View.extend({
     template: _.template( showUserPageTemplate ),
     events: {
-      'click .btn': 'like',
+      'click .btn': 'likeHandler',
       'click h1.editable': 'editName',
       'blur input[data-field="name"]': 'saveName'
     },
+    likeableType: 'user',
     editName: function(e){
       var $el = $(e.target),
           name = $el.text().replace(/^\s+|\s+$/, ''),
@@ -36,17 +39,6 @@ define([
           $el = $('<h1 class="editable">'+name+'</h1>');
       this.user.set('name', name).save();
       $input.replaceWith($el);
-    },
-    like: function(e){
-      var like = {
-        user_id: this.user.get('id')
-      };
-      likeCollection.on('sync', function(model){
-        var $btn = $(e.currentTarget);
-        $btn.addClass('btn-success');
-        $btn.find('i').addClass('icon-white');
-      }, this);
-      likeCollection.create(like);
     },
     initialize: function(options){
       var id = options.params[0];
@@ -91,6 +83,9 @@ define([
       this.on('remove', input.remove);
     }
   });
+
+  _.extend(View.prototype, likeable);
+
   return View;
 
 });

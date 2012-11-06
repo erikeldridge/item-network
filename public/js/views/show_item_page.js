@@ -3,6 +3,7 @@ define([
   'underscore',
   'backbone',
   'current_user',
+  'likeable',
   'collections/items',
   'collections/users',
   'collections/comments',
@@ -15,7 +16,8 @@ define([
   'views/typeahead/input',
   'text!templates/show_item_page.html',
   'text!templates/comment_search_results.html'
-], function module($, _, Backbone, currentUser,
+], function module($, _, Backbone,
+  currentUser, likeable,
   itemCollection, userCollection, commentCollection, activityCollection, likeCollection,
   LayoutView, CommentView, CommentFormView, StreamView, TypeaheadInputView,
   template, commentSearchResultsTemplate){
@@ -23,10 +25,12 @@ define([
   var View = Backbone.View.extend({
     template: _.template( template ),
     events: {
+      'click .btn': 'likeHandler', // added by extension
       'click h1.editable': 'editName',
       'blur input[data-field="name"]': 'saveName',
       'click .destroy': 'destroyItem'
     },
+    likeableType: 'item',
     destroyItem: function(){
       this.item.destroy();
       this.item.on('sync', function(){
@@ -92,6 +96,9 @@ define([
       this.$('.comment-stream').html(commentStream.render().el);
     }
   });
+
+  _.extend(View.prototype, likeable);
+
   return View;
 
 });
