@@ -56,6 +56,7 @@ define([
     initialize: function(options){
       var id = options.params[0];
       this.item = itemCollection.get(id);
+      this.owner = userCollection.get(this.item.get('owner_id'));
       this.render();
     },
     remove: function(){
@@ -66,7 +67,8 @@ define([
       var page = this.template({
             currentUserIsOwner: this.item.get('owner_id') === currentUser.user_id,
             isLiked: likeCollection.where({item_id:this.item.get('id'), owner_id:currentUser.user_id}).length > 0,
-            item: this.item
+            item: this.item,
+            owner: this.owner
           }),
           that = this,
           commentStream;

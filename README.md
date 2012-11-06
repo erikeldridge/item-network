@@ -1,5 +1,4 @@
 todo
-- add "created by" attribute to show item page
 - add "leave a comment" placeholder text to comment box
 - show a user's activity on the show user page
 - show a item's activity on the show item page
@@ -22,7 +21,7 @@ todo
 - enable private comments
 - define comment view that renders comment templates
 - define pipe syntax, eg [item-123|My item]
-- "show" pages should reference "model", not uniquely named model object, e.g., "item", "user", etc
+- define user sm widget, e.g., <div class="user-sm" data-user-id="1">. Render it in a host view's (show item) render fn
 
 rules
 - send mentions to anyone named in a comment if they follow the author

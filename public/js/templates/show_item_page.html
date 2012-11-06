@@ -8,6 +8,10 @@
   <%= item.get('name') %>
 </h1>
 
+<p>
+  Created by: <a href="/users/<%= owner.get('id') %>"><%= owner.get('name') %></a>
+</p>
+
 <% if(isLiked){ %>
   <button class="btn btn-success unlike"><i class="icon-star icon-white"></i></button>
 <% }else{ %>
