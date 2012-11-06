@@ -6,13 +6,14 @@ define([
   'collections/comments',
   'collections/user_likes',
   'collections/activities',
+  'views/layout',
   'views/stream',
   'views/typeahead/input',
   'text!templates/show_user_page.html',
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone, currentUser,
   userCollection, commentCollection, userLikesCollection, activityCollection,
-  StreamView, TypeaheadInputView,
+  LayoutView, StreamView, TypeaheadInputView,
   showUserPageTemplate, commentSearchResultsTemplate){
 
   var View = Backbone.View.extend({
@@ -58,7 +59,7 @@ define([
     },
     render: function(){
       var that = this,
-          html = this.template({
+          page = this.template({
             user: this.user,
             isCurrentUser: this.user.get('id') === currentUser.user_id,
             isLiked: userLikesCollection.where({user_id:this.user.get('id'), owner_id:currentUser.user_id}).length > 0
@@ -77,7 +78,13 @@ define([
               user_id: this.user.get('id')
             }
           });
-      this.$el.html( html );
+
+      var layout = new LayoutView({
+        page: page
+      });
+      this.on('remove', layout.remove);
+      this.$el.html( layout.el );
+
       this.$('.typeahead').html(input.render().el);
       this.$('.comment-stream').html(stream.render().el);
       this.on('remove', stream.remove);

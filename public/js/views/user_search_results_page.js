@@ -3,11 +3,12 @@ define([
   'backbone',
   'collections/users',
   'views/stream',
+  'views/layout',
   'text!templates/user_search_results_page.html',
   'text!templates/user_search_results.html'
 ], function module(_, Backbone,
   userCollection,
-  StreamView,
+  StreamView, LayoutView,
   pageTemplate, streamTemplate){
 
   function formDecode(string){
@@ -34,7 +35,6 @@ define([
           params = formDecode(query),
           name = params.name || '',
           re = new RegExp(name),
-          html = this.template(),
           stream = new StreamView({
             template: streamTemplate,
             collection: userCollection,
@@ -43,7 +43,13 @@ define([
               return re.test(text);
             }
           });
-      this.$el.html( html );
+
+      var layout = new LayoutView({
+        page: this.template()
+      });
+      this.on('remove', layout.remove);
+      this.$el.html( layout.el );
+
       this.$('.user-stream').html(stream.render().el);
       userCollection.fetch({
         data: query,

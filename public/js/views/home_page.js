@@ -6,13 +6,15 @@ define([
   'collections/comments',
   'collections/activities',
   'collections/items',
+  'views/layout',
   'views/typeahead/input',
   'views/activity_stream',
   'text!templates/home_page.html'
 ], function module($, _, Backbone,
   userCollection, commentCollection, activityCollection, itemCollection,
-  TypeaheadInputView, ActivityStreamView,
+  LayoutView, TypeaheadInputView, ActivityStreamView,
   navPageTemplate){
+
 
   var View = Backbone.View.extend({
       template: _.template( navPageTemplate ),
@@ -20,12 +22,16 @@ define([
         this.render();
       },
       remove: function(){
-        this.undelegateEvents();
+        this.trigger('remove');
         Backbone.View.prototype.remove.call(this);
+        this.off();
       },
       render: function(){
-        var html = this.template();
-        this.$el.html( html );
+        var layout = new LayoutView({
+          page: this.template()
+        });
+        this.on('remove', layout.remove);
+        this.$el.html( layout.el );
 
         // input
         var input = new TypeaheadInputView();

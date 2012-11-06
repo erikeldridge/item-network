@@ -2,12 +2,13 @@ define([
   'underscore',
   'backbone',
   'collections/comments',
+  'views/layout',
   'views/stream',
   'text!templates/comment_search_results_page.html',
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
   commentCollection,
-  StreamView,
+  LayoutView, StreamView,
   pageTemplate, streamTemplate){
 
   function formDecode(string){
@@ -35,7 +36,6 @@ define([
           name = params.name || '',
           re = new RegExp(name),
           that = this,
-          html = this.template(),
           stream = new StreamView({
             template: streamTemplate,
             collection: commentCollection,
@@ -44,7 +44,13 @@ define([
               return re.test(text);
             }
           });
-      this.$el.html( html );
+
+      var layout = new LayoutView({
+        page: this.template()
+      });
+      this.on('remove', layout.remove);
+      this.$el.html( layout.el );
+
       this.$('.comment-stream').html(stream.render().el);
       commentCollection.fetch({
         data: query,

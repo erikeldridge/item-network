@@ -7,6 +7,7 @@ define([
   'collections/users',
   'collections/comments',
   'collections/activities',
+  'views/layout',
   'views/comment',
   'views/comment_form',
   'views/stream',
@@ -15,7 +16,7 @@ define([
   'text!templates/comment_search_results.html'
 ], function module($, _, Backbone, currentUser,
   itemCollection, userCollection, commentCollection, activityCollection,
-  CommentView, CommentFormView, StreamView, TypeaheadInputView,
+  LayoutView, CommentView, CommentFormView, StreamView, TypeaheadInputView,
   template, commentSearchResultsTemplate){
 
   var View = Backbone.View.extend({
@@ -57,14 +58,18 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var html = this.template({
+      var page = this.template({
             currentUserIsOwner: this.item.get('owner_id') === currentUser.user_id,
             item: this.item
           }),
           that = this,
           commentStream;
 
-      this.$el.html( html );
+      var layout = new LayoutView({
+        page: page
+      });
+      this.on('remove', layout.remove);
+      this.$el.html( layout.el );
 
       // input
       var input = new TypeaheadInputView({

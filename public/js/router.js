@@ -45,8 +45,6 @@ define([
           'search_form'       : SearchFormPageView
         },
         initialize: function(){
-          var layout = new LayoutView();
-          $('#container').html(layout.el);
           Backbone.history.on('route', function(router, viewClass, params){
             if(this.view){
               this.view.remove();
@@ -54,7 +52,7 @@ define([
             this.view = new viewClass({
               params: params
             });
-            layout.$('#page').html(this.view.el);
+            $('body').html(this.view.el);
           }, this);
 
           // Internally handle anchor clicks if route is defined

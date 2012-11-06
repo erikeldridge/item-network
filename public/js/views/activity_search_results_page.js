@@ -3,11 +3,12 @@ define([
   'backbone',
   'collections/activities',
   'views/activity_stream',
+  'views/layout',
   'text!templates/activity_search_results_page.html',
   'text!templates/activity_stream.html'
 ], function module(_, Backbone,
   activityCollection,
-  ActivityStreamView,
+  ActivityStreamView, LayoutView,
   pageTemplate, streamTemplate){
 
   function formDecode(string){
@@ -31,9 +32,14 @@ define([
     },
     render: function(){
       var query = this.options.params[0],
-          html = this.template(),
           stream = new ActivityStreamView();
-      this.$el.html( html );
+
+      var layout = new LayoutView({
+        page: this.template()
+      });
+      this.on('remove', layout.remove);
+      this.$el.html( layout.el );
+
       this.$('.activity-stream').html(stream.render().el);
       activityCollection.fetch({
         data: query,

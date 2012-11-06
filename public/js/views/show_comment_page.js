@@ -7,6 +7,7 @@ define([
   'collections/users',
   'collections/comment_tags',
   'collections/activities',
+  'views/layout',
   'views/comment_tag_form',
   'views/stream',
   'views/typeahead/input',
@@ -14,7 +15,7 @@ define([
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone, currentUser,
   commentCollection, itemCollection, userCollection, tagCollection, activityCollection,
-  CommentTagFormView, StreamView, TypeaheadInputView,
+  LayoutView, CommentTagFormView, StreamView, TypeaheadInputView,
   pageTemplate, streamTemplate){
 
   var View = Backbone.View.extend({
@@ -57,7 +58,7 @@ define([
     },
     render: function(){
       var that = this,
-          html = this.template({
+          page = this.template({
             currentUserIsOwner: this.comment.get('owner_id') === currentUser.user_id,
             comment: this.comment
           }),
@@ -73,7 +74,12 @@ define([
               reply_to_id: this.comment.get('id')
             }
           });
-      this.$el.html( html );
+
+      var layout = new LayoutView({
+        page: page
+      });
+      this.on('remove', layout.remove);
+      this.$el.html( layout.el );
 
       this.$('.typeahead').html(input.render().el);
       this.$('.comment-stream').html(stream.render().el);

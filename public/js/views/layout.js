@@ -21,7 +21,7 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var html = this.template();
+      var html = this.template(this.options);
       this.$el.html( html );
     }
   });

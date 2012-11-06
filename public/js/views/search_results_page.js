@@ -4,6 +4,7 @@ define([
   'collections/comments',
   'collections/users',
   'collections/items',
+  'views/layout',
   'views/stream',
   'text!templates/search_results_page.html',
   'text!templates/item_search_results.html',
@@ -11,7 +12,7 @@ define([
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
   commentCollection, userCollection, itemCollection,
-  StreamView,
+  LayoutView, StreamView,
   template, itemSearchResultsTemplate, userSearchResultsTemplate, commentSearchResultsTemplate){
 
   function formDecode(string){
@@ -42,8 +43,11 @@ define([
           userStream,
           commentStream;
 
-      var html = this.template();
-      this.$el.html( html );
+      var layout = new LayoutView({
+        page: this.template()
+      });
+      this.on('remove', layout.remove);
+      this.$el.html( layout.el );
 
       // item stream
       itemStream = new StreamView({
