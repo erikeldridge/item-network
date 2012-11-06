@@ -126,6 +126,6 @@ Sequel.migration do
   end
 
   down do
-    drop_table :items, :comment_tags, :comments, :users, :mentions, :likes, :activities, :bookmarks
+    drop_table :items, :likes, :comment_tags, :comments, :users, :mentions, :activities, :bookmarks, :cascade => true
   end
 end
