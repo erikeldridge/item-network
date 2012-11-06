@@ -12,6 +12,13 @@ namespace :db do
     puts ":)"
   end
 
+  desc "Reset DB"
+  task :reset do
+    Sequel::Migrator.run(DB, "migrations", :target => 0)
+    Sequel::Migrator.run(DB, "migrations")
+    puts ':)'
+  end
+
   desc "List tables"
   task :tables do
     # Ref: http://sequel.rubyforge.org/rdoc/classes/Sequel/Database.html#method-i-tables
