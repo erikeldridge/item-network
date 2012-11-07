@@ -10,6 +10,10 @@ require './models'
 set :session_fail, '/login'
 set :session_secret, 'secret'
 
+def empty_param? name
+  params[name].nil? || params[name].empty?
+end
+
 post '/api/1/items' do
   session!
   data = JSON.parse request.body.read
@@ -137,9 +141,14 @@ end
 
 get '/api/1/activities' do
   session!
-  user_ids = Like.select(:user_id).filter(:owner_id => session[:user_id])
-  activities = Activity.filter(:owner_id => user_ids)
-  activities.all.to_json
+  activities = Activity
+  unless empty_param? :owner_id
+    activities = activities.filter(:owner_id => session[:user_id])
+  else
+    user_ids = Like.select(:user_id).filter(:owner_id => session[:user_id])
+    activities = activities.filter(:owner_id => user_ids)
+  end
+  activities.to_json
 end
 
 post '/api/1/comment_tags' do

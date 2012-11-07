@@ -9,13 +9,14 @@ define([
   'collections/activities',
   'views/layout',
   'views/stream',
+  'views/activity_stream',
   'views/typeahead/input',
   'text!templates/show_user_page.html',
   'text!templates/comment_search_results.html'
 ], function module(_, Backbone,
   currentUser, likeable,
   userCollection, commentCollection, likeCollection, activityCollection,
-  LayoutView, StreamView, TypeaheadInputView,
+  LayoutView, StreamView, ActivityStreamView, TypeaheadInputView,
   showUserPageTemplate, commentSearchResultsTemplate){
 
   var View = Backbone.View.extend({
@@ -56,13 +57,19 @@ define([
             isCurrentUser: this.user.get('id') === currentUser.user_id,
             isLiked: likeCollection.where({user_id:this.user.get('id'), owner_id:currentUser.user_id}).length > 0
           }),
-          stream = new StreamView({
+          commentStream = new StreamView({
             template: commentSearchResultsTemplate,
             collection: commentCollection,
             filter: function(comment){
               var isOwner = comment.get('owner_id') === that.user.get('id'),
                   isTo = comment.get('user_id') === that.user.get('id');
               return isOwner || isTo;
+            }
+          }),
+          activityStream = new ActivityStreamView({
+            filter: function(model){
+              var isOwner = model.get('owner_id') === that.user.get('id')
+              return isOwner;
             }
           }),
           input = new TypeaheadInputView({
@@ -78,9 +85,13 @@ define([
       this.$el.html( layout.el );
 
       this.$('.typeahead').html(input.render().el);
-      this.$('.comment-stream').html(stream.render().el);
-      this.on('remove', stream.remove);
-      this.on('remove', input.remove);
+      this.$('.comment-stream').html(commentStream.render().el);
+      this.$('.activity-stream').html(activityStream.render().el);
+      this.on('remove', function(){
+        commentStream.remove();
+        activityStream.remove();
+        input.remove();
+      });
     }
   });
 
