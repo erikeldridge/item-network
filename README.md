@@ -1,5 +1,4 @@
 todo
-- show a item's activity on the show item page
 - filter activity client-side on the home page
 - define an "owner id hash" field on editable models that can be checked w/o reading the db
 - redirect to show item page after item creation
@@ -22,6 +21,8 @@ todo
 - define pipe syntax, eg [item-123|My item]
 - define user sm widget, e.g., <div class="user-sm" data-user-id="1">. Render it in a host view's (show item) render fn
 - add "leave a comment" placeholder text to comment box
+- show likes for a given item in the item activity stream
+- show mentions for a given item in the item activity stream
 
 rules
 - send mentions to anyone named in a comment if they follow the author
