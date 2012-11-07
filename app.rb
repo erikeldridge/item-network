@@ -70,7 +70,6 @@ post '/api/1/comments' do
     }
     type, id = match.first.split('-')
     data["#{type}_id".to_sym] = id.to_i
-    puts data, '='*50
     mention = Mention.create(data)
     Activity.create(:table => 'mentions', :row => mention[:id], :action => 'create', :owner_id => session[:user_id])
   end

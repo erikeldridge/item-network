@@ -1,12 +1,8 @@
 todo
-- filter activity client-side on the home page
-- define an "owner id hash" field on editable models that can be checked w/o reading the db
-- redirect to show item page after item creation
-- show count of replies to comment
 - hightlight usernames in comments
 - show reply prompt if no replies
 - refresh activity after comment from home page
-- update activitiy only when loading an activity stream
+- update activity only when loading an activity stream
 - add owner to list of items on item search result page
 - define group
 - add "deleted" attribute to models
@@ -23,6 +19,12 @@ todo
 - add "leave a comment" placeholder text to comment box
 - show likes for a given item in the item activity stream
 - show mentions for a given item in the item activity stream
+- filter activity client-side on the home page
+- define an "owner id hash" field on editable models that can be checked w/o reading the db
+- hide stream headers if stream is empty
+- add like button to comment page
+- show count of replies to comment
+- add layout to create item page
 
 rules
 - send mentions to anyone named in a comment if they follow the author

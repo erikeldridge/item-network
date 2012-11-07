@@ -29,8 +29,8 @@ define([
           item = {
             name: name
           };
-      itemCollection.on('sync', function(){
-        this.$('.alert-success').show();
+      itemCollection.on('sync', function(model){
+        Backbone.history.navigate('/items/'+model.get('id'), {trigger: true});
       }, this);
       itemCollection.create(item);
       return false;
