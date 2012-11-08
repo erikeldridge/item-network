@@ -1,5 +1,4 @@
 todo
-- hightlight usernames in comments
 - show reply prompt if no replies
 - refresh activity after comment from home page
 - update activity only when loading an activity stream
@@ -7,7 +6,6 @@ todo
 - define group
 - add "deleted" attribute to models
 - on delete, clear details from record and set "deleted" attribute to true
-- support saved search
 - create separate notifications stream (once we have private messages)
 - allow user to sign in w/ twitter
 - update comment search to use "by" for owner_id, and "mentioning" for search by mention
@@ -25,7 +23,17 @@ todo
 - add like button to comment page
 - show count of replies to comment
 - add layout to create item page
+- replace "bookmarks" with recent searches
+- add "pin/like/save" btn to recent searches page
+- generate name for search on server, eg comments?owner_id=1 --> {name:'comments by [user-1]', results:[...]}
+
+dev env
+- install postgres (Postgres.app makes this easy)
+- run `bundle` to install ruby dependencies
+- run `rake` to prep db
+- run `shotgun` to start app
 
 rules
 - send mentions to anyone named in a comment if they follow the author
 - on delete, clear details from record and set "deleted" attribute to true (to avoid 404)
+
