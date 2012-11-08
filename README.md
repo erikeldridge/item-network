@@ -1,6 +1,4 @@
 todo
-- show reply prompt if no replies
-- refresh activity after comment from home page
 - update activity only when loading an activity stream
 - add owner to list of items on item search result page
 - define group
@@ -26,6 +24,7 @@ todo
 - replace "bookmarks" with recent searches
 - add "pin/like/save" btn to recent searches page
 - generate name for search on server, eg comments?owner_id=1 --> {name:'comments by [user-1]', results:[...]}
+- show reply prompt if no replies
 
 dev env
 - install postgres (Postgres.app makes this easy)

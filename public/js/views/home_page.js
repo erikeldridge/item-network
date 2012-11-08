@@ -35,15 +35,22 @@ define([
 
         // input
         var input = new TypeaheadInputView();
-        this.on('remove', input.remove);
         this.$('.typeahead').html(input.render().el);
 
         // activity stream
         var activityStream = new ActivityStreamView({
               limit: 3
             });
-        this.on('remove', activityStream.remove);
         this.$('.activity-stream').html(activityStream.render().el);
+        commentCollection.on('sync', function(){
+          activityCollection.fetch(); // fetch latest activity when new comment is made
+        });
+
+        // cleanup
+        this.on('remove', function(){
+          input.remove();
+          activityStream.remove();
+        });
       }
     });
   return View;
