@@ -36,7 +36,6 @@ define([
       this.item.destroy();
       this.item.on('sync', function(){
         Backbone.history.navigate('/items', {trigger: true});
-        activityCollection.fetch();
       });
       this.remove();
     },

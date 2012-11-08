@@ -29,7 +29,6 @@ define([
       this.comment.destroy();
       this.comment.on('sync', function(){
         Backbone.history.navigate('/comments', {trigger: true});
-        activityCollection.fetch();
       });
       this.remove();
     },
