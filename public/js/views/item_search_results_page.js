@@ -27,8 +27,9 @@ define([
       this.render();
     },
     remove: function(){
-      this.undelegateEvents();
+      this.trigger('remove');
       Backbone.View.prototype.remove.call(this);
+      this.off();
     },
     render: function(){
       var query = this.options.params[0],
@@ -47,7 +48,6 @@ define([
       var layout = new LayoutView({
         page: this.template()
       });
-      this.on('remove', layout.remove);
       this.$el.html( layout.el );
 
       itemCollection.fetch({
@@ -55,7 +55,12 @@ define([
         add: true
       });
       this.$('.item-stream').html(stream.render().el);
-      this.on('remove', stream.remove);
+
+      // clean up
+      this.on('remove', function(){
+        layout.remove();
+        stream.remove();
+      });
     }
   });
   return View;

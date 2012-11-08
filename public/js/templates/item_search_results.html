@@ -1,5 +1,6 @@
 <% _.each(collection, function(item){ %>
   <div class="item">
+    <a href="/users/<%= item.get('owner_id') %>"><%= item.get('owner_id') %></a>:
     <a href="/items/<%= item.get('id') %>"><%= item.get('name') %></a>
   </div>
 <% }) %>

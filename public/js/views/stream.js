@@ -28,11 +28,13 @@ define([
         collection: collection
       });
       this.$el.html( html );
+
       this.$('.item-sm').each(function(i, el){
         var $el = $(el),
             id = $el.data('item-id');
         $el.html( itemCollection.get(id).get('name') );
       });
+
       return this;
     }
   });

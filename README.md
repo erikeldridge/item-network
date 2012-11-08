@@ -1,5 +1,4 @@
 todo
-- add owner to list of items on item search result page
 - define group
 - add "deleted" attribute to models
 - on delete, clear details from record and set "deleted" attribute to true
@@ -25,6 +24,8 @@ todo
 - generate name for search on server, eg comments?owner_id=1 --> {name:'comments by [user-1]', results:[...]}
 - show reply prompt if no replies
 - render [user-123] into user name, as with [item-123]
+- conditionally add "items created by user" to user show page
+- merge comment and activity streams on user show page
 
 dev env
 - install postgres (Postgres.app makes this easy)
