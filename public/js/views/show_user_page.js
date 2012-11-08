@@ -47,8 +47,9 @@ define([
       this.render();
     },
     remove: function(){
-      this.undelegateEvents();
+      this.trigger('remove');
       Backbone.View.prototype.remove.call(this);
+      this.off();
     },
     render: function(){
       var that = this,
@@ -81,13 +82,15 @@ define([
       var layout = new LayoutView({
         page: page
       });
-      this.on('remove', layout.remove);
       this.$el.html( layout.el );
 
       this.$('.typeahead').html(input.render().el);
       this.$('.comment-stream').html(commentStream.render().el);
       this.$('.activity-stream').html(activityStream.render().el);
+
+      // clean up
       this.on('remove', function(){
+        layout.remove();
         commentStream.remove();
         activityStream.remove();
         input.remove();
