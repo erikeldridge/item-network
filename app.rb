@@ -206,6 +206,8 @@ get '/*' do
     :current_user => session,
     :items => Item.all,
     :users => User.all,
+    :groups => Group.all,
+    :memberships => Membership.all,
     :mentions => Mention.all,
     :comment_tags => CommentTag.all,
     :comments => Comment.all,
