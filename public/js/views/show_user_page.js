@@ -7,17 +7,19 @@ define([
   'collections/comments',
   'collections/likes',
   'collections/activities',
+  'collections/memberships',
   'views/layout',
   'views/stream',
   'views/activity_stream',
   'views/typeahead/input',
   'text!templates/show_user_page.html',
-  'text!templates/comment_search_results.html'
+  'text!templates/comment_search_results.html',
+  'text!templates/membership_stream.html'
 ], function module(_, Backbone,
   currentUser, likeable,
-  userCollection, commentCollection, likeCollection, activityCollection,
+  userCollection, commentCollection, likeCollection, activityCollection, membershipCollection,
   LayoutView, StreamView, ActivityStreamView, TypeaheadInputView,
-  showUserPageTemplate, commentSearchResultsTemplate){
+  showUserPageTemplate, commentSearchResultsTemplate, membershipStreamTemplate ){
 
   var View = Backbone.View.extend({
     template: _.template( showUserPageTemplate ),
@@ -67,6 +69,13 @@ define([
               return isOwner || isTo;
             }
           }),
+          membershipStream = new StreamView({
+            template: membershipStreamTemplate,
+            collection: membershipCollection,
+            filter: function(model){
+              return model.get('user_id') === that.user.get('id');
+            }
+          }),
           activityStream = new ActivityStreamView({
             filter: function(model){
               var isOwner = model.get('owner_id') === that.user.get('id')
@@ -87,12 +96,14 @@ define([
       this.$('.typeahead').html(input.render().el);
       this.$('.comment-stream').html(commentStream.render().el);
       this.$('.activity-stream').html(activityStream.render().el);
+      this.$('.membership-stream').html(membershipStream.render().el);
 
       // clean up
       this.on('remove', function(){
         layout.remove();
         commentStream.remove();
         activityStream.remove();
+        membershipStream.remove();
         input.remove();
       });
     }
