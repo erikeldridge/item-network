@@ -1,8 +1,8 @@
 define([
-  'underscore',
-  'backbone',
-  'collections/items'
-], function module(_, Backbone, itemCollection){
+  'underscore', 'backbone',
+  'collections/items', 'collections/users'
+], function module(_, Backbone,
+  itemCollection, userCollection){
 
   var View = Backbone.View.extend({
     initialize: function(options){
@@ -33,6 +33,12 @@ define([
         var $el = $(el),
             id = $el.data('item-id');
         $el.html( itemCollection.get(id).get('name') );
+      });
+
+      this.$('.user-sm').each(function(i, el){
+        var $el = $(el),
+            id = $el.data('user-id');
+        $el.html( userCollection.get(id).get('name') );
       });
 
       return this;
