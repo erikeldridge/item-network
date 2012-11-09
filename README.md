@@ -1,10 +1,4 @@
 todo
-- add "deleted" attribute to models
-- on delete, clear details from record and set "deleted" attribute to true
-- create separate notifications stream (once we have private messages)
-- allow user to sign in w/ twitter
-- update comment search to use "by" for owner_id, and "mentioning" for search by mention
-- format text input to look like textarea
 - enable private comments
 - define comment view that renders comment templates
 - define pipe syntax, eg [item-123|My item]
@@ -27,6 +21,12 @@ todo
 - add link to /groups to bookmarks
 - enable group creation
 - enable membership creation
+- gracefully handle deleted items,comments,users, and groups
+- create separate notifications stream (once we have private messages)
+- allow user to sign in w/ twitter
+- update comment search to use "by" for owner_id, and "mentioning" for search by mention
+- create context-aware comment box on each item,user,comment,group page
+- add groups to omni-search
 
 dev env
 - install postgres (Postgres.app makes this easy)
