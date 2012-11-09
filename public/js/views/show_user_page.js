@@ -14,12 +14,12 @@ define([
   'views/typeahead/input',
   'text!templates/show_user_page.html',
   'text!templates/comment_search_results.html',
-  'text!templates/membership_stream.html'
+  'text!templates/group_stream.html'
 ], function module(_, Backbone,
   currentUser, likeable,
   userCollection, commentCollection, likeCollection, activityCollection, membershipCollection,
   LayoutView, StreamView, ActivityStreamView, TypeaheadInputView,
-  showUserPageTemplate, commentSearchResultsTemplate, membershipStreamTemplate ){
+  showUserPageTemplate, commentSearchResultsTemplate, groupStreamTemplate ){
 
   var View = Backbone.View.extend({
     template: _.template( showUserPageTemplate ),
@@ -70,7 +70,7 @@ define([
             }
           }),
           membershipStream = new StreamView({
-            template: membershipStreamTemplate,
+            template: groupStreamTemplate,
             collection: membershipCollection,
             filter: function(model){
               return model.get('user_id') === that.user.get('id');

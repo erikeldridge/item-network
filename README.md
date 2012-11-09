@@ -26,6 +26,9 @@ todo
 - render [user-123] into user name, as with [item-123]
 - conditionally add "items created by user" to user show page
 - merge comment and activity streams on user show page
+- add link to /groups to bookmarks
+- enable group creation
+- enable membership creation
 
 dev env
 - install postgres (Postgres.app makes this easy)

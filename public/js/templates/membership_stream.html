@@ -1,6 +1,6 @@
 <% _.each(collection, function(membership){ %>
   <div class="membership">
-    <a class="membership-sm" href="/memberships/<%= membership.get('id') %>"><%= membership.get('id') %></a>
+    <a class="user-sm" href="/users/<%= membership.get('user_id') %>"><%= membership.get('user_id') %></a>
   </div>
 <% }) %>
 
