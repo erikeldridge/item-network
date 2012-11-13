@@ -1,8 +1,4 @@
 todo
-- define comment view that renders comment templates
-- define pipe syntax, eg [item-123|My item]
-- define user sm widget, e.g., <div class="user-sm" data-user-id="1">. Render it in a host view's (show item) render fn
-- add "leave a comment" placeholder text to comment box
 - show likes for a given item in the item activity stream
 - show mentions for a given item in the item activity stream
 - filter activity client-side on the home page
@@ -27,6 +23,10 @@ todo
 - create context-aware comment box on each item,user,comment,group page
 - add groups to omni-search
 - enable private comments
+- add contributor credit to comment
+- add contributor credit to item
+- render placeholders in comment titles
+- define pipe syntax, eg [item-123|My item]
 
 dev env
 - install postgres (Postgres.app makes this easy)
