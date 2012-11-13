@@ -1,0 +1,5 @@
+<% _.each(collection, function(contributor){ %>
+  <div class="contributor">
+    <a href="/users/<%= contributor.get('user_id') %>"><%= contributor.get('user_id') %></a>
+  </div>
+<% }) %>

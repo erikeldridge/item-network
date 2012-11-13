@@ -1,5 +1,4 @@
 todo
-- enable private comments
 - define comment view that renders comment templates
 - define pipe syntax, eg [item-123|My item]
 - define user sm widget, e.g., <div class="user-sm" data-user-id="1">. Render it in a host view's (show item) render fn
@@ -27,6 +26,7 @@ todo
 - update comment search to use "by" for owner_id, and "mentioning" for search by mention
 - create context-aware comment box on each item,user,comment,group page
 - add groups to omni-search
+- enable private comments
 
 dev env
 - install postgres (Postgres.app makes this easy)

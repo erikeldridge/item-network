@@ -7,19 +7,19 @@ define([
   'collections/comments',
   'collections/likes',
   'collections/activities',
-  'collections/memberships',
+  'collections/contributors',
   'views/layout',
   'views/stream',
   'views/activity_stream',
   'views/typeahead/input',
   'text!templates/show_user_page.html',
   'text!templates/comment_search_results.html',
-  'text!templates/group_stream.html'
+  'text!templates/contributor_stream.html'
 ], function module(_, Backbone,
   currentUser, likeable,
-  userCollection, commentCollection, likeCollection, activityCollection, membershipCollection,
+  userCollection, commentCollection, likeCollection, activityCollection, contributorCollection,
   LayoutView, StreamView, ActivityStreamView, TypeaheadInputView,
-  showUserPageTemplate, commentSearchResultsTemplate, groupStreamTemplate ){
+  showUserPageTemplate, commentSearchResultsTemplate, contributorStreamTemplate ){
 
   var View = Backbone.View.extend({
     template: _.template( showUserPageTemplate ),
@@ -69,11 +69,11 @@ define([
               return isOwner || isTo;
             }
           }),
-          membershipStream = new StreamView({
-            template: groupStreamTemplate,
-            collection: membershipCollection,
+          contributorStream = new StreamView({
+            template: contributorStreamTemplate,
+            collection: contributorCollection,
             filter: function(model){
-              return model.get('user_id') === that.user.get('id');
+              return model.get('contributor_id') === that.user.get('id');
             }
           }),
           activityStream = new ActivityStreamView({
@@ -96,14 +96,14 @@ define([
       this.$('.typeahead').html(input.render().el);
       this.$('.comment-stream').html(commentStream.render().el);
       this.$('.activity-stream').html(activityStream.render().el);
-      this.$('.membership-stream').html(membershipStream.render().el);
+      this.$('.contributor-stream').html(contributorStream.render().el);
 
       // clean up
       this.on('remove', function(){
         layout.remove();
         commentStream.remove();
         activityStream.remove();
-        membershipStream.remove();
+        contributorStream.remove();
         input.remove();
       });
     }

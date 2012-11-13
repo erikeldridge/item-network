@@ -3,9 +3,7 @@ Sequel::Model.plugin :json_serializer
 
 class User < Sequel::Model
 end
-class Group < Sequel::Model
-end
-class Membership < Sequel::Model
+class Contributor < Sequel::Model
 end
 class Item < Sequel::Model
 end

@@ -1,10 +1,10 @@
 define([
   'backbone',
-  'models/group'
+  'models/contributor'
 ], function(Backbone, model){
   var Collection = Backbone.Collection.extend({
     model: model,
-    url: '/api/1/groups'
+    url: '/api/1/contributors'
   });
-  return new Collection(init.groups);
+  return new Collection(init.contributors);
 });
