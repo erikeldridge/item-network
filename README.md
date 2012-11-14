@@ -1,6 +1,11 @@
-todo
+Item network is a playground for social network patterns. The project is topic-agnostic, to maintain the focus on user interaction; users interact with each other around generic items.
+
+To do
+-----
+
 - show likes for a given item in the item activity stream
 - show mentions for a given item in the item activity stream
+- show comments for a given item in the item activity stream
 - filter activity client-side on the home page
 - define an "owner id hash" field on editable models that can be checked w/o reading the db
 - hide stream headers if stream is empty
@@ -28,13 +33,19 @@ todo
 - render placeholders in comment titles
 - define pipe syntax, eg [item-123|My item]
 
-dev env
+Dev env
+-------
+
 - install postgres (Postgres.app makes this easy)
 - run `bundle` to install ruby dependencies
 - run `rake` to prep db
 - run `shotgun` to start app
 
-rules
-- send mentions to anyone named in a comment if they follow the author
-- on delete, clear details from record and set "deleted" attribute to true (to avoid 404)
+Copyright and license
+---------------------
 
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the LICENSE file, or at:
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
