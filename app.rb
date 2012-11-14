@@ -32,9 +32,6 @@ put '/api/1/items/:id' do
 end
 
 get '/api/1/items' do
-  def empty_param? name
-    params[name].nil? || params[name].empty?
-  end
   items = Item
   items = items.filter(Sequel.like(:name, "%#{params[:name]}%")) unless empty_param? :name
   unless empty_param? :owner
@@ -78,9 +75,6 @@ post '/api/1/comments' do
 end
 
 get '/api/1/comments' do
-  def empty_param? name
-    params[name].nil? || params[name].empty?
-  end
   comments = Comment
   comments = comments.filter(Sequel.like(:text, "%#{params[:name]}%")) unless empty_param? :name
   comments = comments.filter(:owner_id => params[:owner_id]) unless empty_param? :owner_id
@@ -113,18 +107,12 @@ post '/api/1/item_comments' do
 end
 
 get '/api/1/item_comments' do
-  def empty_param? name
-    params[name].nil? || params[name].empty?
-  end
   comments = ItemComment
   comments = comments.filter(:owner_id => params[:owner_id]) unless empty_param? :owner_id
   comments.to_json
 end
 
 get '/api/1/users' do
-  def empty_param? name
-    params[name].nil? || params[name].empty?
-  end
   users = User
   users = users.filter(Sequel.like(:name, "%#{params[:name]}%")) unless empty_param? :name
   users.to_json
@@ -160,9 +148,6 @@ post '/api/1/comment_tags' do
 end
 
 get '/api/1/comment_tags' do
-  def empty_param? name
-    params[name].nil? || params[name].empty?
-  end
   rows = CommentTag
   rows = rows.filter(Sequel.like(:text, "%#{params[:text]}%")) unless empty_param? :text
   rows = rows.filter(:comment_id => params[:comment_id]) unless empty_param? :comment_id
