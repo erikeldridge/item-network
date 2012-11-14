@@ -4,7 +4,7 @@ Item network is a playground for social network patterns. The project is topic-a
 
 ## Patterns
 
-### User activity
+### Activity
 
 Exposing user activity facilitates recognition and helps users learn how to use a product
 
@@ -26,7 +26,7 @@ http://item-network.herokuapp.com
 
 ## To do
 
-- show comments for a given item in the item activity stream
+- show activity for a given item in the item activity stream
 - filter activity client-side on the home page
 - define an "owner id hash" field on editable models that can be checked w/o reading the db
 - hide stream headers if stream is empty
@@ -54,6 +54,7 @@ http://item-network.herokuapp.com
 - render placeholders in comment titles
 - define pipe syntax, eg [item-123|My item]
 - make comment box stand-alone on user, item, and comment pages
+- fix margins on wide layout
 
 ## Dev env
 

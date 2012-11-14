@@ -85,16 +85,12 @@ define([
       this.on('remove', input.remove);
       this.$('.typeahead').html(input.render().el);
 
-      // comment stream
-      commentStream = new StreamView({
-        template: commentSearchResultsTemplate,
-        collection: commentCollection,
-        filter: function(comment){return comment.get('item_id') === that.item.get('id')}
+      // stream
+      var model = Backbone.Model.extend({
+        idAttribute: "model_id"
       });
-      this.$('.comment-stream').html(commentStream.render().el);
-
       var Collection = Backbone.Collection.extend({
-            idAttribute: 'model_id',
+            model: model,
             comparator: function(model) {
               return model.get("created_at");
             }
@@ -103,13 +99,19 @@ define([
       likeCollection.each(function(model){
         if(model.get('item_id') === this.item.get('id')){
           model.set('model_id', 'like-'+model.get('id'));
-          collection.add(model);
+          collection.add(model.toJSON()); // toJSON so collection uses model_id instead of native id
         }
       }, this);
       mentionCollection.each(function(model){
         if(model.get('item_id') === this.item.get('id')){
           model.set('model_id', 'mention-'+model.get('id'));
-          collection.add(model);
+          collection.add(model.toJSON());
+        }
+      }, this);
+      commentCollection.each(function(model){
+        if(model.get('item_id') === this.item.get('id')){
+          model.set('model_id', 'comment-'+model.get('id'));
+          collection.add(model.toJSON());
         }
       }, this);
 
