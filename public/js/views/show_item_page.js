@@ -16,12 +16,13 @@ define([
   'views/activity_stream',
   'views/typeahead/input',
   'text!templates/show_item_page.html',
-  'text!templates/comment_search_results.html'
+  'text!templates/comment_search_results.html',
+  'text!templates/generic_stream.html'
 ], function module($, _, Backbone,
   currentUser, likeable,
   itemCollection, userCollection, commentCollection, activityCollection, likeCollection,
   LayoutView, CommentView, CommentFormView, StreamView, ActivityStreamView, TypeaheadInputView,
-  template, commentSearchResultsTemplate){
+  template, commentSearchResultsTemplate, genericStreamTemplate){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
@@ -97,12 +98,15 @@ define([
       });
       this.$('.comment-stream').html(commentStream.render().el);
 
-      activityStream = new ActivityStreamView({
-        filter: function(model){
-          return model.get('table') === 'items' && model.get('row') === that.item.get('id');
-        }
+      var collection = new Backbone.Collection();
+      var likes = likeCollection.where({item_id:this.item.get('id')});
+      collection.add(likes);
+
+      stream = new StreamView({
+        template: genericStreamTemplate,
+        collection: collection
       });
-      this.$('.activity-stream').html(activityStream.render().el);
+      this.$('.activity-stream').html(stream.render().el);
 
       this.on('remove', function(){
         activityStream.remove();

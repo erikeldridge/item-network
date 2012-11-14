@@ -197,7 +197,7 @@ get '/*' do
     :comments => Comment.all,
     :activities => activities.all,
     :bookmarks => Bookmark.all,
-    :likes => Like.filter(:owner_id=>session[:user_id])
+    :likes => Like.all
   }.to_json
   erb :default
 end

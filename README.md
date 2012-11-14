@@ -26,7 +26,6 @@ http://item-network.herokuapp.com
 
 ## To do
 
-- show likes for a given item in the item activity stream
 - show mentions for a given item in the item activity stream
 - show comments for a given item in the item activity stream
 - filter activity client-side on the home page
