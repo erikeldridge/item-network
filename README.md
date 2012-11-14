@@ -26,11 +26,13 @@ http://item-network.herokuapp.com
 
 ## To do
 
+- update show user page to match show item page
+- update show comment page to match show item page
+- fix margins on wide layout
 - filter activity client-side on the home page
-- define an "owner id hash" field on editable models that can be checked w/o reading the db
+- define an "owner id hash" field on editable models that can be checked w/o reading db
 - hide stream headers if stream is empty
 - add like button to comment page
-- show count of replies to comment
 - add layout to create item page
 - replace "bookmarks" with recent searches
 - add "pin/like/save" btn to recent searches page
@@ -53,7 +55,7 @@ http://item-network.herokuapp.com
 - render placeholders in comment titles
 - define pipe syntax, eg [item-123|My item]
 - make comment box stand-alone on user, item, and comment pages
-- fix margins on wide layout
+- show count of replies to comment
 
 ## Dev env
 

@@ -9,7 +9,7 @@
 </h1>
 
 <p>
-  Created by: <a href="/users/<%= owner.get('id') %>"><%= owner.get('name') %></a>
+  Owner: <a href="/users/<%= owner.get('id') %>"><%= owner.get('name') %></a>
 </p>
 
 <% if(isLiked){ %>
@@ -18,11 +18,13 @@
   <button class="btn"><i class="icon-star"></i></button>
 <% } %>
 
-<h2>Comment</h2>
-<div class="typeahead"></div>
+<p>
+  <div class="typeahead"></div>
+</p>
 
-<h2>Activities</h2>
+<h2>Activity</h2>
 <div class="activity-stream"></div>
-
-<h2>&nbsp;</h2>
-<button class="btn btn-danger destroy"><i class="icon-trash icon-white"></i></button>
+<p/>
+<p>
+  <button class="btn btn-danger destroy"><i class="icon-trash icon-white"></i></button>
+</p>
