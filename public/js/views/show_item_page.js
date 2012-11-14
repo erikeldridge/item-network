@@ -71,7 +71,6 @@ define([
       var layout = new LayoutView({
         page: page
       });
-      this.on('remove', layout.remove);
       this.$el.html( layout.el );
 
       // input
@@ -80,7 +79,6 @@ define([
           item_id: this.item.get('id')
         }
       });
-      this.on('remove', input.remove);
       this.$('.typeahead').html(input.render().el);
 
       // stream
@@ -126,6 +124,8 @@ define([
       this.$('.activity-stream').html(stream.render().el);
 
       this.on('remove', function(){
+        layout.remove();
+        input.remove();
         stream.remove();
       });
 
