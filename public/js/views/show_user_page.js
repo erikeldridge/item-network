@@ -1,25 +1,24 @@
 define([
-  'underscore',
-  'backbone',
-  'current_user',
-  'likeable',
-  'collections/users',
-  'collections/comments',
-  'collections/likes',
-  'collections/activities',
-  'collections/contributors',
-  'views/layout',
-  'views/stream',
-  'views/activity_stream',
+  'underscore', 'backbone',
+  'current_user', 'likeable',
+  'collections/users', 'collections/comments', 'collections/likes',
+  'collections/mentions', 'collections/activities', 'collections/contributors',
+  'views/layout', 'views/stream', 'views/activity_stream',
   'views/typeahead/input',
   'text!templates/show_user_page.html',
   'text!templates/comment_search_results.html',
-  'text!templates/contributor_stream.html'
+  'text!templates/contributor_stream.html',
+  'text!templates/user_activity_stream.html'
 ], function module(_, Backbone,
   currentUser, likeable,
-  userCollection, commentCollection, likeCollection, activityCollection, contributorCollection,
-  LayoutView, StreamView, ActivityStreamView, TypeaheadInputView,
-  showUserPageTemplate, commentSearchResultsTemplate, contributorStreamTemplate ){
+  userCollection, commentCollection, likeCollection,
+  mentionCollection, activityCollection, contributorCollection,
+  LayoutView, StreamView, ActivityStreamView,
+  TypeaheadInputView,
+  showUserPageTemplate,
+  commentSearchResultsTemplate,
+  contributorStreamTemplate,
+  genericStreamTemplate ){
 
   var View = Backbone.View.extend({
     template: _.template( showUserPageTemplate ),
@@ -60,26 +59,11 @@ define([
             isCurrentUser: this.user.get('id') === currentUser.user_id,
             isLiked: likeCollection.where({user_id:this.user.get('id'), owner_id:currentUser.user_id}).length > 0
           }),
-          commentStream = new StreamView({
-            template: commentSearchResultsTemplate,
-            collection: commentCollection,
-            filter: function(comment){
-              var isOwner = comment.get('owner_id') === that.user.get('id'),
-                  isTo = comment.get('user_id') === that.user.get('id');
-              return isOwner || isTo;
-            }
-          }),
           contributorStream = new StreamView({
             template: contributorStreamTemplate,
             collection: contributorCollection,
             filter: function(model){
               return model.get('contributor_id') === that.user.get('id');
-            }
-          }),
-          activityStream = new ActivityStreamView({
-            filter: function(model){
-              var isOwner = model.get('owner_id') === that.user.get('id')
-              return isOwner;
             }
           }),
           input = new TypeaheadInputView({
@@ -88,20 +72,61 @@ define([
             }
           });
 
+      // stream
+      var model = Backbone.Model.extend({
+            idAttribute: "model_id"
+          }),
+          Collection = Backbone.Collection.extend({
+            model: model,
+            comparator: function(model) {
+              return model.get("created_at");
+            }
+          }),
+          collection = new Collection(),
+          activityStream;
+      likeCollection.each(function(model){
+        if(model.get('user_id') === this.user.get('id')){
+          model.set('model_id', 'like-'+model.get('id'));
+          collection.add(model.toJSON()); // toJSON so collection uses model_id instead of native id
+        }
+      }, this);
+      mentionCollection.each(function(model){
+        if(model.get('user_id') === this.user.get('id')){
+          model.set('model_id', 'mention-'+model.get('id'));
+          collection.add(model.toJSON());
+        }
+      }, this);
+      commentCollection.each(function(model){
+        if(model.get('user_id') === this.user.get('id')){
+          model.set('model_id', 'comment-'+model.get('id'));
+          collection.add(model.toJSON());
+        }
+      }, this);
+      activityCollection.each(function(model){
+        if('users' === model.get('table') && model.get('row') === this.user.get('id')){
+          model.set('model_id', 'activity-'+model.get('id'));
+          collection.add(model.toJSON());
+        }
+      }, this);
+
+      activityStream = new StreamView({
+        template: genericStreamTemplate,
+        collection: collection
+      });
+
+      // render
       var layout = new LayoutView({
         page: page
       });
       this.$el.html( layout.el );
 
       this.$('.typeahead').html(input.render().el);
-      this.$('.comment-stream').html(commentStream.render().el);
       this.$('.activity-stream').html(activityStream.render().el);
       this.$('.contributor-stream').html(contributorStream.render().el);
 
       // clean up
       this.on('remove', function(){
         layout.remove();
-        commentStream.remove();
         activityStream.remove();
         contributorStream.remove();
         input.remove();

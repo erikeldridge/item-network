@@ -26,7 +26,6 @@ http://item-network.herokuapp.com
 
 ## To do
 
-- update show user page to match show item page
 - update show comment page to match show item page
 - fix margins on wide layout
 - filter activity client-side on the home page
@@ -56,6 +55,7 @@ http://item-network.herokuapp.com
 - define pipe syntax, eg [item-123|My item]
 - make comment box stand-alone on user, item, and comment pages
 - show count of replies to comment
+- rename generic_stream to item_activity_stream
 
 ## Dev env
 

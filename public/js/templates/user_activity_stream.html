@@ -1,0 +1,22 @@
+<% _.each(collection, function(model){ %>
+  <% if('Like' === model.get('json_class')){ %>
+    <div class="<%= model.get('model_id') %>">
+      <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a> liked <a href="/users/<%= model.get('user_id') %>" class="user-sm" data-user-id="<%= model.get('user_id') %>"></a>
+    </div>
+  <% } %>
+  <% if('Mention' === model.get('json_class')){ %>
+    <div class="<%= model.get('model_id') %>">
+      <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a> mentioned <a href="/users/<%= model.get('user_id') %>" class="user-sm" data-user-id="<%= model.get('user_id') %>"></a>
+    </div>
+  <% } %>
+  <% if('Comment' === model.get('json_class')){ %>
+    <div class="<%= model.get('model_id') %>">
+      <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a> commented on <a href="/users/<%= model.get('user_id') %>" class="user-sm" data-user-id="<%= model.get('user_id') %>"></a>
+    </div>
+  <% } %>
+  <% if('Activity' === model.get('json_class')){ %>
+    <div class="<%= model.get('model_id') %>">
+      <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a> modified <a href="/users/<%= model.get('row') %>" class="user-sm" data-user-id="<%= model.get('row') %>"></a>
+    </div>
+  <% } %>
+<% }) %>
