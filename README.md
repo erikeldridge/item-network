@@ -20,6 +20,10 @@ The barrier to entry should be very low. Value should be immediately apparent.
 
 The system should learn about its users and adapt to make the common case easier
 
+## Demo
+
+http://item-network.herokuapp.com
+
 ## To do
 
 - show likes for a given item in the item activity stream
