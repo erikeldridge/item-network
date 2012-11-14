@@ -1,14 +1,8 @@
 define([
-  'zepto',
-  'underscore',
-  'backbone',
-  'current_user',
-  'likeable',
-  'collections/items',
-  'collections/users',
-  'collections/comments',
-  'collections/activities',
-  'collections/likes',
+  'zepto', 'underscore', 'backbone',
+  'current_user', 'likeable',
+  'collections/items', 'collections/users', 'collections/comments',
+  'collections/activities', 'collections/likes', 'collections/mentions',
   'views/layout',
   'views/comment',
   'views/comment_form',
@@ -20,7 +14,8 @@ define([
   'text!templates/generic_stream.html'
 ], function module($, _, Backbone,
   currentUser, likeable,
-  itemCollection, userCollection, commentCollection, activityCollection, likeCollection,
+  itemCollection, userCollection, commentCollection,
+  activityCollection, likeCollection, mentionCollection,
   LayoutView, CommentView, CommentFormView, StreamView, ActivityStreamView, TypeaheadInputView,
   template, commentSearchResultsTemplate, genericStreamTemplate){
 
@@ -98,9 +93,25 @@ define([
       });
       this.$('.comment-stream').html(commentStream.render().el);
 
-      var collection = new Backbone.Collection();
-      var likes = likeCollection.where({item_id:this.item.get('id')});
-      collection.add(likes);
+      var Collection = Backbone.Collection.extend({
+            idAttribute: 'model_id',
+            comparator: function(model) {
+              return model.get("created_at");
+            }
+          }),
+          collection = new Collection();
+      likeCollection.each(function(model){
+        if(model.get('item_id') === this.item.get('id')){
+          model.set('model_id', 'like-'+model.get('id'));
+          collection.add(model);
+        }
+      }, this);
+      mentionCollection.each(function(model){
+        if(model.get('item_id') === this.item.get('id')){
+          model.set('model_id', 'mention-'+model.get('id'));
+          collection.add(model);
+        }
+      }, this);
 
       stream = new StreamView({
         template: genericStreamTemplate,
