@@ -114,6 +114,12 @@ define([
           collection.add(model.toJSON());
         }
       }, this);
+      activityCollection.each(function(model){
+        if('items' === model.get('table') && model.get('row') === this.item.get('id')){
+          model.set('model_id', 'activity-'+model.get('id'));
+          collection.add(model.toJSON());
+        }
+      }, this);
 
       stream = new StreamView({
         template: genericStreamTemplate,

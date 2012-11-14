@@ -26,7 +26,6 @@ http://item-network.herokuapp.com
 
 ## To do
 
-- show activity for a given item in the item activity stream
 - filter activity client-side on the home page
 - define an "owner id hash" field on editable models that can be checked w/o reading the db
 - hide stream headers if stream is empty

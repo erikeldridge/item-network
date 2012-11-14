@@ -14,4 +14,9 @@
       <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a> commented on <a href="/items/<%= model.get('item_id') %>" class="item-sm" data-item-id="<%= model.get('item_id') %>"></a>
     </div>
   <% } %>
+  <% if('Activity' === model.get('json_class')){ %>
+    <div class="<%= model.get('model_id') %>">
+      <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a> modified <a href="/items/<%= model.get('row') %>" class="item-sm" data-item-id="<%= model.get('row') %>"></a>
+    </div>
+  <% } %>
 <% }) %>
