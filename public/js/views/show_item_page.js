@@ -66,9 +66,7 @@ define([
             item: this.item,
             owner: this.owner
           }),
-          that = this,
-          commentStream,
-          activityStream;
+          stream;
 
       var layout = new LayoutView({
         page: page
@@ -128,8 +126,7 @@ define([
       this.$('.activity-stream').html(stream.render().el);
 
       this.on('remove', function(){
-        activityStream.remove();
-        commentStream.remove();
+        stream.remove();
       });
 
     }
