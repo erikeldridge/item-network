@@ -1,7 +1,26 @@
-Item network is a playground for social network patterns. The project is topic-agnostic, to maintain the focus on user interaction; users interact with each other around generic items.
+# Item network
 
-To do
------
+Item network is a playground for social network patterns. The project is topic-agnostic to focus on users' interactions with each other and the product's structure. Users can create, comment on, and coordinate around generic items.
+
+## Patterns
+
+### User activity
+
+Exposing user activity facilitates recognition and helps users learn how to use a product
+
+### Simplicity
+
+Restricting the amount of primitives and rules facilitates onboarding
+
+### Ease of use
+
+The barrier to entry should be very low. Value should be immediately apparent.
+
+### Delightful
+
+The system should learn about its users and adapt to make the common case easier
+
+## To do
 
 - show likes for a given item in the item activity stream
 - show mentions for a given item in the item activity stream
@@ -32,17 +51,16 @@ To do
 - add contributor credit to item
 - render placeholders in comment titles
 - define pipe syntax, eg [item-123|My item]
+- make comment box stand-alone on user, item, and comment pages
 
-Dev env
--------
+## Dev env
 
 - install postgres (Postgres.app makes this easy)
 - run `bundle` to install ruby dependencies
 - run `rake` to prep db
 - run `shotgun` to start app
 
-Copyright and license
----------------------
+## Copyright and license
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the LICENSE file, or at:
 
