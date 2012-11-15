@@ -1,3 +1,6 @@
+body {
+  padding: 0 20px;
+}
 .suggestion.active {
   background-color: #08C;
 }

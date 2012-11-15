@@ -6,19 +6,19 @@ Item network is a playground for social network patterns. The project is topic-a
 
 ### Activity
 
-Exposing user activity facilitates recognition and helps users learn how to use a product
+Expose user activity to provide feedback and recognition
 
 ### Simplicity
 
-Restricting the amount of primitives and rules facilitates onboarding
+Restrict the amount of primitives and rules to facilitate onboarding
 
 ### Ease of use
 
-The barrier to entry should be very low. Value should be immediately apparent.
+Maintain a low barrier to entry. Value should be immediately apparent.
 
 ### Delightful
 
-The system should learn about its users and adapt to make the common case easier
+Adapt to make the common case easier
 
 ## Demo
 
@@ -26,7 +26,6 @@ http://item-network.herokuapp.com
 
 ## To do
 
-- fix margins on wide layout
 - filter activity client-side on the home page
 - define an "owner id hash" field on editable models that can be checked w/o reading db
 - hide stream headers if stream is empty
@@ -59,13 +58,17 @@ http://item-network.herokuapp.com
 - put author credit under comment text on show comment page
 - display comment text inline in activity stream
 - use star icon in activity stream
+- update home page activity stream to match others
+- build assets to speed page render
+- serve home content w/ initial page load
 
 ## Dev env
 
-- install postgres (Postgres.app makes this easy)
-- run `bundle` to install ruby dependencies
-- run `rake` to prep db
-- run `shotgun` to start app
+1. Install postgres ([Postgres.app](http://postgresapp.com) makes this easy)
+2. Run `bundle` to install ruby dependencies
+3. Run `rake` to prep db
+4. Run `shotgun` to start app
+5. Load http://localhost:9393 to view
 
 ## Copyright and license
 
