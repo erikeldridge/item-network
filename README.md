@@ -26,7 +26,6 @@ http://item-network.herokuapp.com
 
 ## To do
 
-- update show comment page to match show item page
 - fix margins on wide layout
 - filter activity client-side on the home page
 - define an "owner id hash" field on editable models that can be checked w/o reading db

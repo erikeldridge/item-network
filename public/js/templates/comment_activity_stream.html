@@ -1,0 +1,18 @@
+<% _.each(collection, function(model){ %>
+  <% if('Like' === model.get('json_class')){ %>
+    <div class="<%= model.get('model_id') %>">
+      <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a> liked this comment</a>
+    </div>
+  <% } %>
+  <% if('Comment' === model.get('json_class')){ %>
+    <div class="<%= model.get('model_id') %>">
+      <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a> replied to this comment
+      <a href="/comments/<%= model.get('id') %>">...</a>
+    </div>
+  <% } %>
+  <% if('Activity' === model.get('json_class')){ %>
+    <div class="<%= model.get('model_id') %>">
+      <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a> updated this comment</a>
+    </div>
+  <% } %>
+<% }) %>
