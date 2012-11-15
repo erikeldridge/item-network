@@ -56,6 +56,10 @@ http://item-network.herokuapp.com
 - make comment box stand-alone on user, item, and comment pages
 - show count of replies to comment
 - rename generic_stream to item_activity_stream
+- parameterize input placeholder text
+- put author credit under comment text on show comment page
+- display comment text inline in activity stream
+- use star icon in activity stream
 
 ## Dev env
 

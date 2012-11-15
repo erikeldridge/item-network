@@ -18,7 +18,7 @@ define([
   showUserPageTemplate,
   commentSearchResultsTemplate,
   contributorStreamTemplate,
-  genericStreamTemplate ){
+  userActivityStreamTemplate ){
 
   var View = Backbone.View.extend({
     template: _.template( showUserPageTemplate ),
@@ -85,7 +85,8 @@ define([
           collection = new Collection(),
           activityStream;
       likeCollection.each(function(model){
-        if(model.get('user_id') === this.user.get('id')){
+        if( (model.get('user_id') === this.user.get('id')) ||
+          (model.get('user_id') && model.get('owner_id') === this.user.get('id')) ){
           model.set('model_id', 'like-'+model.get('id'));
           collection.add(model.toJSON()); // toJSON so collection uses model_id instead of native id
         }
@@ -97,7 +98,8 @@ define([
         }
       }, this);
       commentCollection.each(function(model){
-        if(model.get('user_id') === this.user.get('id')){
+        if( (model.get('user_id') === this.user.get('id')) ||
+          (model.get('owner_id') === this.user.get('id')) ){
           model.set('model_id', 'comment-'+model.get('id'));
           collection.add(model.toJSON());
         }
@@ -110,7 +112,7 @@ define([
       }, this);
 
       activityStream = new StreamView({
-        template: genericStreamTemplate,
+        template: userActivityStreamTemplate,
         collection: collection
       });
 
