@@ -138,6 +138,15 @@ get '/api/1/activities' do
   activities.to_json
 end
 
+get '/api/1/activities/home' do
+  session!
+  user_ids = Like.select(:user_id).filter( ~{:user_id=>nil} & {:owner_id=>session[:user_id]} )
+  item_ids = Like.select(:item_id).filter( ~{:item_id=>nil} & {:owner_id=>session[:user_id]} )
+  comments = Comment.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
+  likes = Like.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
+  (comments.to_a.concat likes).to_json
+end
+
 post '/api/1/comment_tags' do
   session!
   data = JSON.parse request.body.read
@@ -185,8 +194,12 @@ get '/login' do
 end
 
 get '/*' do
-  user_ids = Like.select(:user_id).filter(:owner_id => session[:user_id])
-  activities = Activity.filter(:owner_id => user_ids)
+  user_ids = Like.select(:user_id).filter( ~{:user_id=>nil} & {:owner_id=>session[:user_id]} )
+  item_ids = Like.select(:item_id).filter( ~{:item_id=>nil} & {:owner_id=>session[:user_id]} )
+  comments = Comment.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
+  likes = Like.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
+  activities = (comments.to_a.concat likes.to_a)
+
   @init_json = {
     :current_user => session,
     :items => Item.all,
@@ -195,7 +208,7 @@ get '/*' do
     :mentions => Mention.all,
     :comment_tags => CommentTag.all,
     :comments => Comment.all,
-    :activities => activities.all,
+    :activities => {:home => activities},
     :bookmarks => Bookmark.all,
     :likes => Like.all
   }.to_json

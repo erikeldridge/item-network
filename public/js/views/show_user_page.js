@@ -84,6 +84,16 @@ define([
           }),
           collection = new Collection(),
           activityStream;
+
+      // likes, comments, mentions from users, items, and comments I like
+      activityCollection.each(function(model){
+
+        if('users' === model.get('table') && model.get('row') === this.user.get('id')){
+          model.set('model_id', 'activity-'+model.get('id'));
+          collection.add(model.toJSON());
+        }
+      }, this);
+
       likeCollection.each(function(model){
         if( (model.get('user_id') === this.user.get('id')) ||
           (model.get('user_id') && model.get('owner_id') === this.user.get('id')) ){

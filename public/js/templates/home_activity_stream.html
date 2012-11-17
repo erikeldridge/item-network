@@ -1,0 +1,34 @@
+<% _.each(collection, function(model){ %>
+  <% if('Like' === model.get('json_class')){ %>
+    <div class="<%= model.get('model_id') %>">
+      <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a> liked
+      <% if(model.get('reply_to_id')){ %>
+        comment <%= model.get('comment_id') %>
+      <% }else if(model.get('user_id')){ %>
+        user <%= model.get('user_id') %>
+      <% }else if(model.get('item_id')){ %>
+        item <%= model.get('item_id') %>
+      <% } %>
+    </div>
+  <% } %>
+  <% if('Comment' === model.get('json_class')){ %>
+    <div class="<%= model.get('model_id') %>">
+      <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a>
+      <% if(model.get('reply_to_id')){ %>
+        commented <a href="/comments/<%= model.get('id') %>">...</a>
+        in reply to <a href="/comments/<%= model.get('reply_to_id') %>"><%= model.get('reply_to_id') %></a>
+      <% }else if(model.get('user_id')){ %>
+        commented on <%= model.get('user_id') %>
+      <% }else if(model.get('item_id')){ %>
+        commented on <%= model.get('item_id') %>
+      <% }else{ %>
+        commented <a href="/comments/<%= model.get('id') %>">...</a>
+      <% } %>
+    </div>
+  <% } %>
+  <% if('Activity' === model.get('json_class')){ %>
+    <div class="<%= model.get('model_id') %>">
+      <a href="/users/<%= model.get('owner_id') %>" class="user-sm" data-user-id="<%= model.get('owner_id') %>"></a> updated this comment</a>
+    </div>
+  <% } %>
+<% }) %>
