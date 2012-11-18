@@ -1,4 +1,4 @@
 define([
 ], function(){
-  return init.activities;
+  return {};
 });

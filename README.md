@@ -26,7 +26,9 @@ http://item-network.herokuapp.com
 
 ## To do
 
-- refactor activity generation
+- refactor item activity generation
+- refactor comment activity generation
+- define global activity storage
 - define an "owner id hash" field on editable models that can be checked w/o reading db
 - hide stream headers if stream is empty
 - add like button to comment page

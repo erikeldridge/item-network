@@ -1,6 +1,6 @@
 define([
   'underscore', 'backbone',
-  'current_user', 'likeable',
+  'current_user', 'likeable', 'activities',
   'collections/users', 'collections/comments', 'collections/likes',
   'collections/mentions', 'collections/activities', 'collections/contributors',
   'views/layout', 'views/stream', 'views/activity_stream',
@@ -10,7 +10,7 @@ define([
   'text!templates/contributor_stream.html',
   'text!templates/user_activity_stream.html'
 ], function module(_, Backbone,
-  currentUser, likeable,
+  currentUser, likeable, activities,
   userCollection, commentCollection, likeCollection,
   mentionCollection, activityCollection, contributorCollection,
   LayoutView, StreamView, ActivityStreamView,
@@ -45,6 +45,34 @@ define([
     initialize: function(options){
       var id = options.params[0];
       this.user = userCollection.get(id);
+
+      var model = Backbone.Model.extend({
+        idAttribute: "model_id"
+      });
+      var Collection = Backbone.Collection.extend({
+        url: '/api/1/activities/user/'+id,
+        model: model,
+        parse: function(resp){
+          var activities = [];
+          _.each(resp.likes, function(like){
+            likeCollection.add(like);
+            like.model_id = 'like-'+like.id;
+            activities.push(like);
+          });
+          _.each(resp.comments, function(comment){
+            commentCollection.add(comment);
+            comment.model_id = 'comment-'+comment.id;
+            activities.push(comment);
+          });
+          return activities;
+        },
+        comparator: function(model) {
+          return model.get("created_at");
+        }
+      });
+      this.activityCollection = new Collection();
+      this.activityCollection.fetch();
+
       this.render();
     },
     remove: function(){
@@ -58,85 +86,38 @@ define([
             user: this.user,
             isCurrentUser: this.user.get('id') === currentUser.user_id,
             isLiked: likeCollection.where({user_id:this.user.get('id'), owner_id:currentUser.user_id}).length > 0
-          }),
-          contributorStream = new StreamView({
-            template: contributorStreamTemplate,
-            collection: contributorCollection,
-            filter: function(model){
-              return model.get('contributor_id') === that.user.get('id');
-            }
-          }),
-          input = new TypeaheadInputView({
-            comment: {
-              user_id: this.user.get('id')
-            }
           });
 
-      // stream
-      var model = Backbone.Model.extend({
-            idAttribute: "model_id"
-          }),
-          Collection = Backbone.Collection.extend({
-            model: model,
-            comparator: function(model) {
-              return model.get("created_at");
-            }
-          }),
-          collection = new Collection(),
-          activityStream;
-
-      // likes, comments, mentions from users, items, and comments I like
-      activityCollection.each(function(model){
-
-        if('users' === model.get('table') && model.get('row') === this.user.get('id')){
-          model.set('model_id', 'activity-'+model.get('id'));
-          collection.add(model.toJSON());
-        }
-      }, this);
-
-      likeCollection.each(function(model){
-        if( (model.get('user_id') === this.user.get('id')) ||
-          (model.get('user_id') && model.get('owner_id') === this.user.get('id')) ){
-          model.set('model_id', 'like-'+model.get('id'));
-          collection.add(model.toJSON()); // toJSON so collection uses model_id instead of native id
-        }
-      }, this);
-      mentionCollection.each(function(model){
-        if(model.get('user_id') === this.user.get('id')){
-          model.set('model_id', 'mention-'+model.get('id'));
-          collection.add(model.toJSON());
-        }
-      }, this);
-      commentCollection.each(function(model){
-        if( (model.get('user_id') === this.user.get('id')) ||
-          (model.get('owner_id') === this.user.get('id')) ){
-          model.set('model_id', 'comment-'+model.get('id'));
-          collection.add(model.toJSON());
-        }
-      }, this);
-      activityCollection.each(function(model){
-        if('users' === model.get('table') && model.get('row') === this.user.get('id')){
-          model.set('model_id', 'activity-'+model.get('id'));
-          collection.add(model.toJSON());
-        }
-      }, this);
-
-      activityStream = new StreamView({
-        template: userActivityStreamTemplate,
-        collection: collection
-      });
-
-      // render
       var layout = new LayoutView({
         page: page
       });
       this.$el.html( layout.el );
 
+      var input = new TypeaheadInputView({
+        comment: {
+          user_id: this.user.get('id')
+        }
+      });
       this.$('.typeahead').html(input.render().el);
+
+      var activityStream = new StreamView({
+        template: userActivityStreamTemplate,
+        collection: this.activityCollection
+      });
+      commentCollection.on('sync', function(){
+        this.activityCollection.fetch();
+      });
       this.$('.activity-stream').html(activityStream.render().el);
+
+      var contributorStream = new StreamView({
+        template: contributorStreamTemplate,
+        collection: contributorCollection,
+        filter: function(model){
+          return model.get('contributor_id') === that.user.get('id');
+        }
+      });
       this.$('.contributor-stream').html(contributorStream.render().el);
 
-      // clean up
       this.on('remove', function(){
         layout.remove();
         activityStream.remove();

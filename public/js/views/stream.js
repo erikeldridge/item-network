@@ -1,8 +1,10 @@
 define([
   'underscore', 'backbone',
-  'collections/items', 'collections/users'
+  'collections/items', 'collections/users', 'collections/comments',
+  'collections/likes',
 ], function module(_, Backbone,
-  itemCollection, userCollection){
+  itemCollection, userCollection, commentCollection,
+  likeCollection){
 
   var View = Backbone.View.extend({
     initialize: function(options){
@@ -28,6 +30,23 @@ define([
         collection: collection
       });
       this.$el.html( html );
+
+      this.$('.comment').each(function(i, el){
+        var $el = $(el),
+            id = $el.data('id'),
+            comment = commentCollection.get(id),
+            ownerId = comment.get('owner_id'),
+            text = comment.get('text').replace(/\[(user|item)-(\d+)\]/g, '<a class="$1-sm" href="/$1s/$2" data-$1-id="$2"></a>')
+        $el.html('<a class="user-sm" href="/users/'+ownerId+'" data-user-id="'+ownerId+'"></a>: '+text);
+      });
+
+      this.$('.like').each(function(i, el){
+        var $el = $(el),
+            id = $el.data('id'),
+            like = likeCollection.get(id),
+            ownerId = like.get('owner_id');
+        $el.html('<a class="user-sm" href="/users/'+ownerId+'" data-user-id="'+ownerId+'"></a> liked');
+      });
 
       this.$('.item-sm').each(function(i, el){
         var $el = $(el),

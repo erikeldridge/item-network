@@ -1,17 +1,17 @@
 define([
-  'zepto',
-  'underscore',
-  'backbone',
-  'collections/users',
-  'collections/comments',
-  'collections/items',
+  'zepto', 'underscore', 'backbone',
+  'activities',
+  'collections/users', 'collections/comments', 'collections/items',
+  'collections/likes',
   'views/layout',
   'views/typeahead/input',
   'views/stream',
   'text!templates/home_page.html',
   'text!templates/home_activity_stream.html'
 ], function module($, _, Backbone,
+  activities,
   userCollection, commentCollection, itemCollection,
+  likeCollection,
   LayoutView, TypeaheadInputView, StreamView,
   navPageTemplate, homeActivityStreamTemplate){
 
@@ -25,15 +25,26 @@ define([
         var Collection = Backbone.Collection.extend({
           url: '/api/1/activities/home',
           model: model,
+          parse: function(resp){
+            var activities = [];
+            _.each(resp.likes, function(like){
+              likeCollection.add(like);
+              like.model_id = 'like-'+like.id;
+              activities.push(like);
+            });
+            _.each(resp.comments, function(comment){
+              commentCollection.add(comment);
+              comment.model_id = 'comment-'+comment.id;
+              activities.push(comment);
+            });
+            return activities;
+          },
           comparator: function(model) {
             return model.get("created_at");
           }
         });
         this.activityCollection = new Collection();
-        _.each(init.activities.home, function(model){;
-          model.model_id = model.json_class.toLowerCase()+'-'+model.id;
-          this.activityCollection.add(model);
-        }, this);
+        this.activityCollection.reset(this.activityCollection.parse(init.activities.home));
 
         this.render();
       },

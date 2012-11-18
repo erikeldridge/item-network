@@ -138,13 +138,35 @@ get '/api/1/activities' do
   activities.to_json
 end
 
+get '/api/1/activities/user/:id' do
+  comments = Comment.filter(
+    {:user_id=>params[:id]} | # comments on user
+    {:owner_id=>params[:id]}  # comments from user
+  )
+  likes = Like.filter(
+    {:user_id=>params[:id]} | # likes of user
+    {:owner_id=>params[:id]}  # likes by user
+  )
+  {
+    :comments=>comments,
+    :likes=>likes
+  }.to_json
+end
+
 get '/api/1/activities/home' do
   session!
+  # comments from ppl the current user likes
+  # comments on users and items the current user likes
+  # likes on users and items the current user likes
+  # likes from ppl the current user likes
   user_ids = Like.select(:user_id).filter( ~{:user_id=>nil} & {:owner_id=>session[:user_id]} )
   item_ids = Like.select(:item_id).filter( ~{:item_id=>nil} & {:owner_id=>session[:user_id]} )
   comments = Comment.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
   likes = Like.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
-  (comments.to_a.concat likes).to_json
+  {
+    :comments=>comments,
+    :likes=>likes
+  }.to_json
 end
 
 post '/api/1/comment_tags' do
@@ -198,7 +220,7 @@ get '/*' do
   item_ids = Like.select(:item_id).filter( ~{:item_id=>nil} & {:owner_id=>session[:user_id]} )
   comments = Comment.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
   likes = Like.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
-  activities = (comments.to_a.concat likes.to_a)
+  activities = {:comments=>comments, :likes=>likes}
 
   @init_json = {
     :current_user => session,
