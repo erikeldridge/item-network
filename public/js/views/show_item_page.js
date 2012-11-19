@@ -11,13 +11,13 @@ define([
   'views/typeahead/input',
   'text!templates/show_item_page.html',
   'text!templates/comment_search_results.html',
-  'text!templates/generic_stream.html'
+  'text!templates/user_activity_stream.html'
 ], function module($, _, Backbone,
   currentUser, likeable,
   itemCollection, userCollection, commentCollection,
-  activityCollection, likeCollection, mentionCollection,
+  activityCollections, likeCollection, mentionCollection,
   LayoutView, CommentView, CommentFormView, StreamView, ActivityStreamView, TypeaheadInputView,
-  template, commentSearchResultsTemplate, genericStreamTemplate){
+  template, commentSearchResultsTemplate, streamTemplate){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
@@ -82,44 +82,18 @@ define([
       this.$('.typeahead').html(input.render().el);
 
       // stream
-      var model = Backbone.Model.extend({
-        idAttribute: "model_id"
+      var activityCollection = activityCollections.get('item_'+this.item.get('id'));
+      activityCollection.fetch({
+        data: 'user_id='+this.item.get('id')
       });
-      var Collection = Backbone.Collection.extend({
-            model: model,
-            comparator: function(model) {
-              return model.get("created_at");
-            }
-          }),
-          collection = new Collection();
-      likeCollection.each(function(model){
-        if(model.get('item_id') === this.item.get('id')){
-          model.set('model_id', 'like-'+model.get('id'));
-          collection.add(model.toJSON()); // toJSON so collection uses model_id instead of native id
-        }
-      }, this);
-      mentionCollection.each(function(model){
-        if(model.get('item_id') === this.item.get('id')){
-          model.set('model_id', 'mention-'+model.get('id'));
-          collection.add(model.toJSON());
-        }
-      }, this);
-      commentCollection.each(function(model){
-        if(model.get('item_id') === this.item.get('id')){
-          model.set('model_id', 'comment-'+model.get('id'));
-          collection.add(model.toJSON());
-        }
-      }, this);
-      activityCollection.each(function(model){
-        if('items' === model.get('table') && model.get('row') === this.item.get('id')){
-          model.set('model_id', 'activity-'+model.get('id'));
-          collection.add(model.toJSON());
-        }
-      }, this);
-
-      stream = new StreamView({
-        template: genericStreamTemplate,
-        collection: collection
+      var stream = new StreamView({
+        template: streamTemplate,
+        collection: activityCollection
+      });
+      commentCollection.on('sync', function(){
+        activityCollection.fetch({
+          data: 'user_id='+this.user.get('id')
+        });
       });
       this.$('.activity-stream').html(stream.render().el);
 
