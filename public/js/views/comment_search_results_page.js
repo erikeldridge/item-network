@@ -5,7 +5,7 @@ define([
   'views/layout',
   'views/stream',
   'text!templates/comment_search_results_page.html',
-  'text!templates/comment_search_results.html'
+  'text!templates/user_activity_stream.html'
 ], function module(_, Backbone,
   commentCollection,
   LayoutView, StreamView,
