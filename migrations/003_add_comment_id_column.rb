@@ -13,11 +13,11 @@ Sequel.migration do
   end
 
   down do
+    self[:likes].filter({:owner_id => 1, :comment_id => 1}).delete
+    self[:likes].filter({:owner_id => 2, :comment_id => 1}).delete
+
     alter_table :likes do
       drop_column :comment_id
     end
-
-    self[:likes].filter({:owner_id => 1, :comment_id => 1}).delete
-    self[:likes].filter({:owner_id => 2, :comment_id => 1}).delete
   end
 end
