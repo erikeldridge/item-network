@@ -42,9 +42,11 @@ define([
               if(params.text){
                 var text = comment.get('text');
                 return re.test(text);
-              }else if(params.owner_id){
+              }
+              if(params.owner_id){
                 return comment.get('owner_id') == params.owner_id;
               }
+              return true;
             }
           });
 
