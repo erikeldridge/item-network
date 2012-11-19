@@ -26,6 +26,7 @@ http://item-network.herokuapp.com
 
 ## To do
 
+- consolidate activity stream templates
 - define an "owner id hash" field on editable models that can be checked w/o reading db
 - hide stream headers if stream is empty
 - add like button to comment page

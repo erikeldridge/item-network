@@ -33,15 +33,18 @@ define([
     render: function(){
       var query = this.options.params[0],
           params = formDecode(query),
-          name = params.name || '',
-          re = new RegExp(name),
+          re = new RegExp(params.text || ''),
           that = this,
           stream = new StreamView({
             template: streamTemplate,
             collection: commentCollection,
             filter: function(comment){
-              var text = comment.get('name');
-              return re.test(text);
+              if(params.text){
+                var text = comment.get('text');
+                return re.test(text);
+              }else if(params.owner_id){
+                return comment.get('owner_id') == params.owner_id;
+              }
             }
           });
 
