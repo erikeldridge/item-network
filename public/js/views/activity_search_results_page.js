@@ -2,13 +2,13 @@ define([
   'underscore',
   'backbone',
   'collections/activities',
-  'views/activity_stream',
+  'views/stream',
   'views/layout',
   'text!templates/activity_search_results_page.html',
-  'text!templates/activity_stream.html'
+  'text!templates/user_activity_stream.html'
 ], function module(_, Backbone,
-  activityCollection,
-  ActivityStreamView, LayoutView,
+  activityCollections,
+  StreamView, LayoutView,
   pageTemplate, streamTemplate){
 
   function formDecode(string){
@@ -32,20 +32,34 @@ define([
     },
     render: function(){
       var query = this.options.params[0],
-          stream = new ActivityStreamView();
+          params = formDecode(query);
 
       var layout = new LayoutView({
         page: this.template()
       });
-      this.on('remove', layout.remove);
       this.$el.html( layout.el );
 
+      var key = 'home';
+      if(params.user_id){
+        key = 'user_'+params.user_id;
+      }
+
+      var activityCollection = activityCollections.get(key);
+      activityCollection.fetch({
+        data: query
+      });
+      var stream = new StreamView({
+        template: streamTemplate,
+        collection: activityCollection
+      });
       this.$('.activity-stream').html(stream.render().el);
+
       activityCollection.fetch({
         data: query,
         add: true
       });
       this.on('remove', function(){
+        layout.remove();
         stream.remove();
       });
     }

@@ -32,10 +32,9 @@ define([
         var input = new TypeaheadInputView();
         this.$('.typeahead').html(input.render().el);
 
-        var activityCollection = activityCollections.get('home', {
-          url: '/api/1/activities/home'
-        });
+        var activityCollection = activityCollections.get('home');
         var stream = new StreamView({
+          limit: 3,
           template: homeActivityStreamTemplate,
           collection: activityCollection
         });

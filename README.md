@@ -26,7 +26,6 @@ http://item-network.herokuapp.com
 
 ## To do
 
-- update activities search page to use new format
 - refactor item activity generation
 - refactor comment activity generation
 - define an "owner id hash" field on editable models that can be checked w/o reading db

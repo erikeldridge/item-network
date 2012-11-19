@@ -14,6 +14,44 @@ def empty_param? name
   params[name].nil? || params[name].empty?
 end
 
+def home_activities
+  user_ids = Like.select(:user_id).filter(
+    ~{:user_id=>nil} & {:owner_id=>session[:user_id]} # liked users
+  )
+  item_ids = Like.select(:item_id).filter(
+    ~{:item_id=>nil} & {:owner_id=>session[:user_id]} # liked items
+  )
+  comments = Comment.filter(
+    {:user_id=>user_ids} | # comments on liked users
+    {:item_id=>item_ids} | # comments on liked items
+    {:owner_id=>user_ids}  # comments by liked users
+  )
+  likes = Like.filter(
+    {:user_id=>user_ids} | # likes on liked users
+    {:item_id=>item_ids} | # likes on liked items
+    {:owner_id=>user_ids}  # likes by liked users
+  )
+  {
+    :comments=>comments,
+    :likes=>likes
+  }
+end
+
+def user_activities(user_id)
+  comments = Comment.filter(
+    {:user_id=>user_id} | # comments on user
+    {:owner_id=>user_id}  # comments from user
+  )
+  likes = Like.filter(
+    {:user_id=>user_id} | # likes of user
+    {:owner_id=>user_id}  # likes by user
+  )
+  {
+    :comments=>comments,
+    :likes=>likes
+  }
+end
+
 post '/api/1/items' do
   session!
   data = JSON.parse request.body.read
@@ -126,18 +164,6 @@ put '/api/1/users/:id' do
   data.to_json
 end
 
-get '/api/1/activities' do
-  session!
-  activities = Activity
-  unless empty_param? :owner_id
-    activities = activities.filter(:owner_id => session[:user_id])
-  else
-    user_ids = Like.select(:user_id).filter(:owner_id => session[:user_id])
-    activities = activities.filter(:owner_id => user_ids)
-  end
-  activities.to_json
-end
-
 get '/api/1/activities/user/:id' do
   comments = Comment.filter(
     {:user_id=>params[:id]} | # comments on user
@@ -153,28 +179,13 @@ get '/api/1/activities/user/:id' do
   }.to_json
 end
 
-get '/api/1/activities/home' do
+get '/api/1/activities' do
   session!
-  user_ids = Like.select(:user_id).filter(
-    ~{:user_id=>nil} & {:owner_id=>session[:user_id]} # liked users
-  )
-  item_ids = Like.select(:item_id).filter(
-    ~{:item_id=>nil} & {:owner_id=>session[:user_id]} # liked items
-  )
-  comments = Comment.filter(
-    {:user_id=>user_ids} | # comments on liked users
-    {:item_id=>item_ids} | # comments on liked items
-    {:owner_id=>user_ids}  # comments by liked users
-  )
-  likes = Like.filter(
-    {:user_id=>user_ids} | # likes on liked users
-    {:item_id=>item_ids} | # likes on liked items
-    {:owner_id=>user_ids}  # likes by liked users
-  )
-  {
-    :comments=>comments,
-    :likes=>likes
-  }.to_json
+  if params[:user_id]
+    user_activities params[:user_id]
+  else
+    home_activities
+  end.to_json
 end
 
 post '/api/1/comment_tags' do
@@ -224,12 +235,6 @@ get '/login' do
 end
 
 get '/*' do
-  user_ids = Like.select(:user_id).filter( ~{:user_id=>nil} & {:owner_id=>session[:user_id]} )
-  item_ids = Like.select(:item_id).filter( ~{:item_id=>nil} & {:owner_id=>session[:user_id]} )
-  comments = Comment.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
-  likes = Like.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
-  activities = {:comments=>comments, :likes=>likes}
-
   @init_json = {
     :current_user => session,
     :items => Item.all,
@@ -238,7 +243,7 @@ get '/*' do
     :mentions => Mention.all,
     :comment_tags => CommentTag.all,
     :comments => Comment.all,
-    :activities => {:home => activities},
+    :activities => {:home => home_activities},
     :bookmarks => Bookmark.all,
     :likes => Like.all
   }.to_json

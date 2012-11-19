@@ -53,7 +53,8 @@ define([
       this.off();
     },
     render: function(){
-      var that = this,
+      var query = this.options.params[0],
+          that = this,
           page = this.template({
             user: this.user,
             isCurrentUser: this.user.get('id') === currentUser.user_id,
@@ -72,15 +73,18 @@ define([
       });
       this.$('.typeahead').html(input.render().el);
 
-      var activityCollection = activityCollections.get('user_'+this.user.get('id'), {
-        url: '/api/1/activities/user/'+this.user.get('id')
+      var activityCollection = activityCollections.get('user_'+this.user.get('id'));
+      activityCollection.fetch({
+        data: 'user_id='+this.user.get('id')
       });
       var activityStream = new StreamView({
         template: userActivityStreamTemplate,
         collection: activityCollection
       });
       commentCollection.on('sync', function(){
-        activityCollection.fetch();
+        activityCollection.fetch({
+          data: 'user_id='+this.user.get('id')
+        });
       });
       this.$('.activity-stream').html(activityStream.render().el);
 

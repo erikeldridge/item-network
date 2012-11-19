@@ -6,7 +6,8 @@ define([
       model = Backbone.Model.extend({
         idAttribute: "model_id"
       }),
-      BaseCollection = Backbone.Collection.extend({
+      Collection = Backbone.Collection.extend({
+        url: '/api/1/activities',
         model: model,
         parse: function(resp){
           var activities = [];
@@ -28,13 +29,11 @@ define([
       });
 
   return {
-    get: function(name, opts){
+    get: function(name){
       var collection = collections[name];
       if(!collection){
-        var Collection = BaseCollection.extend(opts);
         collection = collections[name] = new Collection();
         collection.reset( collection.parse(init.activities[name] || {}) );
-        collection.fetch();
       }
       return collection;
     }
