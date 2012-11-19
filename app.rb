@@ -155,14 +155,22 @@ end
 
 get '/api/1/activities/home' do
   session!
-  # comments from ppl the current user likes
-  # comments on users and items the current user likes
-  # likes on users and items the current user likes
-  # likes from ppl the current user likes
-  user_ids = Like.select(:user_id).filter( ~{:user_id=>nil} & {:owner_id=>session[:user_id]} )
-  item_ids = Like.select(:item_id).filter( ~{:item_id=>nil} & {:owner_id=>session[:user_id]} )
-  comments = Comment.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
-  likes = Like.filter( {:user_id=>user_ids} | {:item_id=>item_ids} | {:owner_id=>user_ids} )
+  user_ids = Like.select(:user_id).filter(
+    ~{:user_id=>nil} & {:owner_id=>session[:user_id]} # liked users
+  )
+  item_ids = Like.select(:item_id).filter(
+    ~{:item_id=>nil} & {:owner_id=>session[:user_id]} # liked items
+  )
+  comments = Comment.filter(
+    {:user_id=>user_ids} | # comments on liked users
+    {:item_id=>item_ids} | # comments on liked items
+    {:owner_id=>user_ids}  # comments by liked users
+  )
+  likes = Like.filter(
+    {:user_id=>user_ids} | # likes on liked users
+    {:item_id=>item_ids} | # likes on liked items
+    {:owner_id=>user_ids}  # likes by liked users
+  )
   {
     :comments=>comments,
     :likes=>likes

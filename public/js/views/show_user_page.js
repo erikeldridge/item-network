@@ -1,6 +1,6 @@
 define([
   'underscore', 'backbone',
-  'current_user', 'likeable', 'activities',
+  'current_user', 'likeable',
   'collections/users', 'collections/comments', 'collections/likes',
   'collections/mentions', 'collections/activities', 'collections/contributors',
   'views/layout', 'views/stream', 'views/activity_stream',
@@ -10,9 +10,9 @@ define([
   'text!templates/contributor_stream.html',
   'text!templates/user_activity_stream.html'
 ], function module(_, Backbone,
-  currentUser, likeable, activities,
+  currentUser, likeable,
   userCollection, commentCollection, likeCollection,
-  mentionCollection, activityCollection, contributorCollection,
+  mentionCollection, activityCollections, contributorCollection,
   LayoutView, StreamView, ActivityStreamView,
   TypeaheadInputView,
   showUserPageTemplate,
@@ -45,34 +45,6 @@ define([
     initialize: function(options){
       var id = options.params[0];
       this.user = userCollection.get(id);
-
-      var model = Backbone.Model.extend({
-        idAttribute: "model_id"
-      });
-      var Collection = Backbone.Collection.extend({
-        url: '/api/1/activities/user/'+id,
-        model: model,
-        parse: function(resp){
-          var activities = [];
-          _.each(resp.likes, function(like){
-            likeCollection.add(like);
-            like.model_id = 'like-'+like.id;
-            activities.push(like);
-          });
-          _.each(resp.comments, function(comment){
-            commentCollection.add(comment);
-            comment.model_id = 'comment-'+comment.id;
-            activities.push(comment);
-          });
-          return activities;
-        },
-        comparator: function(model) {
-          return model.get("created_at");
-        }
-      });
-      this.activityCollection = new Collection();
-      this.activityCollection.fetch();
-
       this.render();
     },
     remove: function(){
@@ -100,12 +72,15 @@ define([
       });
       this.$('.typeahead').html(input.render().el);
 
+      var activityCollection = activityCollections.get('user_'+this.user.get('id'), {
+        url: '/api/1/activities/user/'+this.user.get('id')
+      });
       var activityStream = new StreamView({
         template: userActivityStreamTemplate,
-        collection: this.activityCollection
+        collection: activityCollection
       });
       commentCollection.on('sync', function(){
-        this.activityCollection.fetch();
+        activityCollection.fetch();
       });
       this.$('.activity-stream').html(activityStream.render().el);
 
