@@ -42,6 +42,10 @@ define([
       var key = 'home';
       if(params.user_id){
         key = 'user_'+params.user_id;
+      }else if(params.item_id){
+        key = 'item_'+params.item_id;
+      }else if(params.comment_id){
+        key = 'comment_'+params.comment_id;
       }
 
       var activityCollection = activityCollections.get(key);

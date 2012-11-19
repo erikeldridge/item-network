@@ -37,7 +37,10 @@ define([
             comment = commentCollection.get(id),
             ownerId = comment.get('owner_id'),
             text = comment.get('text').replace(/\[(user|item)-(\d+)\]/g, '<a class="$1-sm" href="/$1s/$2" data-$1-id="$2"></a>')
-        $el.html('<a class="user-sm" href="/users/'+ownerId+'" data-user-id="'+ownerId+'"></a>: '+text);
+        $el.html(
+          '<a class="user-sm" href="/users/'+ownerId+'" data-user-id="'+ownerId+'"></a>: '+
+          text+
+          '<a href="/comments/'+comment.get('id')+'">...</a>');
       });
 
       this.$('.like').each(function(i, el){

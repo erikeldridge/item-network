@@ -87,7 +87,6 @@ Sequel.migration do
 
     self[:likes].insert({:owner_id => 1, :user_id => 2, :created_at => Time.now})
     self[:likes].insert({:owner_id => 1, :item_id => 2, :created_at => Time.now})
-    self[:likes].insert({:owner_id => 2, :item_id => 1, :created_at => Time.now})
 
     # status
     self[:comments].insert({:owner_id => 1, :text => 'status 1', :created_at => Time.now})
@@ -100,7 +99,7 @@ Sequel.migration do
     self[:comments].insert({:owner_id => 2, :item_id => 2, :text => 'comment 3 about [user-2]', :created_at => Time.now})
 
     # replies
-    self[:comments].insert({:owner_id => 1, :reply_to_id => 4, :text => 'reply 1 to comment 1', :created_at => Time.now})
+    self[:comments].insert({:owner_id => 1, :reply_to_id => 4, :text => 'reply 1 to comment 4', :created_at => Time.now})
     self[:comments].insert({:owner_id => 2, :reply_to_id => 7, :text => 'reply 2 to reply 1', :created_at => Time.now})
     self[:comments].insert({:owner_id => 3, :reply_to_id => 8, :text => 'reply 3 to reply 2', :created_at => Time.now})
 

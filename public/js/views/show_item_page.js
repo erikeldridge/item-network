@@ -73,7 +73,6 @@ define([
       });
       this.$el.html( layout.el );
 
-      // input
       var input = new TypeaheadInputView({
         comment: {
           item_id: this.item.get('id')
@@ -81,10 +80,9 @@ define([
       });
       this.$('.typeahead').html(input.render().el);
 
-      // stream
       var activityCollection = activityCollections.get('item_'+this.item.get('id'));
       activityCollection.fetch({
-        data: 'user_id='+this.item.get('id')
+        data: 'item_id='+this.item.get('id')
       });
       var stream = new StreamView({
         template: streamTemplate,
@@ -92,7 +90,7 @@ define([
       });
       commentCollection.on('sync', function(){
         activityCollection.fetch({
-          data: 'user_id='+this.user.get('id')
+          data: 'item_id='+this.user.get('id')
         });
       });
       this.$('.activity-stream').html(stream.render().el);

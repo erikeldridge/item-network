@@ -6,17 +6,15 @@ define([
   'views/layout', 'views/comment_tag_form', 'views/stream',
   'views/typeahead/input',
   'text!templates/show_comment_page.html',
-  'text!templates/comment_search_results.html',
-  'text!templates/comment_activity_stream.html'
+  'text!templates/user_activity_stream.html'
 ], function module(_, Backbone,
   currentUser,
   commentCollection, itemCollection, userCollection,
-  tagCollection, activityCollection, likeCollection,
+  tagCollection, activityCollections, likeCollection,
   LayoutView, CommentTagFormView, StreamView,
   TypeaheadInputView,
   pageTemplate,
-  streamTemplate,
-  commentActivityStreamTemplate){
+  streamTemplate){
 
   var View = Backbone.View.extend({
     template: _.template( pageTemplate ),
@@ -67,42 +65,20 @@ define([
             }
           });
 
-      // stream
-      var model = Backbone.Model.extend({
-            idAttribute: "model_id"
-          }),
-          Collection = Backbone.Collection.extend({
-            model: model,
-            comparator: function(model) {
-              return model.get("created_at");
-            }
-          }),
-          collection = new Collection(),
-          activityStream;
-      likeCollection.each(function(model){
-        if(model.get('comment_id') === this.comment.get('id')){
-          model.set('model_id', 'like-'+model.get('id'));
-          collection.add(model.toJSON()); // toJSON so collection uses model_id instead of native id
-        }
-      }, this);
-      commentCollection.each(function(model){
-        if(model.get('reply_to_id') === this.comment.get('id')){
-          model.set('model_id', 'comment-'+model.get('id'));
-          collection.add(model.toJSON());
-        }
-      }, this);
-      activityCollection.each(function(model){
-        if('comments' === model.get('table') &&
-          this.comment.get('id') === model.get('row') ){
-          model.set('model_id', 'activity-'+model.get('id'));
-          collection.add(model.toJSON());
-        }
-      }, this);
-
-      activityStream = new StreamView({
-        template: commentActivityStreamTemplate,
-        collection: collection
+      var activityCollection = activityCollections.get('comment_'+this.comment.get('id'));
+      activityCollection.fetch({
+        data: 'comment_id='+this.comment.get('id')
       });
+      var stream = new StreamView({
+        template: streamTemplate,
+        collection: activityCollection
+      });
+      commentCollection.on('sync', function(){
+        activityCollection.fetch({
+          data: 'comment_id='+this.user.get('id')
+        });
+      });
+      this.$('.activity-stream').html(stream.render().el);
 
       // render
       var layout = new LayoutView({
@@ -110,13 +86,13 @@ define([
       });
       this.$el.html( layout.el );
       this.$('.typeahead').html(input.render().el);
-      this.$('.activity-stream').html(activityStream.render().el);
+      this.$('.activity-stream').html(stream.render().el);
 
       // clean up
       this.on('remove', function(){
         layout.remove();
         input.remove();
-        activityStream.remove();
+        stream.remove();
       });
     }
   });

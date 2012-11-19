@@ -52,6 +52,32 @@ def user_activities(user_id)
   }
 end
 
+def item_activities(item_id)
+  comments = Comment.filter(
+    {:item_id=>item_id} # comments on item
+  )
+  likes = Like.filter(
+    {:item_id=>item_id} # likes of item
+  )
+  {
+    :comments=>comments,
+    :likes=>likes
+  }
+end
+
+def comment_activities(comment_id)
+  comments = Comment.filter(
+    {:reply_to_id=>comment_id} # comments on comment
+  )
+  likes = Like.filter(
+    {:comment_id=>comment_id} # likes of comment
+  )
+  {
+    :comments=>comments,
+    :likes=>likes
+  }
+end
+
 post '/api/1/items' do
   session!
   data = JSON.parse request.body.read
@@ -164,25 +190,14 @@ put '/api/1/users/:id' do
   data.to_json
 end
 
-get '/api/1/activities/user/:id' do
-  comments = Comment.filter(
-    {:user_id=>params[:id]} | # comments on user
-    {:owner_id=>params[:id]}  # comments from user
-  )
-  likes = Like.filter(
-    {:user_id=>params[:id]} | # likes of user
-    {:owner_id=>params[:id]}  # likes by user
-  )
-  {
-    :comments=>comments,
-    :likes=>likes
-  }.to_json
-end
-
 get '/api/1/activities' do
   session!
   if params[:user_id]
     user_activities params[:user_id]
+  elsif params[:item_id]
+    item_activities params[:item_id]
+  elsif params[:comment_id]
+    comment_activities params[:comment_id]
   else
     home_activities
   end.to_json
