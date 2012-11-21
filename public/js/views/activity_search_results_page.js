@@ -1,15 +1,12 @@
 define([
-  'underscore',
-  'backbone',
+  'underscore', 'backbone',
   'collections/activities',
-  'views/stream',
-  'views/layout',
-  'text!templates/activity_search_results_page.html',
-  'text!templates/user_activity_stream.html'
+  'views/activity_stream', 'views/layout',
+  'text!templates/activity_search_results_page.html'
 ], function module(_, Backbone,
   activityCollections,
-  StreamView, LayoutView,
-  pageTemplate, streamTemplate){
+  ActivityStreamView, LayoutView,
+  pageTemplate){
 
   function formDecode(string){
     string = string || '';
@@ -52,19 +49,14 @@ define([
       activityCollection.fetch({
         data: query
       });
-      var stream = new StreamView({
-        template: streamTemplate,
+      var activityStream = new ActivityStreamView({
         collection: activityCollection
       });
-      this.$('.activity-stream').html(stream.render().el);
+      this.$('.activity-stream').html(activityStream.render().el);
 
-      activityCollection.fetch({
-        data: query,
-        add: true
-      });
       this.on('remove', function(){
         layout.remove();
-        stream.remove();
+        activityStream.remove();
       });
     }
   });

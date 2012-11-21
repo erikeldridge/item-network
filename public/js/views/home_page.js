@@ -1,20 +1,15 @@
 define([
   'zepto', 'underscore', 'backbone',
-  'collections/activities', 'collections/likes',
-  'collections/users', 'collections/comments', 'collections/items',
-  'views/layout',
-  'views/typeahead/input',
-  'views/stream',
-  'text!templates/home_page.html',
-  'text!templates/home_activity_stream.html'
+  'collections/activities', 'collections/comments',
+  'views/layout', 'views/typeahead/input', 'views/activity_stream',
+  'text!templates/home_page.html'
 ], function module($, _, Backbone,
-  activityCollections, likeCollection,
-  userCollection, commentCollection, itemCollection,
-  LayoutView, TypeaheadInputView, StreamView,
-  navPageTemplate, homeActivityStreamTemplate){
+  activityCollections, commentCollection,
+  LayoutView, TypeaheadInputView, ActivityStreamView,
+  pageTemplate){
 
   var View = Backbone.View.extend({
-      template: _.template( navPageTemplate ),
+      template: _.template( pageTemplate ),
       initialize: function(){
         this.render();
       },
@@ -33,20 +28,19 @@ define([
         this.$('.typeahead').html(input.render().el);
 
         var activityCollection = activityCollections.get('home');
-        var stream = new StreamView({
+        var activityStream = new ActivityStreamView({
           limit: 3,
-          template: homeActivityStreamTemplate,
           collection: activityCollection
         });
-        this.$('.activity-stream').html(stream.render().el);
+        this.$('.activity-stream').html(activityStream.render().el);
         commentCollection.on('sync', function(){
-          activityCollection.fetch(); // fetch latest activity when new comment is made
+          activityCollection.fetch();
         });
 
         this.on('remove', function(){
           layout.remove();
           input.remove();
-          stream.remove();
+          activityStream.remove();
         });
       }
     });

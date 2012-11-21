@@ -2,26 +2,22 @@ define([
   'underscore', 'backbone',
   'current_user', 'likeable',
   'collections/users', 'collections/comments', 'collections/likes',
-  'collections/mentions', 'collections/activities', 'collections/contributors',
-  'views/layout', 'views/stream', 'views/activity_stream',
+  'collections/activities', 'collections/contributors',
+  'views/layout', 'views/activity_stream', 'views/stream',
   'views/typeahead/input',
   'text!templates/show_user_page.html',
-  'text!templates/comment_search_results.html',
-  'text!templates/contributor_stream.html',
-  'text!templates/user_activity_stream.html'
+  'text!templates/contributor_stream.html'
 ], function module(_, Backbone,
   currentUser, likeable,
   userCollection, commentCollection, likeCollection,
-  mentionCollection, activityCollections, contributorCollection,
-  LayoutView, StreamView, ActivityStreamView,
+  activityCollections, contributorCollection,
+  LayoutView, ActivityStreamView, StreamView,
   TypeaheadInputView,
-  showUserPageTemplate,
-  commentSearchResultsTemplate,
-  contributorStreamTemplate,
-  userActivityStreamTemplate ){
+  pageTemplate,
+  contributorStreamTemplate){
 
   var View = Backbone.View.extend({
-    template: _.template( showUserPageTemplate ),
+    template: _.template( pageTemplate ),
     events: {
       'click .btn': 'likeHandler',
       'click h1.editable': 'editName',
@@ -77,16 +73,15 @@ define([
       activityCollection.fetch({
         data: 'user_id='+this.user.get('id')
       });
-      var activityStream = new StreamView({
-        template: userActivityStreamTemplate,
+      var activityStream = new ActivityStreamView({
         collection: activityCollection
       });
+      this.$('.activity-stream').html(activityStream.render().el);
       commentCollection.on('sync', function(){
         activityCollection.fetch({
           data: 'user_id='+this.user.get('id')
         });
       });
-      this.$('.activity-stream').html(activityStream.render().el);
 
       var contributorStream = new StreamView({
         template: contributorStreamTemplate,

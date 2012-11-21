@@ -1,5 +1,3 @@
-<% _.each(activities, function(activity){ %>
-  <div class="activity">
-    <a href="/users/<%= activity.get('owner_id') %>"><%= activity.get('owner_id') %></a> <%= activity.get('action') %> <a href="/<%= activity.get('table') %>/<%= activity.get('row') %>"><%= activity.get('table') %></a>
-  </div>
+<% _.each(activities, function(model){ %>
+  <div class="<%= model.get('json_class').toLowerCase() %>" data-id="<%= model.get('id') %>"></div>
 <% }) %>

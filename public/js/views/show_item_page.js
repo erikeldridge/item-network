@@ -2,25 +2,20 @@ define([
   'zepto', 'underscore', 'backbone',
   'current_user', 'likeable',
   'collections/items', 'collections/users', 'collections/comments',
-  'collections/activities', 'collections/likes', 'collections/mentions',
+  'collections/activities', 'collections/likes',
   'views/layout',
-  'views/comment',
-  'views/comment_form',
-  'views/stream',
   'views/activity_stream',
   'views/typeahead/input',
-  'text!templates/show_item_page.html',
-  'text!templates/comment_search_results.html',
-  'text!templates/user_activity_stream.html'
+  'text!templates/show_item_page.html'
 ], function module($, _, Backbone,
   currentUser, likeable,
   itemCollection, userCollection, commentCollection,
-  activityCollections, likeCollection, mentionCollection,
-  LayoutView, CommentView, CommentFormView, StreamView, ActivityStreamView, TypeaheadInputView,
-  template, commentSearchResultsTemplate, streamTemplate){
+  activityCollections, likeCollection,
+  LayoutView, ActivityStreamView, TypeaheadInputView,
+  pageTemplate){
 
   var View = Backbone.View.extend({
-    template: _.template( template ),
+    template: _.template( pageTemplate ),
     events: {
       'click .btn': 'likeHandler', // added by extension
       'click h1.editable': 'editName',
@@ -84,21 +79,20 @@ define([
       activityCollection.fetch({
         data: 'item_id='+this.item.get('id')
       });
-      var stream = new StreamView({
-        template: streamTemplate,
+      var activityStream = new ActivityStreamView({
         collection: activityCollection
       });
+      this.$('.activity-stream').html(activityStream.render().el);
       commentCollection.on('sync', function(){
         activityCollection.fetch({
           data: 'item_id='+this.user.get('id')
         });
       });
-      this.$('.activity-stream').html(stream.render().el);
 
       this.on('remove', function(){
         layout.remove();
         input.remove();
-        stream.remove();
+        activityStream.remove();
       });
 
     }

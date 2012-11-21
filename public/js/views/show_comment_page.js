@@ -1,20 +1,16 @@
 define([
   'underscore', 'backbone',
   'current_user',
-  'collections/comments', 'collections/items', 'collections/users',
-  'collections/comment_tags', 'collections/activities', 'collections/likes',
-  'views/layout', 'views/comment_tag_form', 'views/stream',
+  'collections/comments', 'collections/activities',
+  'views/layout', 'views/activity_stream',
   'views/typeahead/input',
-  'text!templates/show_comment_page.html',
-  'text!templates/user_activity_stream.html'
+  'text!templates/show_comment_page.html'
 ], function module(_, Backbone,
   currentUser,
-  commentCollection, itemCollection, userCollection,
-  tagCollection, activityCollections, likeCollection,
-  LayoutView, CommentTagFormView, StreamView,
+  commentCollection, activityCollections,
+  LayoutView, ActivityStreamView,
   TypeaheadInputView,
-  pageTemplate,
-  streamTemplate){
+  pageTemplate){
 
   var View = Backbone.View.extend({
     template: _.template( pageTemplate ),
@@ -69,16 +65,15 @@ define([
       activityCollection.fetch({
         data: 'comment_id='+this.comment.get('id')
       });
-      var stream = new StreamView({
-        template: streamTemplate,
+      var stream = new ActivityStreamView({
         collection: activityCollection
       });
+      this.$('.activity-stream').html(stream.render().el);
       commentCollection.on('sync', function(){
         activityCollection.fetch({
           data: 'comment_id='+this.user.get('id')
         });
       });
-      this.$('.activity-stream').html(stream.render().el);
 
       // render
       var layout = new LayoutView({
