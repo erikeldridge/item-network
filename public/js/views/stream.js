@@ -36,11 +36,23 @@ define([
             id = $el.data('id'),
             comment = commentCollection.get(id),
             ownerId = comment.get('owner_id'),
-            text = comment.get('text').replace(/\[(user|item)-(\d+)\]/g, '<a class="$1-sm" href="/$1s/$2" data-$1-id="$2"></a>')
+            text = comment.get('text').replace(/\[(user|item)-(\d+)\]/g, '<a class="$1" href="/$1s/$2" data-id="$2"></a>')
         $el.html(
-          '<a class="user-sm" href="/users/'+ownerId+'" data-user-id="'+ownerId+'"></a>: '+
+          '<a class="user" href="/users/'+ownerId+'" data-id="'+ownerId+'"></a>: '+
           text+
           '<a href="/comments/'+comment.get('id')+'">...</a>');
+      });
+
+      this.$('.comment').each(function(i, el){
+        var $el = $(el),
+            id = $el.data('id'),
+            comment = commentCollection.get(id),
+            ownerId = comment.get('owner_id'),
+            text = comment.get('text').replace(/\[(user|item)-(\d+)\]/g, '<a class="$1" href="/$1s/$2" data-id="$2"></a>')
+        $el.replaceWith(
+          '<a class="user" href="/users/'+ownerId+'" data-id="'+ownerId+'"></a>: '+
+          text+
+          ' <a href="/comments/'+comment.get('id')+'">...</a>');
       });
 
       this.$('.like').each(function(i, el){
@@ -48,19 +60,21 @@ define([
             id = $el.data('id'),
             like = likeCollection.get(id),
             ownerId = like.get('owner_id');
-        $el.html('<a class="user-sm" href="/users/'+ownerId+'" data-user-id="'+ownerId+'"></a> liked');
+        $el.replaceWith('<a class="user" href="/users/'+ownerId+'" data-id="'+ownerId+'"></a> liked');
       });
 
-      this.$('.item-sm').each(function(i, el){
+      this.$('.item').each(function(i, el){
         var $el = $(el),
-            id = $el.data('item-id');
-        $el.html( itemCollection.get(id).get('name') );
+            id = $el.data('id'),
+            item = itemCollection.get(id);
+        $el.replaceWith('<a class="item" href="/items/'+id+'" data-id="'+id+'">'+item.get('name')+'</a>');
       });
 
-      this.$('.user-sm').each(function(i, el){
+      this.$('.user').each(function(i, el){
         var $el = $(el),
-            id = $el.data('user-id');
-        $el.html( userCollection.get(id).get('name') );
+            id = $el.data('id'),
+            user = userCollection.get(id);
+        $el.replaceWith('<a class="user" href="/users/'+id+'" data-id="'+id+'">'+user.get('name')+'</a>');
       });
 
       return this;
