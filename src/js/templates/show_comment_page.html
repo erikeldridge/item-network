@@ -4,10 +4,6 @@
   <li class="active"><%= comment.get('id') %></li>
 </ul>
 
-<p>
-  Author: <a href="/users/<%= comment.get('owner_id') %>"><%= comment.get('owner_id') %></a>
-</p>
-
 <% if(comment.get('reply_to_id')){ %>
   <p>
     In reply to: <a href="/comments/<%= comment.get('reply_to_id') %>"><%= comment.get('reply_to_id') %></a>
@@ -17,6 +13,16 @@
 <h1 class="<%= currentUserIsOwner ? 'editable' : '' %>">
   <%= comment.get('text') %>
 </h1>
+
+<p>
+  Author: <a href="/users/<%= comment.get('owner_id') %>"><%= comment.get('owner_id') %></a>
+</p>
+
+<% if(isLiked){ %>
+  <button class="btn btn-success unlike"><i class="icon-star icon-white"></i></button>
+<% }else{ %>
+  <button class="btn like"><i class="icon-star"></i></button>
+<% } %>
 
 <p>
   <div class="typeahead"></div>

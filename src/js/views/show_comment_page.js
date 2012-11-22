@@ -1,13 +1,13 @@
 define([
   'underscore', 'backbone',
-  'current_user',
-  'collections/comments', 'collections/activities',
+  'current_user', 'likeable',
+  'collections/comments', 'collections/activities', 'collections/likes',
   'views/layout', 'views/activity_stream',
   'views/typeahead/input',
   'text!templates/show_comment_page.html'
 ], function module(_, Backbone,
-  currentUser,
-  commentCollection, activityCollections,
+  currentUser, likeable,
+  commentCollection, activityCollections, likeCollection,
   LayoutView, ActivityStreamView,
   TypeaheadInputView,
   pageTemplate){
@@ -15,10 +15,12 @@ define([
   var View = Backbone.View.extend({
     template: _.template( pageTemplate ),
     events: {
+      'click .like.btn': 'likeHandler', // added by extension
       'click h1.editable': 'editText',
       'blur input[data-field="text"]': 'saveText',
       'click .destroy': 'destroyItem'
     },
+    likeableType: 'comment',
     destroyItem: function(){
       this.comment.destroy();
       this.comment.on('sync', function(){
@@ -52,6 +54,7 @@ define([
     render: function(){
       var that = this,
           page = this.template({
+            isLiked: likeCollection.where({comment_id:this.comment.get('id'), owner_id:currentUser.user_id}).length > 0,
             currentUserIsOwner: this.comment.get('owner_id') === currentUser.user_id,
             comment: this.comment
           }),
@@ -91,6 +94,9 @@ define([
       });
     }
   });
+
+  _.extend(View.prototype, likeable);
+
   return View;
 
 });
