@@ -2,12 +2,14 @@ define([
   'underscore', 'backbone',
   'current_user', 'likeable',
   'collections/comments', 'collections/activities', 'collections/likes',
+  'collections/users', 'collections/items',
   'views/layout', 'views/activity_stream',
   'views/typeahead/input',
   'text!templates/show_comment_page.html'
 ], function module(_, Backbone,
   currentUser, likeable,
   commentCollection, activityCollections, likeCollection,
+  userCollection, itemCollection,
   LayoutView, ActivityStreamView,
   TypeaheadInputView,
   pageTemplate){
@@ -30,7 +32,7 @@ define([
     },
     editText: function(e){
       var $el = $(e.target),
-          text = $el.text().replace(/^\s+|\s+$/, ''),
+          text = this.comment.get('text'),
           $input = $('<input type="text" value="'+text+'" data-field="text">');
       $el.replaceWith($input);
       $input.focus();
@@ -38,9 +40,12 @@ define([
     saveText: function(e){
       var $input = $(e.target),
           text = $input.val().replace(/^\s+|\s+$/, ''),
-          $el = $('<h1 class="editable">'+text+'</h1>');
+          $el = $('<h1 class="comment editable" data-id="'+this.comment.get('id')+'">'+
+            text.replace(/\[(user|item)-(\d+)\]/g, '<span class="$1" data-id="$2"></span>')+
+            '</h1>');
       this.comment.save('text', text);
       $input.replaceWith($el);
+      this.renderCommentText();
     },
     initialize: function(options){
       var id = options.params[0];
@@ -58,6 +63,21 @@ define([
         data: 'comment_id='+this.comment.get('id')
       });
     },
+    renderCommentText: function(){
+      this.$('.item').each(function(i, el){
+        var $el = $(el),
+            id = $el.data('id'),
+            item = itemCollection.get(id);
+        $el.replaceWith('<a class="item" href="/items/'+id+'" data-id="'+id+'">'+item.get('name')+'</a>');
+      });
+
+      this.$('.user').each(function(i, el){
+        var $el = $(el),
+            id = $el.data('id'),
+            user = userCollection.get(id);
+        $el.replaceWith('<a class="user" href="/users/'+id+'" data-id="'+id+'">'+user.get('name')+'</a>');
+      });
+    },
     render: function(){
       var page = this.template({
             isLiked: likeCollection.where({comment_id:this.comment.get('id'), owner_id:currentUser.user_id}).length > 0,
@@ -69,6 +89,8 @@ define([
         page: page
       });
       this.$el.html( layout.el );
+
+      this.renderCommentText();
 
       var input = new TypeaheadInputView({
         comment: {

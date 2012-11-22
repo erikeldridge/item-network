@@ -43,18 +43,6 @@ define([
           '<a href="/comments/'+comment.get('id')+'">...</a>');
       });
 
-      this.$('.comment').each(function(i, el){
-        var $el = $(el),
-            id = $el.data('id'),
-            comment = commentCollection.get(id),
-            ownerId = comment.get('owner_id'),
-            text = comment.get('text').replace(/\[(user|item)-(\d+)\]/g, '<a class="$1" href="/$1s/$2" data-id="$2"></a>')
-        $el.replaceWith(
-          '<a class="user" href="/users/'+ownerId+'" data-id="'+ownerId+'"></a>: '+
-          text+
-          ' <a href="/comments/'+comment.get('id')+'">...</a>');
-      });
-
       this.$('.like').each(function(i, el){
         var $el = $(el),
             id = $el.data('id'),

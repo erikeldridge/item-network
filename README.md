@@ -55,7 +55,6 @@ http://item-network.herokuapp.com
 - enable private comments
 - add contributor credit to comment
 - add contributor credit to item
-- render placeholders in comment titles
 - define pipe syntax, eg [item-123|My item]
 - make comment box stand-alone on user, item, and comment pages
 - show count of replies to comment
@@ -76,6 +75,7 @@ http://item-network.herokuapp.com
 - create separate notifications stream (once we have private messages)
 - create Procfile & use forman
 - render author credit into name on show comment page
+- add liked comments to activity generators
 
 ## Dev env
 

@@ -11,7 +11,7 @@
 <% } %>
 
 <h1 class="<%= currentUserIsOwner ? 'editable' : '' %>">
-  <%= comment.get('text') %>
+  <%= comment.get('text').replace(/\[(user|item)-(\d+)\]/g, '<span class="$1" data-id="$2"></span>') %>
 </h1>
 
 <p>
