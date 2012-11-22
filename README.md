@@ -68,7 +68,6 @@ http://item-network.herokuapp.com
 - put author credit under comment text on show comment page
 - display comment text inline in activity stream
 - use star icon in activity stream
-- serve home content w/ initial page load
 - show rendered names in typeahead instead of placeholders
 - add footer w/ link back to project
 - make omnisearch case insensitive
@@ -76,6 +75,7 @@ http://item-network.herokuapp.com
 - hide delete button unless user owns item
 - re-enable "more" button on home page
 - define an "owner id hash" field on editable models that can be checked w/o reading db
+- move activity helper functions into model layer
 
 ## Dev env
 
