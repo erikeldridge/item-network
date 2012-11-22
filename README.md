@@ -76,6 +76,7 @@ http://item-network.herokuapp.com
 - re-enable "more" button on home page
 - define an "owner id hash" field on editable models that can be checked w/o reading db
 - move activity helper functions into model layer
+- set static_cache_control (http://www.sinatrarb.com/intro#Static%20Files)
 
 ## Dev env
 
