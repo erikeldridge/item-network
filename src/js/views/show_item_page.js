@@ -48,11 +48,18 @@ define([
       var id = options.params[0];
       this.item = itemCollection.get(id);
       this.owner = userCollection.get(this.item.get('owner_id'));
+      this.activityCollection = activityCollections.get('item_'+id);
       this.render();
     },
     remove: function(){
       this.trigger('remove');
       Backbone.View.prototype.remove.call(this);
+      this.off();
+    },
+    fetchActivity: function(){
+      this.activityCollection.fetch({
+        data: 'item_id='+this.item.get('id')
+      });
     },
     render: function(){
       var page = this.template({
@@ -75,24 +82,18 @@ define([
       });
       this.$('.typeahead').html(input.render().el);
 
-      var activityCollection = activityCollections.get('item_'+this.item.get('id'));
-      activityCollection.fetch({
-        data: 'item_id='+this.item.get('id')
-      });
+      this.fetchActivity();
       var activityStream = new ActivityStreamView({
-        collection: activityCollection
+        collection: this.activityCollection
       });
       this.$('.activity-stream').html(activityStream.render().el);
-      commentCollection.on('sync', function(){
-        activityCollection.fetch({
-          data: 'item_id='+this.user.get('id')
-        });
-      });
+      commentCollection.on('sync', this.fetchActivity, this);
 
       this.on('remove', function(){
         layout.remove();
         input.remove();
         activityStream.remove();
+        commentCollection.off('sync', this.fetchActivity);
       });
 
     }

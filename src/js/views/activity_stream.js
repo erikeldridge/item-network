@@ -11,7 +11,7 @@ define([
   var View = Backbone.View.extend({
     template: _.template( template ),
     initialize: function(){
-      this.collection.on('add reset', this.render, this);
+      this.collection.on('add reset sync', this.render, this);
     },
     remove: function(){
       Backbone.View.prototype.remove.call(this);

@@ -41,12 +41,18 @@ define([
     initialize: function(options){
       var id = options.params[0];
       this.user = userCollection.get(id);
+      this.activityCollection = activityCollections.get('user_'+id);
       this.render();
     },
     remove: function(){
       this.trigger('remove');
       Backbone.View.prototype.remove.call(this);
       this.off();
+    },
+    fetchActivity: function(){
+      this.activityCollection.fetch({
+        data: 'user_id='+this.user.get('id')
+      });
     },
     render: function(){
       var query = this.options.params[0],
@@ -69,19 +75,12 @@ define([
       });
       this.$('.typeahead').html(input.render().el);
 
-      var activityCollection = activityCollections.get('user_'+this.user.get('id'));
-      activityCollection.fetch({
-        data: 'user_id='+this.user.get('id')
-      });
+      this.fetchActivity();
       var activityStream = new ActivityStreamView({
-        collection: activityCollection
+        collection: this.activityCollection
       });
       this.$('.activity-stream').html(activityStream.render().el);
-      commentCollection.on('sync', function(){
-        activityCollection.fetch({
-          data: 'user_id='+this.user.get('id')
-        });
-      });
+      commentCollection.on('sync', this.fetchActivity, this);
 
       var contributorStream = new StreamView({
         template: contributorStreamTemplate,
@@ -93,6 +92,7 @@ define([
       this.$('.contributor-stream').html(contributorStream.render().el);
 
       this.on('remove', function(){
+        commentCollection.off('sync', this.fetchActivity);
         layout.remove();
         activityStream.remove();
         contributorStream.remove();

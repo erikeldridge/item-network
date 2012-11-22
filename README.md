@@ -61,7 +61,6 @@ http://item-network.herokuapp.com
 - show count of replies to comment
 - rename generic_stream to item_activity_stream
 - parameterize input placeholder text
-- put author credit under comment text on show comment page
 - display comment text inline in activity stream
 - use star icon in activity stream
 - show rendered names in typeahead instead of placeholders
@@ -75,6 +74,8 @@ http://item-network.herokuapp.com
 - set static_cache_control (http://www.sinatrarb.com/intro#Static%20Files)
 - compress require.js
 - create separate notifications stream (once we have private messages)
+- create Procfile & use forman
+- render author credit into name on show comment page
 
 ## Dev env
 

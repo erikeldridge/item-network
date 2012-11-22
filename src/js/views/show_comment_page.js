@@ -45,52 +45,50 @@ define([
     initialize: function(options){
       var id = options.params[0];
       this.comment = commentCollection.get(id);
+      this.activityCollection = activityCollections.get('comment_'+id);
       this.render();
     },
     remove: function(){
-      this.undelegateEvents();
+      this.trigger('remove');
       Backbone.View.prototype.remove.call(this);
+      this.off();
+    },
+    fetchActivity: function(){
+      this.activityCollection.fetch({
+        data: 'comment_id='+this.comment.get('id')
+      });
     },
     render: function(){
-      var that = this,
-          page = this.template({
+      var page = this.template({
             isLiked: likeCollection.where({comment_id:this.comment.get('id'), owner_id:currentUser.user_id}).length > 0,
             currentUserIsOwner: this.comment.get('owner_id') === currentUser.user_id,
             comment: this.comment
-          }),
-          input = new TypeaheadInputView({
-            comment: {
-              reply_to_id: this.comment.get('id')
-            }
           });
 
-      var activityCollection = activityCollections.get('comment_'+this.comment.get('id'));
-      activityCollection.fetch({
-        data: 'comment_id='+this.comment.get('id')
-      });
-      var stream = new ActivityStreamView({
-        collection: activityCollection
-      });
-      this.$('.activity-stream').html(stream.render().el);
-      commentCollection.on('sync', function(){
-        activityCollection.fetch({
-          data: 'comment_id='+this.user.get('id')
-        });
-      });
-
-      // render
       var layout = new LayoutView({
         page: page
       });
       this.$el.html( layout.el );
-      this.$('.typeahead').html(input.render().el);
-      this.$('.activity-stream').html(stream.render().el);
 
-      // clean up
+      var input = new TypeaheadInputView({
+        comment: {
+          reply_to_id: this.comment.get('id')
+        }
+      });
+      this.$('.typeahead').html(input.render().el);
+
+      this.fetchActivity();
+      var activityStream = new ActivityStreamView({
+        collection: this.activityCollection
+      });
+      commentCollection.on('sync', this.fetchActivity, this);
+      this.$('.activity-stream').html(activityStream.render().el);
+
       this.on('remove', function(){
         layout.remove();
         input.remove();
-        stream.remove();
+        activityStream.remove();
+        commentCollection.off('sync', this.fetchActivity);
       });
     }
   });
