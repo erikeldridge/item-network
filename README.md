@@ -38,7 +38,6 @@ http://item-network.herokuapp.com
 
 ## To do
 
-- build assets to speed page render (http://requirejs.org/docs/optimization.html)
 - hide stream headers if stream is empty
 - add like button to comment page
 - add layout to create item page

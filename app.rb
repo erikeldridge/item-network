@@ -10,6 +10,10 @@ require './models'
 set :session_fail, '/login'
 set :session_secret, 'secret'
 
+configure :development do
+  set :public_folder, File.dirname(__FILE__) + '/src'
+end
+
 def empty_param? name
   params[name].nil? || params[name].empty?
 end
@@ -249,7 +253,7 @@ get '/login' do
   200
 end
 
-get '/*' do
+get '/' do
   @init_json = {
     :current_user => session,
     :items => Item.all,
