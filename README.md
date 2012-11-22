@@ -6,7 +6,7 @@ Item network is a playground for social network patterns. The project is topic-a
 
 ### Activity
 
-Expose user activity to provide feedback and recognition
+Expose user activity to provide feedback and facilitate recognition
 
 ### Simplicity
 
@@ -14,11 +14,23 @@ Restrict the amount of primitives and rules to facilitate onboarding
 
 ### Ease of use
 
-Maintain a low barrier to entry. Value should be immediately apparent.
+Maintain a low barrier to entry. Value should be immediately apparent
 
 ### Delightful
 
-Adapt to make the common case easier
+Make it easy to do the right thing
+
+Example: autocomplete user names when commenting
+
+### Search
+
+Enable users to find what they are looking for
+
+Example: a search box is one of three elements on the home page, and is in the header on all pages
+
+### API
+
+Enable external innovation by providing programmatic access
 
 ## Demo
 
