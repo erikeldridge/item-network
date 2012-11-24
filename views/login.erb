@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <title>Item network</title>
+      <script type="text/javascript">
+      var init = (function(init){
+        return init || {};
+      })(<%= @init_json %>);
+      </script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" type="text/css" href="/css/app.css">
+      <script data-main="/js/main" src="/js/require.js"></script>
+  </head>
+  <body>
+
+    <!-- Bootstrap container & layout attachment point -->
+    <div class="container" id="container">
+      <div class="row">
+        <div class="span12">
+          <form class="form-horizontal" method="post">
+            <div class="control-group">
+              <label class="control-label" for="input-email">Email</label>
+              <div class="controls">
+                <input type="text" id="input-email" placeholder="Email">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="input-password">Password</label>
+              <div class="controls">
+                <input type="password" id="input-password" placeholder="Password">
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <button type="submit" class="btn">Sign in</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

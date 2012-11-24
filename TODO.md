@@ -1,4 +1,5 @@
 - allow users to sign in
+-- dynamically set user object
 - allow users to register
 - enable users to unlike an item/comment/user
 - remove unused comment tag model
@@ -14,7 +15,6 @@
 - make omnisearch case insensitive
 - add footer w/ link back to project
 - move activity helper functions into model layer
-- define an "owner id hash" field on editable models that can be checked w/o reading db
 - set static_cache_control (http://www.sinatrarb.com/intro#Static%20Files)
 - compress require.js
 - create Procfile & use forman
@@ -35,3 +35,4 @@
 - show count of replies to comment
 - replace breadcrumbs w/ advanced search
 - review [shallow exclusions for fast development](http://requirejs.org/docs/optimization.html#shallow), and update build process accordingly
+- define an "owner id hash" field on editable models that can be checked w/o reading db

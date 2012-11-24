@@ -252,9 +252,13 @@ post '/api/1/likes' do
 end
 
 get '/login' do
+  erb :login
+end
+
+post '/login' do
   session_start!
   session[:user_id] = 1
-  200
+  redirect to '/'
 end
 
 get '/*' do
