@@ -38,44 +38,7 @@ http://item-network.herokuapp.com
 
 ## To do
 
-- hide stream headers if stream is empty
-- add layout to create item page
-- replace "bookmarks" with recent searches
-- add "pin/like/save" btn to recent searches page
-- generate name for search on server, eg comments?owner_id=1 --> {name:'comments by [user-1]', results:[...]}
-- show reply prompt if no replies
-- conditionally add "items created by user" to user show page
-- enable group creation
-- enable membership creation
-- gracefully handle deleted items,comments,users, and groups
-- allow user to sign in w/ twitter
-- update comment search to use "by" for owner_id, and "mentioning" for search by mention
-- create context-aware comment box on each item,user,comment,group page
-- add groups to omni-search
-- enable private comments
-- add contributor credit to comment
-- add contributor credit to item
-- define pipe syntax, eg [item-123|My item]
-- make comment box stand-alone on user, item, and comment pages
-- show count of replies to comment
-- rename generic_stream to item_activity_stream
-- parameterize input placeholder text
-- display comment text inline in activity stream
-- use star icon in activity stream
-- show rendered names in typeahead instead of placeholders
-- add footer w/ link back to project
-- make omnisearch case insensitive
-- conditionally add "contributors" stream to user show page
-- hide delete button unless user owns item
-- re-enable "more" button on home page
-- define an "owner id hash" field on editable models that can be checked w/o reading db
-- move activity helper functions into model layer
-- set static_cache_control (http://www.sinatrarb.com/intro#Static%20Files)
-- compress require.js
-- create separate notifications stream (once we have private messages)
-- create Procfile & use forman
-- render author credit into name on show comment page
-- add liked comments to activity generators
+See [TODO](https://github.com/erikeldridge/item-network/blob/master/TODO.md)
 
 ## Dev env
 
@@ -83,7 +46,7 @@ http://item-network.herokuapp.com
 2. Run `bundle` to install ruby dependencies
 3. Run `rake` to prep db
 4. Run `shotgun` to start app
-5. Load http://localhost:9393 to view
+5. Load [http://localhost:9393](http://localhost:9393) to view
 
 ## Copyright and license
 

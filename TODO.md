@@ -1,0 +1,37 @@
+- allow users to sign in
+- allow users to register
+- enable users to unlike an item/comment/user
+- remove unused comment tag model
+- removed unused generic_stream template
+- show rendered names in typeahead instead of placeholders
+- replace "bookmarks" with recent searches
+- add "pin/like/save" btn to recent searches page
+- conditionally add "items created by user" to user show page
+- gracefully handle deleted items,comments,users, and groups
+- parameterize input placeholder text
+- define pipe syntax, eg [item-123|My item]
+- make comment box stand-alone on user, item, and comment pages
+- make omnisearch case insensitive
+- add footer w/ link back to project
+- move activity helper functions into model layer
+- define an "owner id hash" field on editable models that can be checked w/o reading db
+- set static_cache_control (http://www.sinatrarb.com/intro#Static%20Files)
+- compress require.js
+- create Procfile & use forman
+- render author credit into name on show comment page
+- add liked comments to activity generators
+- add layout to create item page
+- add contributor credit to comment
+- add contributor credit to item
+- enable users to add collaborators
+- enable users to remove collaborators
+- generate name for search on server, eg comments?owner_id=1 --> {name:'comments by [user-1]', results:[...]}
+- allow users to sign in w/ twitter
+- allow users to sign in w/ fb
+- update comment search to use "by" for owner_id, and "mentioning" for search by mention
+- show reply prompt if no replies
+- enable private comments
+- create separate notifications stream (once we have private messages)
+- show count of replies to comment
+- replace breadcrumbs w/ advanced search
+- review [shallow exclusions for fast development](http://requirejs.org/docs/optimization.html#shallow), and update build process accordingly
