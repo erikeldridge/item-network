@@ -1,5 +1,5 @@
 - allow users to sign in
--- dynamically set user object
+-- require login for write actions, otherwise, allow to browse
 - allow users to register
 - enable users to unlike an item/comment/user
 - remove unused comment tag model
@@ -35,4 +35,3 @@
 - show count of replies to comment
 - replace breadcrumbs w/ advanced search
 - review [shallow exclusions for fast development](http://requirejs.org/docs/optimization.html#shallow), and update build process accordingly
-- define an "owner id hash" field on editable models that can be checked w/o reading db

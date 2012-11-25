@@ -2,6 +2,8 @@ require 'sinatra'
 require 'sinatra/session'
 require 'json'
 require 'sequel'
+require 'scrypt'
+require 'debugger'
 
 DB = Sequel.connect(ENV['HEROKU_POSTGRESQL_RED_URL'] || "postgres://localhost/erik")
 
@@ -252,13 +254,20 @@ post '/api/1/likes' do
 end
 
 get '/login' do
+  session_end!
   erb :login
 end
 
 post '/login' do
-  session_start!
-  session[:user_id] = 1
-  redirect to '/'
+  user = User.filter(:email => params[:email]).first
+  password = SCrypt::Password.new(user[:password_hash])
+  path = '/login?error=invalid_credentials'
+  if password == params[:password]
+    session_start!
+    session[:user_id] = user[:id]
+    path = '/'
+  end
+  redirect to path
 end
 
 get '/*' do
