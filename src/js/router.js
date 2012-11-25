@@ -4,7 +4,7 @@ define([
   'views/create_item_page', 'views/edit_item_page', 'views/show_item_page',
   'views/search_form_page', 'views/search_results_page',
   'views/show_user_page', 'views/user_search_results_page',
-  'views/show_comment_page',
+  'views/show_comment_page', 'views/logout_page', 'views/login_page',
   'views/item_search_results_page', 'views/comment_search_results_page', 'views/activity_search_results_page',
 ], function(
   $, Backbone,
@@ -12,12 +12,14 @@ define([
   CreateItemPageView, EditItemPageView, ShowItemPageView,
   SearchFormPageView, SearchResultsPageView,
   ShowUserPageView, UserSearchResultsPageView,
-  ShowCommentPageView,
+  ShowCommentPageView, LogoutPageView, LoginPageView,
   ItemSearchResultsPageView, CommentSearchResultsPageView, ActivitySearchPageView){
 
   var Router = Backbone.Router.extend({
         routes: {
           ''                  : HomePageView,
+          'logout'            : LogoutPageView,
+          'login'             : LoginPageView,
           'nav'               : NavPageView,
           'create'            : CreateItemPageView,
           'edit_item/:id'     : EditItemPageView,

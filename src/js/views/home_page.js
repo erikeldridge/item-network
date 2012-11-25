@@ -33,6 +33,7 @@ define([
           collection: activityCollection
         });
         this.$('.activity-stream').html(activityStream.render().el);
+        activityCollection.fetch();
         commentCollection.on('sync', function(){
           activityCollection.fetch();
         });

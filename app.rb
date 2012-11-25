@@ -4,6 +4,7 @@ require 'json'
 require 'sequel'
 require 'scrypt'
 require 'debugger'
+require 'json'
 
 DB = Sequel.connect(ENV['HEROKU_POSTGRESQL_RED_URL'] || "postgres://localhost/erik")
 
@@ -253,21 +254,21 @@ post '/api/1/likes' do
   record.to_json
 end
 
-get '/login' do
-  session_end!
-  erb :login
-end
-
-post '/login' do
-  user = User.filter(:email => params[:email]).first
+post '/api/1/session' do
+  data = JSON.parse request.body.read
+  user = User.filter(:email => data['email']).first
   password = SCrypt::Password.new(user[:password_hash])
-  path = '/login?error=invalid_credentials'
-  if password == params[:password]
+  if password == data['password']
     session_start!
     session[:user_id] = user[:id]
     path = '/'
   end
-  redirect to path
+  session.to_json
+end
+
+delete '/api/1/session/:user_id' do
+  session_end!
+  200
 end
 
 get '/*' do
@@ -280,7 +281,7 @@ get '/*' do
     :comment_tags => CommentTag.all,
     :comments => Comment.all,
     :activities => {:home => home_activities},
-    :bookmarks => Bookmark.all,
+    :bookmarks => Bookmark.filter({:owner_id=>session[:user_id]}).all,
     :likes => Like.all
   }.to_json
   erb :default

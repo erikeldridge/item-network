@@ -10,7 +10,6 @@ Sequel.migration do
       add_column :email, String
     end
 
-    # https://github.com/emerose/pbkdf2-ruby
     password = SCrypt::Password.create("asd123")
 
     self[:users].filter({:id => 1}).update({:password_hash => password, :email => 'a@s.d'})

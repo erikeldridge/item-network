@@ -1,11 +1,11 @@
-- allow users to sign in
--- require login for write actions, otherwise, allow to browse
+- return 403 in api response instead of redirecting to login
+- require login for write actions, otherwise, allow to browse
+- review [shallow exclusions for fast development](http://requirejs.org/docs/optimization.html#shallow), and update build process accordingly
 - allow users to register
 - enable users to unlike an item/comment/user
 - remove unused comment tag model
 - removed unused generic_stream template
 - show rendered names in typeahead instead of placeholders
-- replace "bookmarks" with recent searches
 - add "pin/like/save" btn to recent searches page
 - conditionally add "items created by user" to user show page
 - gracefully handle deleted items,comments,users, and groups
@@ -34,4 +34,4 @@
 - create separate notifications stream (once we have private messages)
 - show count of replies to comment
 - replace breadcrumbs w/ advanced search
-- review [shallow exclusions for fast development](http://requirejs.org/docs/optimization.html#shallow), and update build process accordingly
+
