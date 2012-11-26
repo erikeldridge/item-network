@@ -90,7 +90,7 @@ def comment_activities(comment_id)
 end
 
 post '/api/1/items' do
-  session!
+  return 403 unless session?
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
   item = Item.create(data)
@@ -99,7 +99,7 @@ post '/api/1/items' do
 end
 
 put '/api/1/items/:id' do
-  session!
+  return 403 unless session?
   item = JSON.parse request.body.read
   Item.where(:id => params[:id]).update(item.to_hash)
   Activity.create(:table => 'items', :row => params[:id], :action => 'update', :owner_id => session[:user_id])
@@ -121,14 +121,14 @@ get '/api/1/items' do
 end
 
 delete '/api/1/items/:id' do
-  session!
+  return 403 unless session?
   Item.where(:id => params[:id]).destroy
   Activity.create(:table => 'items', :row => params[:id], :action => 'delete', :owner_id => session[:user_id])
   200
 end
 
 post '/api/1/comments' do
-  session!
+  return 403 unless session?
 
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
@@ -157,7 +157,7 @@ get '/api/1/comments' do
 end
 
 put '/api/1/comments/:id' do
-  session!
+  return 403 unless session?
   data = JSON.parse request.body.read
   Comment.where(:id => params[:id]).update(data.to_hash)
   Activity.create(:table => 'comments', :row => params[:id], :action => 'update', :owner_id => session[:user_id])
@@ -165,7 +165,7 @@ put '/api/1/comments/:id' do
 end
 
 delete '/api/1/comments/:id' do
-  session!
+  return 403 unless session?
   CommentTag.where(:comment_id => params[:id]).destroy
   Comment.where(:id => params[:id]).destroy
   Activity.create(:table => 'comments', :row => params[:id], :action => 'delete', :owner_id => session[:user_id])
@@ -173,7 +173,7 @@ delete '/api/1/comments/:id' do
 end
 
 post '/api/1/item_comments' do
-  session!
+  return 403 unless session?
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
   record = ItemComment.create(data)
@@ -194,7 +194,7 @@ get '/api/1/users' do
 end
 
 put '/api/1/users/:id' do
-  session!
+  return 403 unless session?
   data = JSON.parse request.body.read
   User.where(:id => params[:id]).update(data.to_hash)
   Activity.create(:table => 'users', :row => params[:id], :action => 'update', :owner_id => session[:user_id])
@@ -202,7 +202,7 @@ put '/api/1/users/:id' do
 end
 
 get '/api/1/activities' do
-  session!
+  return 403 unless session?
   if params[:user_id]
     user_activities params[:user_id]
   elsif params[:item_id]
@@ -215,7 +215,7 @@ get '/api/1/activities' do
 end
 
 post '/api/1/comment_tags' do
-  session!
+  return 403 unless session?
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
   tag = CommentTag.create(data)
@@ -231,7 +231,7 @@ get '/api/1/comment_tags' do
 end
 
 post '/api/1/mentions' do
-  session!
+  return 403 unless session?
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
   tag = ItemMention.create(data)
@@ -240,13 +240,13 @@ post '/api/1/mentions' do
 end
 
 delete '/api/1/mentions/:id' do
-  session!
+  return 403 unless session?
   tag = ItemMention.first(:id => params[:id]).delete
   Activity.create(:table => 'mentions', :row => tag[:id], :action => 'delete', :owner_id => session[:user_id])
 end
 
 post '/api/1/likes' do
-  session!
+  return 403 unless session?
   data = JSON.parse request.body.read
   data['owner_id'] = session[:user_id]
   record = Like.create(data)

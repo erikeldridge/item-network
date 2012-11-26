@@ -1,4 +1,3 @@
-- return 403 in api response instead of redirecting to login
 - require login for write actions, otherwise, allow to browse
 - review [shallow exclusions for fast development](http://requirejs.org/docs/optimization.html#shallow), and update build process accordingly
 - allow users to register
