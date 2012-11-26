@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sequel'
+require 'scrypt'
 
 Sequel.migration do
 
@@ -27,6 +28,8 @@ Sequel.migration do
     create_table :users do
       primary_key :id
       String :name
+      String :password_hash
+      String :email
       timestamp :created_at
       timestamp :updated_at
     end
@@ -78,8 +81,10 @@ Sequel.migration do
       timestamp :updated_at
     end
 
-    (1..3).each do |i|
-      self[:users].insert({:name => "user#{i}", :created_at => Time.now})
+    # users
+    password = SCrypt::Password.create("asd123")
+    (1..4).each do |i|
+      self[:users].insert({:name => "user#{i}", :password_hash => password, :email => "user#{i}@example.com", :created_at => Time.now})
     end
 
     self[:items].insert({:owner_id => 1, :name => 'item1', :created_at => Time.now})

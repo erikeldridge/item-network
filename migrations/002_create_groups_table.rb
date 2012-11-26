@@ -19,8 +19,6 @@ Sequel.migration do
       end
     end
 
-    self[:users].insert({:name => 'Org', :created_at => Time.now})
-
     self[:contributors].insert({:contributor_id => 1, :user_id => 4, :created_at => Time.now})
     self[:contributors].insert({:contributor_id => 2, :user_id => 4, :created_at => Time.now})
     self[:contributors].insert({:contributor_id => 3, :user_id => 4, :created_at => Time.now})
