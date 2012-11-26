@@ -15,7 +15,5 @@ class Comment < Sequel::Model
 end
 class Like < Sequel::Model
 end
-class CommentTag < Sequel::Model
-end
 class Bookmark < Sequel::Model
 end

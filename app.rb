@@ -172,21 +172,6 @@ delete '/api/1/comments/:id' do
   200
 end
 
-post '/api/1/item_comments' do
-  return 403 unless session?
-  data = JSON.parse request.body.read
-  data['owner_id'] = session[:user_id]
-  record = ItemComment.create(data)
-  Activity.create(:table => 'item_comments', :row => record[:id], :action => 'create', :owner_id => session[:user_id])
-  record.to_json
-end
-
-get '/api/1/item_comments' do
-  comments = ItemComment
-  comments = comments.filter(:owner_id => params[:owner_id]) unless empty_param? :owner_id
-  comments.to_json
-end
-
 get '/api/1/users' do
   users = User
   users = users.filter(Sequel.like(:name, "%#{params[:name]}%")) unless empty_param? :name
@@ -212,22 +197,6 @@ get '/api/1/activities' do
   else
     home_activities
   end.to_json
-end
-
-post '/api/1/comment_tags' do
-  return 403 unless session?
-  data = JSON.parse request.body.read
-  data['owner_id'] = session[:user_id]
-  tag = CommentTag.create(data)
-  Activity.create(:table => 'comment_tags', :row => tag[:id], :action => 'create', :owner_id => session[:user_id])
-  tag.to_json
-end
-
-get '/api/1/comment_tags' do
-  rows = CommentTag
-  rows = rows.filter(Sequel.like(:text, "%#{params[:text]}%")) unless empty_param? :text
-  rows = rows.filter(:comment_id => params[:comment_id]) unless empty_param? :comment_id
-  rows.to_json
 end
 
 post '/api/1/mentions' do
@@ -278,7 +247,6 @@ get '/*' do
     :users => User.all,
     :contributors => Contributor.all,
     :mentions => Mention.all,
-    :comment_tags => CommentTag.all,
     :comments => Comment.all,
     :activities => {:home => home_activities},
     :bookmarks => Bookmark.filter({:owner_id=>session[:user_id]}).all,

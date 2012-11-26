@@ -2,7 +2,6 @@
 - review [shallow exclusions for fast development](http://requirejs.org/docs/optimization.html#shallow), and update build process accordingly
 - allow users to register
 - enable users to unlike an item/comment/user
-- remove unused comment tag model
 - removed unused generic_stream template
 - show rendered names in typeahead instead of placeholders
 - add "pin/like/save" btn to recent searches page
