@@ -6,6 +6,7 @@ define([
   'views/show_user_page', 'views/user_search_results_page',
   'views/show_comment_page', 'views/logout_page', 'views/login_page',
   'views/item_search_results_page', 'views/comment_search_results_page', 'views/activity_search_results_page',
+  'views/signup_page'
 ], function(
   $, Backbone,
   LayoutView, HomePageView, NavPageView,
@@ -13,11 +14,13 @@ define([
   SearchFormPageView, SearchResultsPageView,
   ShowUserPageView, UserSearchResultsPageView,
   ShowCommentPageView, LogoutPageView, LoginPageView,
-  ItemSearchResultsPageView, CommentSearchResultsPageView, ActivitySearchPageView){
+  ItemSearchResultsPageView, CommentSearchResultsPageView, ActivitySearchPageView,
+  SignupPageView){
 
   var Router = Backbone.Router.extend({
         routes: {
           ''                  : HomePageView,
+          'signup'            : SignupPageView,
           'logout'            : LogoutPageView,
           'login'             : LoginPageView,
           'nav'               : NavPageView,

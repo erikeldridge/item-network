@@ -178,6 +178,17 @@ get '/api/1/users' do
   users.to_json
 end
 
+post '/api/1/users' do
+  data = JSON.parse request.body.read
+  user = User.new
+  user.email = data['email']
+  user.password_hash = SCrypt::Password.create(data[:password])
+  user.save
+  session_start!
+  session[:user_id] = user.id
+  user.to_json
+end
+
 put '/api/1/users/:id' do
   return 403 unless session?
   data = JSON.parse request.body.read
@@ -230,7 +241,6 @@ post '/api/1/session' do
   if password == data['password']
     session_start!
     session[:user_id] = user[:id]
-    path = '/'
   end
   session.to_json
 end

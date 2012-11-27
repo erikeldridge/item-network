@@ -1,6 +1,3 @@
-- require login for write actions, otherwise, allow to browse
-- review [shallow exclusions for fast development](http://requirejs.org/docs/optimization.html#shallow), and update build process accordingly
-- allow users to register
 - enable users to unlike an item/comment/user
 - removed unused generic_stream template
 - show rendered names in typeahead instead of placeholders
@@ -32,4 +29,8 @@
 - create separate notifications stream (once we have private messages)
 - show count of replies to comment
 - replace breadcrumbs w/ advanced search
-
+- require login for write actions, otherwise, allow to browse
+- review [shallow exclusions for fast development](http://requirejs.org/docs/optimization.html#shallow), and update build process accordingly
+- remove unused activity generation
+- use sinatra json http://www.sinatrarb.com/contrib/
+- protect user creation endpoint w/ [csrf token](http://stackoverflow.com/questions/11451161/sinatra-csrf-authenticity-tokens)
