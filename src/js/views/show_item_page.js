@@ -17,12 +17,13 @@ define([
   var View = Backbone.View.extend({
     template: _.template( pageTemplate ),
     events: {
-      'click .btn': 'likeHandler', // added by extension
-      'click h1.editable': 'editName',
-      'blur input[data-field="name"]': 'saveName',
-      'click .destroy': 'destroyItem'
+      'click .like-button' : 'likeHandler', // added by extension
+      'click .unlike-button' : 'unlikeHandler', // added by extension
+      'click h1.editable' : 'editName',
+      'blur input[data-field="name"]' : 'saveName',
+      'click .destroy' : 'destroyItem'
     },
-    likeableType: 'item',
+    likeableModelName: 'item',
     destroyItem: function(){
       this.item.destroy();
       this.item.on('sync', function(){

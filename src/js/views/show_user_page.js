@@ -19,11 +19,12 @@ define([
   var View = Backbone.View.extend({
     template: _.template( pageTemplate ),
     events: {
-      'click .btn': 'likeHandler',
+      'click .like-button' : 'likeHandler', // added by extension
+      'click .unlike-button' : 'unlikeHandler', // added by extension
       'click h1.editable': 'editName',
       'blur input[data-field="name"]': 'saveName'
     },
-    likeableType: 'user',
+    likeableModelName: 'user',
     editName: function(e){
       var $el = $(e.target),
           name = $el.text().replace(/^\s+|\s+$/, ''),

@@ -234,6 +234,12 @@ post '/api/1/likes' do
   record.to_json
 end
 
+delete '/api/1/likes/:id' do
+  return 403 unless session?
+  Like.first(:id => params[:id], :owner_id => session[:user_id]).delete
+  200
+end
+
 post '/api/1/session' do
   data = JSON.parse request.body.read
   user = User.filter(:email => data['email']).first

@@ -1,9 +1,10 @@
-- enable users to unlike an item/comment/user
 - removed unused generic_stream template
 - show rendered names in typeahead instead of placeholders
 - add "pin/like/save" btn to recent searches page
 - conditionally add "items created by user" to user show page
-- gracefully handle deleted items,comments,users, and groups
+- gracefully handle deleted items,comments,users
+-- at the page level
+-- handle comments about non-existent items (consider injecting "item id 123 (deleted)" instead of name)
 - parameterize input placeholder text
 - define pipe syntax, eg [item-123|My item]
 - make comment box stand-alone on user, item, and comment pages
@@ -11,7 +12,6 @@
 - add footer w/ link back to project
 - move activity helper functions into model layer
 - set static_cache_control (http://www.sinatrarb.com/intro#Static%20Files)
-- compress require.js
 - create Procfile & use forman
 - render author credit into name on show comment page
 - add liked comments to activity generators
@@ -31,6 +31,10 @@
 - replace breadcrumbs w/ advanced search
 - require login for write actions, otherwise, allow to browse
 - review [shallow exclusions for fast development](http://requirejs.org/docs/optimization.html#shallow), and update build process accordingly
+- compress require.js
+- lazy load page assets
 - remove unused activity generation
 - use sinatra json http://www.sinatrarb.com/contrib/
 - protect user creation endpoint w/ [csrf token](http://stackoverflow.com/questions/11451161/sinatra-csrf-authenticity-tokens)
+- use class + data-id approach for like button
+- evaluate [flask](http://flask.pocoo.org/) for conversion to python backend
