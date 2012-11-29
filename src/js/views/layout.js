@@ -1,7 +1,10 @@
 define([
   'backbone',
+  'collections/sessions',
   'text!templates/layout.html'
-], function module(Backbone, template){
+], function module(Backbone,
+  sessionCollection,
+  template){
 
   var View = Backbone.View.extend({
     template: _.template( template ),
@@ -21,7 +24,11 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
     render: function(){
-      var html = this.template(this.options);
+      var opts = _.extend({
+        session: sessionCollection.first()
+      }, this.options);
+      console.log(opts);
+      var html = this.template(opts);
       this.$el.html( html );
     }
   });

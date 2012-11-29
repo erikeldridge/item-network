@@ -5783,3 +5783,6 @@ label {
 .textarea input:focus {
   outline: none;
 }
+.banner {
+  margin-bottom: 20px;
+}

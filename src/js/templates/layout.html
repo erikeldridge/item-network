@@ -4,12 +4,23 @@
       <form class="navbar-search pull-left">
         <input type="text" class="search-query" name="name" placeholder="Search">
       </form>
-      <a href="/nav" class="btn pull-right"><i class="icon-list"></i></a>
+      <% if(session){ %>
+        <a href="/nav" class="btn pull-right"><i class="icon-list"></i></a>
+      <% } %>
     </div>
   </div>
+
+  <% if(!session){ %>
+    <div class="row banner">
+      <div class="span12">
+        <a href="/signup" class="btn btn-warning">Sign up</a> or <a href="/login">Log in</a> to see content customized for you.
+      </div>
+    </div>
+  <% } %>
 
   <!-- Backbone router attaches page content here -->
   <div id="page">
     <%= page %>
   </div>
+
 </div>

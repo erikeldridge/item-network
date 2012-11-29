@@ -38,3 +38,7 @@
 - protect user creation endpoint w/ [csrf token](http://stackoverflow.com/questions/11451161/sinatra-csrf-authenticity-tokens)
 - use class + data-id approach for like button
 - evaluate [flask](http://flask.pocoo.org/) for conversion to python backend
+- update activity for a user/item/comment after liking
+- replace "current_user" with sessionCollection
+- create layout for signup & login
+

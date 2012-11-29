@@ -258,7 +258,6 @@ end
 
 get '/*' do
   @init_json = {
-    :current_user => session,
     :items => Item.all,
     :users => User.all,
     :contributors => Contributor.all,
@@ -267,6 +266,8 @@ get '/*' do
     :activities => {:home => home_activities},
     :bookmarks => Bookmark.filter({:owner_id=>session[:user_id]}).all,
     :likes => Like.all
+  }.tap {|data|
+    data[:current_user] = session if session?
   }.to_json
   erb :default
 end
