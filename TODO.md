@@ -1,3 +1,5 @@
+- prompt for session if attempt to compose while logged out
+- add "logged out" to readme pattern list
 - removed unused generic_stream template
 - show rendered names in typeahead instead of placeholders
 - add "pin/like/save" btn to recent searches page
@@ -41,4 +43,4 @@
 - update activity for a user/item/comment after liking
 - replace "current_user" with sessionCollection
 - create layout for signup & login
-
+- set content-length

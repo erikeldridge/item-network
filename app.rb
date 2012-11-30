@@ -25,7 +25,7 @@ def empty_param? name
   params[name].nil? || params[name].empty?
 end
 
-def home_activities
+def personalized_home_activities
   user_ids = Like.select(:user_id).filter(
     ~{:user_id=>nil} & {:owner_id=>session[:user_id]} # liked users
   )
@@ -40,6 +40,20 @@ def home_activities
   likes = Like.filter(
     {:user_id=>user_ids} | # likes on liked users
     {:item_id=>item_ids} | # likes on liked items
+    {:owner_id=>user_ids}  # likes by liked users
+  )
+  {
+    :comments=>comments,
+    :likes=>likes
+  }
+end
+
+def generic_home_activities
+  user_ids = [1,2]
+  comments = Comment.filter(
+    {:owner_id=>user_ids}  # comments by liked users
+  )
+  likes = Like.filter(
     {:owner_id=>user_ids}  # likes by liked users
   )
   {
@@ -258,16 +272,15 @@ end
 
 get '/*' do
   @init_json = {
+    :current_user => (session? ? session : nil),
     :items => Item.all,
     :users => User.all,
     :contributors => Contributor.all,
+    :activities => {:home => (session? ? personalized_home_activities : generic_home_activities)},
     :mentions => Mention.all,
     :comments => Comment.all,
-    :activities => {:home => home_activities},
     :bookmarks => Bookmark.filter({:owner_id=>session[:user_id]}).all,
     :likes => Like.all
-  }.tap {|data|
-    data[:current_user] = session if session?
   }.to_json
   erb :default
 end
