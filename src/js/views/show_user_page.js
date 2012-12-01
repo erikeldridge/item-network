@@ -3,6 +3,7 @@ define([
   'current_user', 'likeable',
   'collections/users', 'collections/comments', 'collections/likes',
   'collections/activities', 'collections/contributors',
+  'collections/sessions',
   'views/layout', 'views/activity_stream', 'views/stream',
   'views/typeahead/input',
   'text!templates/show_user_page.html',
@@ -11,6 +12,7 @@ define([
   currentUser, likeable,
   userCollection, commentCollection, likeCollection,
   activityCollections, contributorCollection,
+  sessionCollection,
   LayoutView, ActivityStreamView, StreamView,
   TypeaheadInputView,
   pageTemplate,
@@ -56,17 +58,27 @@ define([
       });
     },
     render: function(){
-      var query = this.options.params[0],
-          that = this,
-          page = this.template({
-            user: this.user,
-            isCurrentUser: this.user.get('id') === currentUser.user_id,
-            isLiked: likeCollection.where({user_id:this.user.get('id'), owner_id:currentUser.user_id}).length > 0
-          });
+      var session = sessionCollection.first(),
+      pageVars = {
+        session: session,
+        user: this.user,
+        like: false,
+        isCurrentUser: false
+      };
 
-      var layout = new LayoutView({
+      if(session){
+        pageVars.like = _.first(likeCollection.where({
+          user_id: this.user.get('id'),
+          owner_id: session.get('user_id')
+        }));
+        pageVars.isCurrentUser = this.user.get('id') === session.get('user_id');
+      }
+
+      var page = this.template(pageVars),
+      layout = new LayoutView({
         page: page
       });
+
       this.$el.html( layout.el );
 
       var input = new TypeaheadInputView({
@@ -83,7 +95,8 @@ define([
       this.$('.activity-stream').html(activityStream.render().el);
       commentCollection.on('sync', this.fetchActivity, this);
 
-      var contributorStream = new StreamView({
+      var that = this,
+      contributorStream = new StreamView({
         template: contributorStreamTemplate,
         collection: contributorCollection,
         filter: function(model){
