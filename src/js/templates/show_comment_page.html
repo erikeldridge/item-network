@@ -1,35 +1,54 @@
-<ul class="breadcrumb">
-  <li><a href="/">Home</a><span class="divider">/</span></li>
-  <li><a href="/comments">Comments</a><span class="divider">/</span></li>
-  <li class="active"><%= comment.get('id') %></li>
-</ul>
-
 <% if(comment.get('reply_to_id')){ %>
   <p>
     In reply to: <a href="/comments/<%= comment.get('reply_to_id') %>"><%= comment.get('reply_to_id') %></a>
   </p>
 <% } %>
 
-<h1 class="<%= currentUserIsOwner ? 'editable' : '' %>">
-  <%= comment.get('text').replace(/\[(user|item)-(\d+)\]/g, '<span class="$1" data-id="$2"></span>') %>
-</h1>
+<div class="row">
+  <div class="span12">
+    <h1 class="<%= currentUserIsOwner ? 'editable' : '' %>">
+      <%= comment.get('text').replace(/\[(user|item)-(\d+)\]/g, '<span class="$1" data-id="$2"></span>') %>
+    </h1>
+  </div>
+</div>
 
-<p>
-  Author: <a href="/users/<%= comment.get('owner_id') %>"><%= comment.get('owner_id') %></a>
-</p>
+<div class="row">
+  <div class="span12">
+    Author: <a href="/users/<%= comment.get('owner_id') %>"><%= comment.get('owner_id') %></a>
+  </div>
+</div>
 
-<% if(isLiked){ %>
-  <button class="btn btn-success unlike-button"><i class="icon-star icon-white"></i></button>
-<% }else{ %>
-  <button class="btn like-button"><i class="icon-star"></i></button>
+<% if(session){ %>
+  <div class="row">
+    <div class="span12">
+      <% if(like){ %>
+        <button class="btn btn-success unlike-button"><i class="icon-star icon-white"></i></button>
+      <% }else{ %>
+        <button class="btn like-button"><i class="icon-star"></i></button>
+      <% } %>
+    </div>
+  </div>
 <% } %>
 
-<p>
-  <div class="typeahead"></div>
-</p>
+<% if(session){ %>
+  <div class="row">
+    <div class="span12">
+      <h2>Comment</h2>
+      <div class="typeahead"></div>
+    </div>
+  </div>
+<% } %>
 
-<h2>Activity</h2>
-<div class="activity-stream"></div>
+<div class="row">
+  <div class="span12">
+    <h2>Activity</h2>
+    <div class="activity-stream"></div>
+  </div>
+</div>
 
-<h2>&nbsp;</h2>
-<button class="btn btn-danger destroy"><i class="icon-trash icon-white"></i></button>
+<div class="row">
+  <div class="span12">
+    <h2>Admin</h2>
+    <button class="btn btn-danger destroy"><i class="icon-trash icon-white"></i></button>
+  </div>
+</div>

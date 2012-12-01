@@ -2,14 +2,14 @@ define([
   'underscore', 'backbone',
   'current_user', 'likeable',
   'collections/comments', 'collections/activities', 'collections/likes',
-  'collections/users', 'collections/items',
+  'collections/users', 'collections/items', 'collections/sessions',
   'views/layout', 'views/activity_stream',
   'views/typeahead/input',
   'text!templates/show_comment_page.html'
 ], function module(_, Backbone,
   currentUser, likeable,
   commentCollection, activityCollections, likeCollection,
-  userCollection, itemCollection,
+  userCollection, itemCollection, sessionCollection,
   LayoutView, ActivityStreamView,
   TypeaheadInputView,
   pageTemplate){
@@ -80,13 +80,25 @@ define([
       });
     },
     render: function(){
-      var page = this.template({
-            isLiked: likeCollection.where({comment_id:this.comment.get('id'), owner_id:currentUser.user_id}).length > 0,
-            currentUserIsOwner: this.comment.get('owner_id') === currentUser.user_id,
-            comment: this.comment
-          });
+      var session = sessionCollection.first(),
+      pageVars = {
+        session: session,
+        comment: this.comment,
+        like: false,
+        currentUserIsOwner: false
+      };
 
-      var layout = new LayoutView({
+      if(session){
+        var likes = likeCollection.where({
+          comment_id: this.comment.get('id'),
+          owner_id: session.get('user_id')
+        });
+        pageVars.like = _.first(likes);
+        pageVars.currentUserIsOwner = this.comment.get('owner_id') === session.get('user_id');
+      }
+
+      var page = this.template(pageVars),
+      layout = new LayoutView({
         page: page
       });
       this.$el.html( layout.el );
