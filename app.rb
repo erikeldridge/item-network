@@ -195,6 +195,7 @@ end
 post '/api/1/users' do
   data = JSON.parse request.body.read
   user = User.new
+  user.name = 'new user'
   user.email = data['email']
   user.password_hash = SCrypt::Password.create(data[:password])
   user.save

@@ -1,4 +1,3 @@
-- fix missing name when creating account
 - removed unused generic_stream template
 - show rendered names in typeahead instead of placeholders
 - add "pin/like/save" btn to recent searches page
@@ -45,3 +44,6 @@
 - define "users|items|comments like this user|item|comment" section
 - investigate appcache feasibilty
 - link to advanced search from search results
+- fix logout bug (can't call destroy on undefined)
+- move bookmarks button to left
+- define bookmarks for new users
