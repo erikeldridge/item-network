@@ -8,13 +8,28 @@ Item network is a playground for social network patterns. The project is topic-a
 
 Expose user activity to provide feedback and facilitate recognition
 
+Inspiration:
+* Facebook
+* Twitter
+* Rdio
+
 ### Simplicity
 
 Restrict the amount of primitives and rules to facilitate onboarding
 
+Inspiration:
+* Apple
+
 ### Ease of use
 
-Maintain a low barrier to entry. Value should be immediately apparent
+Maintain a low barrier to entry. Value should be immediately apparent and accessible
+
+### Logged out
+
+Everyone who touches the product is a user, and exists on a usage continuum
+
+Inspiration:
+* YouTube
 
 ### Delightful
 
@@ -22,11 +37,18 @@ Make it easy to do the right thing
 
 Example: autocomplete user names when commenting
 
+Inspiration:
+* Facebook
+* Freebase
+
 ### Search
 
 Enable users to find what they are looking for
 
 Example: a search box is one of three elements on the home page, and is in the header on all pages
+
+Inspiration:
+* Twitter
 
 ### API
 

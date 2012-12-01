@@ -1,4 +1,3 @@
-- add "logged out" to readme pattern list
 - remove server-side rendered home content
 - removed unused generic_stream template
 - show rendered names in typeahead instead of placeholders
