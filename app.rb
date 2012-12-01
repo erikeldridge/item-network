@@ -212,15 +212,16 @@ put '/api/1/users/:id' do
 end
 
 get '/api/1/activities' do
-  return 403 unless session?
   if params[:user_id]
     user_activities params[:user_id]
   elsif params[:item_id]
     item_activities params[:item_id]
   elsif params[:comment_id]
     comment_activities params[:comment_id]
+  elsif session?
+    personalized_home_activities
   else
-    home_activities
+    generic_home_activities
   end.to_json
 end
 
