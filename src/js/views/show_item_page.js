@@ -2,7 +2,7 @@ define([
   'zepto', 'underscore', 'backbone',
   'current_user', 'likeable',
   'collections/items', 'collections/users', 'collections/comments',
-  'collections/activities', 'collections/likes',
+  'collections/activities', 'collections/likes', 'collections/sessions',
   'views/layout',
   'views/activity_stream',
   'views/typeahead/input',
@@ -10,7 +10,7 @@ define([
 ], function module($, _, Backbone,
   currentUser, likeable,
   itemCollection, userCollection, commentCollection,
-  activityCollections, likeCollection,
+  activityCollections, likeCollection, sessionCollection,
   LayoutView, ActivityStreamView, TypeaheadInputView,
   pageTemplate){
 
@@ -63,15 +63,26 @@ define([
       });
     },
     render: function(){
-      var page = this.template({
-            currentUserIsOwner: this.item.get('owner_id') === currentUser.user_id,
-            isLiked: likeCollection.where({item_id:this.item.get('id'), owner_id:currentUser.user_id}).length > 0,
-            item: this.item,
-            owner: this.owner
-          }),
-          stream;
+      var session = sessionCollection.first(),
+      pageVars = {
+        session: session,
+        item: this.item,
+        owner: this.owner,
+        like: false,
+        currentUserIsOwner: false
+      };
 
-      var layout = new LayoutView({
+      if(session){
+        var likes = likeCollection.where({
+          item_id: this.item.get('id'),
+          owner_id: session.get('user_id')
+        })
+        pageVars.like = _.first(likes);
+        pageVars.currentUserIsOwner = this.item.get('owner_id') === session.get('user_id');
+      }
+
+      var page = this.template(pageVars),
+      layout = new LayoutView({
         page: page
       });
       this.$el.html( layout.el );

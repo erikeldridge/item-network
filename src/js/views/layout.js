@@ -27,7 +27,6 @@ define([
       var opts = _.extend({
         session: sessionCollection.first()
       }, this.options);
-      console.log(opts);
       var html = this.template(opts);
       this.$el.html( html );
     }
