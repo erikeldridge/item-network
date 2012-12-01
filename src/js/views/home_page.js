@@ -1,10 +1,12 @@
 define([
   'zepto', 'underscore', 'backbone',
   'collections/activities', 'collections/comments',
+  'collections/sessions',
   'views/layout', 'views/typeahead/input', 'views/activity_stream',
   'text!templates/home_page.html'
 ], function module($, _, Backbone,
   activityCollections, commentCollection,
+  sessionCollection,
   LayoutView, TypeaheadInputView, ActivityStreamView,
   pageTemplate){
 
@@ -19,9 +21,12 @@ define([
         this.off();
       },
       render: function(){
-        var layout = new LayoutView({
-          page: this.template()
-        });
+        var page = this.template({
+              session: sessionCollection.first()
+            }),
+            layout = new LayoutView({
+              page: page
+            });
         this.$el.html( layout.el );
 
         var input = new TypeaheadInputView();
