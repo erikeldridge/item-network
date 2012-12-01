@@ -1,5 +1,5 @@
-- prompt for session if attempt to compose while logged out
 - add "logged out" to readme pattern list
+- remove server-side rendered home content
 - removed unused generic_stream template
 - show rendered names in typeahead instead of placeholders
 - add "pin/like/save" btn to recent searches page
@@ -30,7 +30,6 @@
 - enable private comments
 - create separate notifications stream (once we have private messages)
 - show count of replies to comment
-- replace breadcrumbs w/ advanced search
 - require login for write actions, otherwise, allow to browse
 - review [shallow exclusions for fast development](http://requirejs.org/docs/optimization.html#shallow), and update build process accordingly
 - compress require.js
@@ -44,3 +43,6 @@
 - replace "current_user" with sessionCollection
 - create layout for signup & login
 - set content-length
+- define "users|items|comments like this user|item|comment" section
+- investigate appcache feasibilty
+- link to advanced search from search results
