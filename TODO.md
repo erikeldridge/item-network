@@ -1,4 +1,4 @@
-- remove server-side rendered home content
+- fix missing name when creating account
 - removed unused generic_stream template
 - show rendered names in typeahead instead of placeholders
 - add "pin/like/save" btn to recent searches page
